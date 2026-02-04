@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <title>Raghu AI - Portfolio Assistant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            wine: {
+              darker: '#0A0508',
+              dark: '#140A12',
+              base: '#1F1217',
+            },
+            amber: {
+              glow: '#FF9A3C',
+              light: '#FFB366',
+              dark: '#E8843A',
+            },
+            rose: {
+              glow: '#FF4D6D',
+              light: '#FF7A8F',
+              dark: '#E83D5F',
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'blob': 'blob 15s infinite ease-in-out',
+            'float': 'float 6s ease-in-out infinite',
+            'jelly': 'jelly 0.6s cubic-bezier(0.3, 1.2, 0.3, 1)',
+            'fade-in': 'fadeIn 0.5s ease-out forwards',
+          },
+          keyframes: {
+            blob: {
+              '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+              '33%': { transform: 'translate(40px, -60px) scale(1.2)' },
+              '66%': { transform: 'translate(-30px, 40px) scale(0.9)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            jelly: {
+              '0%': { transform: 'scale(1, 1)' },
+              '30%': { transform: 'scale(1.1, 0.9)' },
+              '40%': { transform: 'scale(0.9, 1.05)' },
+              '100%': { transform: 'scale(1, 1)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-blur: 28px;
+    }
+
+    body {
+      background-color: #140A12;
+      color: #f5f5f5;
+      overflow: hidden;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Radial background glows */
+    .bg-glow-amber {
+      position: fixed;
+      top: -10%;
+      left: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(255, 154, 60, 0.15) 0%, transparent 70%);
+      filter: blur(80px);
+      z-index: -1;
+    }
+
+    .bg-glow-rose {
+      position: fixed;
+      bottom: -10%;
+      right: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(255, 77, 109, 0.15) 0%, transparent 70%);
+      filter: blur(80px);
+      z-index: -1;
+    }
+
+    /* Glass System Controls */
+    .liquid-glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+      border: 1px solid rgba(255, 154, 60, 0.2);
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-border-amber {
+      border: 1px solid transparent;
+      background-image: linear-gradient(rgba(20, 10, 18, 0.8), rgba(20, 10, 18, 0.8)),
+        linear-gradient(135deg, rgba(255, 154, 60, 0.4), rgba(255, 77, 109, 0.2));
+      background-origin: border-box;
+      background-clip: content-box, border-box;
+    }
+
+    /* Sidebar Glass */
+    .sidebar-glass {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border-right: 1px solid rgba(255, 154, 60, 0.15);
+      box-shadow: inset -10px 0 30px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Message Bubbles - Optimized for Mobile Wrapping */
+    .chat-bubble {
+      border-radius: 26px;
+      max-width: 85%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+
+    .ai-bubble {
+      background: linear-gradient(135deg, rgba(255, 154, 60, 0.1), rgba(255, 255, 255, 0.05));
+      border: 1px solid rgba(255, 154, 60, 0.3);
+      box-shadow: 0 0 20px rgba(255, 154, 60, 0.1);
+    }
+
+    .user-bubble {
+      background: linear-gradient(135deg, rgba(255, 77, 109, 0.2), rgba(255, 154, 60, 0.1));
+      border: 1px solid rgba(255, 77, 109, 0.4);
+      box-shadow: 0 0 20px rgba(255, 77, 109, 0.1);
+    }
+
+    /* Jelly Button */
+    .jelly-btn {
+      background: linear-gradient(135deg, #FF9A3C, #FF4D6D);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 8px 24px rgba(255, 77, 109, 0.3);
+    }
+
+    .jelly-btn:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(255, 77, 109, 0.5);
+      filter: brightness(1.1);
+    }
+
+    /* Floating Input */
+    .floating-input-bar {
+      box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.6), 0 20px 50px rgba(0, 0, 0, 0.4);
+      margin-bottom: clamp(1rem, 4vh, 2.5rem);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 154, 60, 0.2);
+      border-radius: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .chat-bubble {
+        max-width: 92%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-glow-amber"></div>
+  <div class="bg-glow-rose"></div>
+  <div id="root">
+    <div
+      style="height: 100vh; display: flex; align-items: center; justify-content: center; background: #0A0508; color: #FF9A3C; font-family: sans-serif;">
+      <p style="letter-spacing: 0.1em; font-weight: bold; animation: pulse 2s infinite;">INITIALIZING NEURAL NETWORK...
+      </p>
+    </div>
+  </div>
+  <script type="module" src="./index.tsx"></script>
+</body>
+
+</html>
