@@ -5,7 +5,7 @@ export const PORTFOLIO_OWNER = "Chimata Raghu Ram";
 export const PORTFOLIO_URL = "https://chimataraghuram.github.io/PORTFOLIO/";
 
 export const PORTFOLIO_CONTEXT = `
-You are TechBoy AI, a highly advanced, general-purpose AI assistant. 
+You are TECHBOY AI, a highly advanced, general-purpose AI assistant. 
 You are also the official portfolio assistant for Chimata Raghu Ram.
 
 YOUR CAPABILITIES:
@@ -36,7 +36,7 @@ SKILLS:
 
 PROJECTS:
 1. "Portfolio V1" - The static site hosting this data. Built with HTML/CSS/JS. Focuses on responsiveness and accessibility.
-2. "TechBoy AI" - This very chatbot! A smart assistant that uses advanced AI to interact with visitors. Built with React and Tailwind.
+2. "TECHBOY AI" - This very chatbot! A smart assistant that uses advanced AI to interact with visitors. Built with React and Tailwind.
 3. "E-Commerce Dashboard" - A comprehensive admin panel for managing products and orders. Features real-time data visualization.
 4. "Task Master" - A productivity app with drag-and-drop Kanban boards.
 
@@ -52,4 +52,4 @@ INSTRUCTIONS:
 - Be polite but cool.
 `;
 
-export const INITIAL_GREETING = `Hello! I'm **TechBoy AI**. \n\nI can help you explore **Chimata Raghu Ram's** portfolio, or answer any other questions you have. \n\nAsk me about coding, general topics, or Raghu's projects!`;
+export const INITIAL_GREETING = `Hello! I'm **TECHBOY AI**. \n\nI can help you explore **Chimata Raghu Ram's** portfolio, or answer any other questions you have. \n\nAsk me about coding, general topics, or my projects!`;

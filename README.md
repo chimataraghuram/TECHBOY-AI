@@ -1,4 +1,4 @@
-# 🤖 TechBoy AI - Portfolio Assistant
+# 🤖 TECHBOY AI - Portfolio Assistant
 
 ![License](https://img.shields.io/badge/License-Proprietary-red.svg)
 ![Status](https://img.shields.io/badge/Status-Active-success.svg)
@@ -14,7 +14,7 @@
 
 ## 📋 About
 
-**TechBoy AI** is an intelligent portfolio assistant designed and developed entirely by **Chimata Raghu Ram**. This application showcases advanced UI/UX design with a warm sunset glassmorphism aesthetic, featuring floating glass panels, jelly-effect buttons, and radial ambient glows.
+**TECHBOY AI** is an intelligent portfolio assistant designed and developed entirely by **Chimata Raghu Ram**. This application showcases advanced UI/UX design with a warm sunset glassmorphism aesthetic, featuring floating glass panels, jelly-effect buttons, and radial ambient glows.
 
 ### ✨ Key Features
 

@@ -28,3 +28,8 @@ test-key.js
 list-models.js
 print-names.js
 models.json
+
+# Environment Secrets
+.env
+.env.local
+.env.*.local

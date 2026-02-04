@@ -2,11 +2,14 @@ import { GoogleGenerativeAI, ChatSession, GenerativeModel } from "@google/genera
 import { PORTFOLIO_CONTEXT } from "../constants";
 
 // ============================================================================
-// 🔑 PUBLIC ACCESS CONFIGURATION
-// To make the AI work for EVERYONE who visits your website, 
-// paste your Gemini API Key in the quotes below.
+// 🔑 SECURITY CONFIGURATION
+// Your API key was leaked on GitHub and disabled by Google.
+// To fix this:
+// 1. Generate a NEW key at https://aistudio.google.com/app/apikey
+// 2. Create a file named '.env' in the root directory
+// 3. Add this line: VITE_GEMINI_API_KEY=your_new_key_here
 // ============================================================================
-const PUBLIC_API_KEY = "AIzaSyAWtg9egrAfAc-3hGHGCNbRQkoqHApVzuI";
+// (Hardcoded key removed for security)
 // ============================================================================
 
 let genAI: GoogleGenerativeAI | null = null;
@@ -22,11 +25,11 @@ const AVAILABLE_MODELS = [
 ];
 
 const initializeAI = (modelName: string = "gemini-2.0-flash") => {
-  // Priority: 1. Environment Variable, 2. Hardcoded Public Key
-  const activeKey = import.meta.env.VITE_GEMINI_API_KEY || PUBLIC_API_KEY;
+  // Use Environment Variable for security
+  const activeKey = import.meta.env.VITE_GEMINI_API_KEY;
 
   if (!activeKey) {
-    console.error("AI Service Error: No API Key found. Please add your key to aiService.ts or .env");
+    console.error("AI Service Error: No API Key found. Please add VITE_GEMINI_API_KEY to your .env file.");
     return;
   }
 
@@ -107,6 +110,6 @@ export const sendMessageStream = async function* (text: string) {
 
   if (!success) {
     const errorMessage = lastError?.message || lastError?.toString() || "Connection timeout";
-    yield `I encountered an issue connecting to the AI neural network: ${errorMessage}. If you are the owner, please check the API configuration in aiService.ts.`;
+    yield `I encountered an issue connecting to the AI neural network: ${errorMessage}. If you are the owner, please ensure your NEW API key is set in the .env file (the old one was leaked and disabled).`;
   }
 };

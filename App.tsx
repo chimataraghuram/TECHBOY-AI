@@ -117,7 +117,8 @@ const App: React.FC = () => {
             </div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent">
-                Raghu AI
+                TECHBOY AI
+                {/* Brand Updated */}
               </h1>
               <div className="flex items-center gap-1.5">
                 <Circle size={8} className="fill-emerald-500 text-emerald-500 animate-pulse" />

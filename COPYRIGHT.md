@@ -1,4 +1,4 @@
-# TechBoy AI - Copyright Notice
+# TECHBOY AI - Copyright Notice
 
 This project and all its contents are the intellectual property of Chimata Raghu Ram.
 
