@@ -3,11 +3,11 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
   <title>Raghu AI - Portfolio Assistant</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
     rel="stylesheet">
   <link rel="icon" type="image/jpeg" href="/TECHBOY-AI/logo.jpg" />
   <script>
@@ -15,7 +15,6 @@
       theme: {
         extend: {
           colors: {
-            // Warm Sunset Theme
             wine: {
               darker: '#0A0508',
               dark: '#140A12',
@@ -33,36 +32,35 @@
             }
           },
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
+            sans: ['Outfit', 'Inter', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace'],
           },
           animation: {
             'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'blob': 'blob 12s infinite ease-in-out',
+            'blob': 'blob 15s infinite ease-in-out',
             'float': 'float 6s ease-in-out infinite',
-            'glow': 'glow 3s ease-in-out infinite alternate',
-            'jelly': 'jelly 0.5s ease',
+            'jelly': 'jelly 0.6s cubic-bezier(0.3, 1.2, 0.3, 1)',
+            'fade-in': 'fadeIn 0.5s ease-out forwards',
           },
           keyframes: {
             blob: {
               '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
-              '25%': { transform: 'translate(30px, -50px) scale(1.1)' },
-              '50%': { transform: 'translate(-40px, 30px) scale(0.95)' },
-              '75%': { transform: 'translate(20px, 40px) scale(1.05)' },
+              '33%': { transform: 'translate(40px, -60px) scale(1.2)' },
+              '66%': { transform: 'translate(-30px, 40px) scale(0.9)' },
             },
             float: {
               '0%, 100%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-15px)' },
-            },
-            glow: {
-              '0%': { opacity: '0.5', filter: 'blur(60px)' },
-              '100%': { opacity: '0.8', filter: 'blur(80px)' },
+              '50%': { transform: 'translateY(-20px)' },
             },
             jelly: {
               '0%': { transform: 'scale(1, 1)' },
-              '30%': { transform: 'scale(1.05, 0.95)' },
-              '50%': { transform: 'scale(0.95, 1.05)' },
+              '30%': { transform: 'scale(1.1, 0.9)' },
+              '40%': { transform: 'scale(0.9, 1.05)' },
               '100%': { transform: 'scale(1, 1)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
             }
           }
         }
@@ -70,15 +68,112 @@
     }
   </script>
   <style>
-    body {
-      background: linear-gradient(135deg, #140A12 0%, #1F1217 50%, #140A12 100%);
-      color: #f5f5f5;
-      overflow: hidden;
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-blur: 28px;
     }
 
-    /* Custom scrollbar - Warm theme */
+    body {
+      background-color: #140A12;
+      color: #f5f5f5;
+      overflow: hidden;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Radial background glows */
+    .bg-glow-amber {
+      position: fixed;
+      top: -10%;
+      left: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(255, 154, 60, 0.15) 0%, transparent 70%);
+      filter: blur(80px);
+      z-index: -1;
+    }
+
+    .bg-glow-rose {
+      position: fixed;
+      bottom: -10%;
+      right: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(255, 77, 109, 0.15) 0%, transparent 70%);
+      filter: blur(80px);
+      z-index: -1;
+    }
+
+    /* Glass System Controls */
+    .liquid-glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+      border: 1px solid rgba(255, 154, 60, 0.2);
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-border-amber {
+      border: 1px solid transparent;
+      background-image: linear-gradient(rgba(20, 10, 18, 0.8), rgba(20, 10, 18, 0.8)),
+        linear-gradient(135deg, rgba(255, 154, 60, 0.4), rgba(255, 77, 109, 0.2));
+      background-origin: border-box;
+      background-clip: content-box, border-box;
+    }
+
+    /* Sidebar Glass */
+    .sidebar-glass {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border-right: 1px solid rgba(255, 154, 60, 0.15);
+      box-shadow: inset -10px 0 30px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Message Bubbles - Optimized for Mobile Wrapping */
+    .chat-bubble {
+      border-radius: 26px;
+      max-width: 85%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+
+    .ai-bubble {
+      background: linear-gradient(135deg, rgba(255, 154, 60, 0.1), rgba(255, 255, 255, 0.05));
+      border: 1px solid rgba(255, 154, 60, 0.3);
+      box-shadow: 0 0 20px rgba(255, 154, 60, 0.1);
+    }
+
+    .user-bubble {
+      background: linear-gradient(135deg, rgba(255, 77, 109, 0.2), rgba(255, 154, 60, 0.1));
+      border: 1px solid rgba(255, 77, 109, 0.4);
+      box-shadow: 0 0 20px rgba(255, 77, 109, 0.1);
+    }
+
+    /* Jelly Button */
+    .jelly-btn {
+      background: linear-gradient(135deg, #FF9A3C, #FF4D6D);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 8px 24px rgba(255, 77, 109, 0.3);
+    }
+
+    .jelly-btn:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(255, 77, 109, 0.5);
+      filter: brightness(1.1);
+    }
+
+    /* Floating Input */
+    .floating-input-bar {
+      box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.6), 0 20px 50px rgba(0, 0, 0, 0.4);
+      margin-bottom: clamp(1rem, 4vh, 2.5rem);
+    }
+
+    /* Custom scrollbar */
     ::-webkit-scrollbar {
-      width: 6px;
+      width: 5px;
     }
 
     ::-webkit-scrollbar-track {
@@ -90,180 +185,18 @@
       border-radius: 10px;
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 154, 60, 0.4);
-    }
-
-    /* === SUNSET GLASSMORPHISM SYSTEM === */
-
-    /* Sidebar - Floating Glass Slab */
-    .glass-panel-sidebar {
-      background: linear-gradient(135deg, rgba(255, 154, 60, 0.08), rgba(255, 77, 109, 0.06));
-      backdrop-filter: blur(32px) saturate(180%);
-      -webkit-backdrop-filter: blur(32px) saturate(180%);
-      border: 1px solid rgba(255, 154, 60, 0.2);
-      border-right: 1px solid rgba(255, 154, 60, 0.15);
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.6),
-        inset 0 1px 0 rgba(255, 154, 60, 0.1),
-        0 0 60px rgba(255, 154, 60, 0.15);
-    }
-
-    /* Header - Minimal Glass Bar */
-    .glass-panel-header {
-      background: linear-gradient(to right, rgba(255, 154, 60, 0.04), rgba(255, 77, 109, 0.04));
-      backdrop-filter: blur(24px) saturate(150%);
-      -webkit-backdrop-filter: blur(24px) saturate(150%);
-      border-bottom: 1px solid rgba(255, 154, 60, 0.1);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Input - Floating Glass Panel */
-    .glass-input-panel {
-      background: linear-gradient(135deg, rgba(255, 154, 60, 0.1), rgba(255, 77, 109, 0.08));
-      backdrop-filter: blur(40px) saturate(200%);
-      -webkit-backdrop-filter: blur(40px) saturate(200%);
-      border: 1px solid rgba(255, 154, 60, 0.25);
-      box-shadow:
-        0 8px 40px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 154, 60, 0.2),
-        0 0 40px rgba(255, 154, 60, 0.2);
-    }
-
-    /* Message Bubbles - AI with Amber Glow */
-    .glass-message-ai {
-      background: linear-gradient(135deg, rgba(255, 154, 60, 0.12), rgba(255, 122, 143, 0.08));
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid rgba(255, 154, 60, 0.25);
-      border-left: 2px solid rgba(255, 154, 60, 0.6);
-      box-shadow:
-        0 4px 24px rgba(0, 0, 0, 0.3),
-        0 0 30px rgba(255, 154, 60, 0.15),
-        inset 0 1px 0 rgba(255, 154, 60, 0.15);
-    }
-
-    /* Message Bubbles - User with Rose Accent */
-    .glass-message-user {
-      background: linear-gradient(135deg, rgba(255, 77, 109, 0.2), rgba(255, 154, 60, 0.15));
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid rgba(255, 77, 109, 0.3);
-      box-shadow:
-        0 4px 24px rgba(255, 77, 109, 0.25),
-        0 0 20px rgba(255, 77, 109, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-
-    /* Message Bubbles - Error */
-    .glass-message-error {
-      background: rgba(220, 38, 38, 0.15);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(220, 38, 38, 0.4);
-      box-shadow: 0 4px 20px rgba(220, 38, 38, 0.2);
-    }
-
-    /* Glass Button for suggestions */
-    .glass-panel-button {
-      background: linear-gradient(135deg, rgba(255, 154, 60, 0.1), rgba(255, 77, 109, 0.08));
-      backdrop-filter: blur(20px) saturate(160%);
-      -webkit-backdrop-filter: blur(20px) saturate(160%);
-      border: 1px solid rgba(255, 154, 60, 0.2);
-      box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 154, 60, 0.1);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .glass-panel-button:hover {
-      transform: translateY(-2px);
-      box-shadow:
-        0 8px 24px rgba(255, 154, 60, 0.3),
-        0 0 40px rgba(255, 154, 60, 0.2),
-        inset 0 1px 0 rgba(255, 154, 60, 0.2);
-      border-color: rgba(255, 154, 60, 0.4);
-    }
-
-    /* Jelly Button - Amber to Rose Gradient */
-    .jelly-btn {
-      background: linear-gradient(135deg, #FF9A3C 0%, #FF4D6D 100%);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow:
-        0 4px 20px rgba(255, 77, 109, 0.4),
-        0 0 30px rgba(255, 154, 60, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    }
-
-    .jelly-btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow:
-        0 8px 32px rgba(255, 77, 109, 0.5),
-        0 0 50px rgba(255, 154, 60, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-      filter: brightness(1.1);
-    }
-
-    .jelly-btn:active {
-      transform: scale(0.98);
-      animation: jelly 0.5s ease;
-    }
-
-    /* Fade in animation */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
+    @media (max-width: 640px) {
+      .chat-bubble {
+        max-width: 92%;
       }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .animate-fadeIn {
-      animation: fadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-
-    /* Optimization for animated elements */
-    .animate-blob {
-      will-change: transform;
-    }
-
-    /* Custom Scrollbar for thin variant */
-    .scrollbar-thin::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .scrollbar-thin::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .scrollbar-thin::-webkit-scrollbar-thumb {
-      background: rgba(255, 154, 60, 0.2);
-      border-radius: 10px;
-    }
-
-    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 154, 60, 0.4);
-    }
-
-    /* Glow effects */
-    .glow-amber {
-      box-shadow: 0 0 60px rgba(255, 154, 60, 0.3);
-    }
-
-    .glow-rose {
-      box-shadow: 0 0 60px rgba(255, 77, 109, 0.3);
     }
   </style>
-
-
-  <script type="module" crossorigin src="/TECHBOY-AI/assets/index-yfeqf-vV.js"></script>
+  <script type="module" crossorigin src="/TECHBOY-AI/assets/index-PWcyBhoM.js"></script>
 </head>
 
 <body>
+  <div class="bg-glow-amber"></div>
+  <div class="bg-glow-rose"></div>
   <div id="root"></div>
 </body>
 
