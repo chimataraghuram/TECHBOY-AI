@@ -26,10 +26,10 @@ const AVAILABLE_MODELS = [
 
 const initializeAI = (modelName: string = "gemini-2.0-flash") => {
   // Use Environment Variable for security
-  const activeKey = import.meta.env.VITE_GEMINI_API_KEY;
+  const activeKey = import.meta.env.VITE_GEMINI_API_KEY || "AIzaSyAWtg9egrAfAc-3hGHGCNbRQkoqHApVzuI";
 
-  if (!activeKey) {
-    console.error("AI Service Error: No API Key found. Please add VITE_GEMINI_API_KEY to your .env file.");
+  if (!activeKey || activeKey === "your_new_api_key_here") {
+    console.error("AI Service Error: No API Key found.");
     return;
   }
 

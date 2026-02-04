@@ -40,18 +40,17 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
       <form
         onSubmit={handleSubmit}
         className={`
-          w-full liquid-glass border border-white/10 rounded-[32px] transition-all duration-500
-          floating-input-bar group
-          ${disabled ? 'opacity-50 grayscale' : 'hover:border-amber-glow/40'}
+          w-full floating-input-bar transition-all duration-500 group
+          ${disabled ? 'opacity-50 grayscale' : 'hover:border-amber-glow/60'}
         `}
       >
-        <div className="flex items-end gap-2 sm:gap-4 p-3 sm:p-4">
+        <div className="flex items-end gap-2 sm:gap-4 p-4 sm:p-5">
 
           {/* Action Group 1 */}
           <div className="flex items-center pb-1">
             <button
               type="button"
-              className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-amber-glow hover:bg-white/5 transition-all"
+              className="glass-circle-btn text-gray-400"
               title="Attach File"
             >
               <Paperclip size={20} />
@@ -68,23 +67,23 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               disabled={disabled}
               placeholder="Query TECHBOY AI..."
               className="
-                w-full bg-transparent text-gray-100 placeholder:text-gray-500
-                text-[15px] sm:text-[16px] resize-none focus:outline-none 
-                py-2.5 max-h-[180px] leading-relaxed
-                scrollbar-none
+                w-full bg-transparent text-white placeholder:text-gray-500
+                text-[15px] sm:text-[17px] resize-none focus:outline-none 
+                py-2.5 max-h-[220px] leading-relaxed
+                scrollbar-none font-medium
               "
               rows={1}
             />
             {input.length === 0 && !disabled && (
-              <Sparkles size={14} className="absolute right-0 text-amber-glow/20 pointer-events-none" />
+              <Sparkles size={16} className="absolute right-0 text-amber-glow/20 pointer-events-none" />
             )}
           </div>
 
           {/* Action Group 2 */}
-          <div className="flex items-center gap-1 sm:gap-2 pb-1">
+          <div className="flex items-center gap-2 sm:gap-3 pb-1">
             <button
               type="button"
-              className="hidden sm:flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-rose-glow hover:bg-white/5 transition-all"
+              className="hidden sm:flex glass-circle-btn text-gray-400"
               title="Voice Input"
             >
               <Mic size={20} />
@@ -93,14 +92,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               type="submit"
               disabled={!input.trim() || disabled}
               className={`
-                w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all duration-300
+                w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-500 shadow-xl
                 ${input.trim() && !disabled
-                  ? 'jelly-btn text-white scale-110'
+                  ? 'jelly-btn text-white scale-110 rotate-0'
                   : 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'
                 }
               `}
             >
-              <Send size={18} strokeWidth={2.5} className={input.trim() && !disabled ? 'ml-0.5' : ''} />
+              <Send size={20} strokeWidth={2.5} className={input.trim() && !disabled ? 'ml-1' : ''} />
             </button>
           </div>
         </div>

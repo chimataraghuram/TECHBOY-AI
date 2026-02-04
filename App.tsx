@@ -106,23 +106,25 @@ const App: React.FC = () => {
       `}>
         <div className="flex flex-col h-full p-6">
 
-          {/* Logo & Branding */}
-          <div className="flex items-center gap-4 mb-10">
-            <div className="relative p-1 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-[0_0_20px_rgba(255,154,60,0.2)]">
-              <img
-                src="/logo.jpg"
-                alt="Logo"
-                className="w-12 h-12 rounded-xl object-cover"
-              />
+          {/* Logo & Branding - Enhanced Visibility */}
+          <div className="flex items-center gap-4 mb-12">
+            <div className="relative group">
+              <div className="absolute -inset-2 bg-amber-glow/20 rounded-full blur-xl group-hover:bg-amber-glow/40 transition-all duration-500"></div>
+              <div className="relative w-16 h-16 rounded-full liquid-glass border-2 border-white/20 p-1 flex items-center justify-center shadow-[0_0_30px_rgba(255,154,60,0.3)] overflow-hidden">
+                <img
+                  src="/logo.jpg"
+                  alt="Logo"
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </div>
             </div>
-            <div>
+            <div className="flex flex-col">
               <h1 className="text-xl font-bold bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent">
                 TECHBOY AI
-                {/* Brand Updated */}
               </h1>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 mt-0.5">
                 <Circle size={8} className="fill-emerald-500 text-emerald-500 animate-pulse" />
-                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Sync Active</span>
+                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Neural Sync</span>
               </div>
             </div>
           </div>
@@ -130,22 +132,22 @@ const App: React.FC = () => {
           {/* New Chat Jelly Button */}
           <button
             onClick={handleNewChat}
-            className="jelly-btn w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-white font-bold mb-8"
+            className="jelly-btn w-full flex items-center justify-center gap-2 py-4 rounded-2xl text-white font-bold mb-10 shadow-lg"
           >
             <MessageSquarePlus size={20} />
             <span>Reset Neural Link</span>
           </button>
 
           {/* Chat History Pills */}
-          <div className="flex-1 overflow-y-auto space-y-3 scrollbar-none">
-            <div className="flex items-center gap-2 px-2 mb-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">
+          <div className="flex-1 overflow-y-auto space-y-3 scrollbar-none pr-2">
+            <div className="flex items-center gap-2 px-2 mb-5 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">
               <History size={12} />
-              <span>Recent Nodes</span>
+              <span>Session Memory</span>
             </div>
             {['Project Scope', 'Skill Evaluation', 'Contact Protocol'].map((item, i) => (
               <button
                 key={i}
-                className="w-full text-left px-4 py-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-amber-glow/20 transition-all text-xs text-gray-400 hover:text-white truncate"
+                className="glass-pill w-full text-left px-5 py-3.5 rounded-2xl text-xs text-gray-400 hover:text-white truncate"
               >
                 {item}
               </button>
@@ -158,7 +160,7 @@ const App: React.FC = () => {
               href={PORTFOLIO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-amber-glow/10 transition-all text-gray-400 hover:text-amber-light text-xs"
+              className="w-full glass-pill flex items-center gap-3 px-5 py-3.5 rounded-2xl text-gray-400 hover:text-amber-light text-xs transition-all"
             >
               <ExternalLink size={16} />
               <span>Enter Portfolio</span>
@@ -170,29 +172,33 @@ const App: React.FC = () => {
       {/* 🗨️ MAIN CHAT */}
       <main className="relative flex flex-col flex-1 min-w-0">
 
-        {/* Header Bar */}
-        <header className="sticky top-0 z-30 liquid-glass border-b border-white/5 px-4 h-16 flex items-center justify-between">
+        {/* Header Bar - Floating Glass */}
+        <header className="sticky top-0 z-30 liquid-glass border-b border-white/5 px-6 h-20 flex items-center justify-between mx-4 my-2 rounded-2xl shadow-2xl">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 hover:bg-white/5 rounded-xl transition-all lg:hidden text-gray-300"
+              className="transition-all lg:hidden text-gray-300 glass-circle-btn"
             >
               <Menu size={24} />
             </button>
-            <div className="flex items-center gap-2">
-              <Sparkles size={16} className="text-amber-glow animate-float" />
-              <span className="hidden sm:inline text-xs font-bold text-gray-400 tracking-widest uppercase">Portfolio Intel Model v2</span>
-              <span className="sm:hidden text-xs font-bold text-amber-glow tracking-widest">v2.0</span>
+            <div className="flex items-center gap-2.5">
+              <Sparkles size={18} className="text-amber-glow animate-float" />
+              <div className="flex flex-col">
+                <span className="hidden sm:inline text-xs font-bold text-gray-400 tracking-widest uppercase mb-0.5">Neural Model v2.5</span>
+                <span className="sm:hidden text-xs font-black text-amber-glow tracking-widest">v2.5</span>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div className="hidden md:block text-right">
-              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-tighter">Authorized Personal AI for</p>
-              <p className="text-[12px] text-white font-black">{PORTFOLIO_OWNER}</p>
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-tighter">Personal Assistant for</p>
+              <p className="text-[13px] text-white font-black">{PORTFOLIO_OWNER}</p>
             </div>
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-glow/20 to-rose-glow/20 border border-white/10 flex items-center justify-center shadow-inner">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+            <div className="w-12 h-12 rounded-full liquid-glass border border-white/10 flex items-center justify-center p-0.5 shadow-xl overflow-hidden">
+              <div className="w-full h-full rounded-full bg-gradient-to-br from-amber-glow/20 to-rose-glow/20 flex items-center justify-center">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.6)]"></div>
+              </div>
             </div>
           </div>
         </header>
