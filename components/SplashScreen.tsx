@@ -59,13 +59,20 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                     <p className="text-amber-glow font-bold tracking-[0.4em] uppercase text-sm sm:text-lg">
                         TECHBOY AI
                     </p>
-                    <p className="mt-1.5 text-white/30 font-medium text-[9px] sm:text-[10px] tracking-[0.2em]">
-                        cooked by Raghu with ❤️
-                    </p>
+
                     <div className="mt-5 flex gap-1 justify-center">
                         <div className="w-1.5 h-1.5 rounded-full bg-rose-glow animate-bounce [animation-delay:-0.3s]"></div>
                         <div className="w-1.5 h-1.5 rounded-full bg-amber-glow animate-bounce [animation-delay:-0.15s]"></div>
                         <div className="w-1.5 h-1.5 rounded-full bg-rose-glow animate-bounce"></div>
+                    </div>
+
+                    {/* Credit Badge at the Bottom (Marked Place) */}
+                    <div className="mt-12 flex justify-center opacity-0 animate-[fadeIn_0.5s_ease-out_1s_forwards]">
+                        <div className="glass-pill px-6 py-2.5 bg-white/5 border border-white/10 backdrop-blur-md">
+                            <p className="text-white/50 font-medium text-[9px] sm:text-[10px] tracking-[0.3em] uppercase whitespace-nowrap">
+                                cooked by Raghu with ❤️
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
