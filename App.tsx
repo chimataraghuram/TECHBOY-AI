@@ -120,7 +120,7 @@ const App: React.FC = () => {
           {/* New Chat Jelly Button */}
           <button
             onClick={handleNewChat}
-            className="jelly-btn w-full flex items-center justify-center gap-2 py-4 rounded-2xl text-white font-bold mb-10 shadow-lg"
+            className="jelly-btn w-full flex items-center justify-center gap-2 py-4 rounded-full text-white font-bold mb-10 shadow-lg"
           >
             <MessageSquarePlus size={20} />
             <span>Reset Neural Link</span>
@@ -135,7 +135,7 @@ const App: React.FC = () => {
             {['Project Scope', 'Skill Evaluation', 'Contact Protocol'].map((item, i) => (
               <button
                 key={i}
-                className="glass-pill w-full text-left px-5 py-3.5 rounded-2xl text-xs text-gray-400 hover:text-white truncate"
+                className="glass-pill w-full text-left px-5 py-3.5 rounded-full text-xs text-gray-400 hover:text-white truncate"
               >
                 {item}
               </button>
@@ -148,7 +148,7 @@ const App: React.FC = () => {
               href={PORTFOLIO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full glass-pill flex items-center gap-3 px-5 py-3.5 rounded-2xl text-gray-400 hover:text-amber-light text-xs transition-all"
+              className="w-full glass-pill flex items-center gap-3 px-5 py-3.5 rounded-full text-gray-400 hover:text-amber-light text-xs transition-all"
             >
               <ExternalLink size={16} />
               <span>Enter Portfolio</span>
