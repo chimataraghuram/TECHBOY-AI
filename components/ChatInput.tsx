@@ -22,7 +22,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       e.preventDefault();
       handleSubmit();
     }
@@ -40,7 +40,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
       <form
         onSubmit={handleSubmit}
         className={`
-          w-full floating-input-bar transition-all duration-500 group
+          w-full floating-input-bar group
           ${disabled ? 'opacity-50 grayscale' : 'hover:border-amber-glow/60'}
         `}
       >
@@ -67,7 +67,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               disabled={disabled}
               placeholder="Ask anything or Ask about Raghu"
               className="
-                w-full bg-transparent text-white placeholder:text-gray-300
+                w-full bg-transparent text-white placeholder:text-white/40
                 text-[15px] sm:text-[17px] resize-none focus:outline-none 
                 py-3 max-h-[220px] leading-relaxed
                 scrollbar-none font-medium
@@ -92,14 +92,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               type="submit"
               disabled={!input.trim() || disabled}
               className={`
-                glass-circle-btn transition-all duration-500 shadow-xl
+                glass-circle-btn shadow-xl
                 ${input.trim() && !disabled
-                  ? 'jelly-btn text-white scale-110 !border-none'
+                  ? 'jelly-btn text-white !border-none'
                   : 'text-gray-600 cursor-not-allowed'
                 }
               `}
             >
-              <Send size={18} strokeWidth={2.5} className={input.trim() && !disabled ? 'ml-0.5' : ''} />
+              <Send size={18} className={input.trim() && !disabled ? "ml-0.5" : ""} />
             </button>
           </div>
         </div>

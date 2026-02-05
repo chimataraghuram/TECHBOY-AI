@@ -1,8 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Message, Role } from './types';
+import { Message, Role, ChatSession } from './types';
 import { INITIAL_GREETING, PORTFOLIO_URL, PORTFOLIO_OWNER } from './constants';
 import { sendMessageStream } from './services/aiService';
+import {
+  getSessions,
+  createNewSession,
+  saveSession,
+  setActiveSessionId,
+  getActiveSessionId,
+  updateSessionTitle
+} from './services/chatService';
 import ChatMessage from './components/ChatMessage';
+import TypingIndicator from './components/TypingIndicator';
 import ChatInput from './components/ChatInput';
 import {
   MessageSquarePlus,
@@ -18,19 +27,36 @@ import SplashScreen from './components/SplashScreen';
 const App: React.FC = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [sessions, setSessions] = useState<ChatSession[]>([]);
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initialize data
+  // Initialize data
   useEffect(() => {
-    const greeting: Message = {
-      id: 'init-1',
-      role: Role.MODEL,
-      text: INITIAL_GREETING,
-      timestamp: new Date(),
-    };
-    setMessages([greeting]);
+    // Load sessions
+    const loadedSessions = getSessions();
+    let activeId = getActiveSessionId();
+    let activeSession = activeId ? loadedSessions.find(s => s.id === activeId) : null;
+
+    if (!activeSession) {
+      if (loadedSessions.length === 0) {
+        activeSession = createNewSession();
+        loadedSessions.unshift(activeSession);
+      } else {
+        activeSession = loadedSessions[0];
+      }
+      activeId = activeSession.id;
+      setActiveSessionId(activeId);
+    }
+
+    setSessions(loadedSessions);
+    setCurrentSessionId(activeId);
+    if (activeSession) {
+      setMessages(activeSession.messages);
+    }
 
     // Handle initial sidebar state
     if (window.innerWidth >= 1024) {
@@ -40,13 +66,50 @@ const App: React.FC = () => {
 
   // Sync scroll
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const scrollToBottom = () => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // Scroll immediately
+    scrollToBottom();
+
+    // Scroll again after a short delay to account for layout shifts/animations
+    const timeoutId = setTimeout(scrollToBottom, 100);
+
+    return () => clearTimeout(timeoutId);
   }, [messages, isLoading]);
 
+  const updateSessionMessages = (sessionId: string, newMessages: Message[]) => {
+    setSessions(prev => {
+      const idx = prev.findIndex(s => s.id === sessionId);
+      if (idx === -1) return prev;
+
+      const updatedSession = { ...prev[idx], messages: newMessages, updatedAt: new Date().toISOString() };
+
+      // Auto-title for new chats
+      if (newMessages.length === 2 && newMessages[1].role === Role.USER) {
+        let title = newMessages[1].text.substring(0, 30);
+        if (newMessages[1].text.length > 30) title += "...";
+        updatedSession.title = title;
+      }
+
+      saveSession(updatedSession);
+
+      const newArr = [...prev];
+      newArr[idx] = updatedSession;
+      return newArr;
+    });
+  };
+
   const handleSendMessage = async (text: string) => {
-    if (!text.trim()) return;
+    if (!text.trim() || !currentSessionId) return;
+
     const userMsg: Message = { id: Date.now().toString(), role: Role.USER, text: text, timestamp: new Date() };
-    setMessages((prev) => [...prev, userMsg]);
+    const updatedMessages = [...messages, userMsg];
+
+    setMessages(updatedMessages);
+    updateSessionMessages(currentSessionId, updatedMessages);
+
     setIsLoading(true);
 
     const botMsgId = (Date.now() + 1).toString();
@@ -54,32 +117,55 @@ const App: React.FC = () => {
       const stream = sendMessageStream(text);
       let fullText = "";
       let isFirstChunk = true;
+      let currentMessages = updatedMessages; // Track locally for saving
+
       for await (const chunk of stream) {
         fullText += chunk;
         if (isFirstChunk) {
           isFirstChunk = false;
           const botMsg: Message = { id: botMsgId, role: Role.MODEL, text: fullText, timestamp: new Date() };
-          setMessages((prev) => [...prev, botMsg]);
+          currentMessages = [...updatedMessages, botMsg]; // Use updatedMessages instead of currentMessages to avoid duplication
+          setMessages(currentMessages);
         } else {
-          setMessages((prev) => prev.map(msg => msg.id === botMsgId ? { ...msg, text: fullText } : msg));
+          currentMessages = currentMessages.map(msg => msg.id === botMsgId ? { ...msg, text: fullText } : msg);
+          setMessages(currentMessages);
         }
       }
+      updateSessionMessages(currentSessionId, currentMessages);
+
     } catch (error) {
-      setMessages((prev) => prev.concat({
+      const errorMsg: Message = {
         id: (Date.now() + 2).toString(),
         role: Role.MODEL,
         text: "Neural link interrupted. Please check your network.",
         timestamp: new Date(),
         isError: true,
-      }));
+      };
+      const finalMessages = [...updatedMessages, errorMsg];
+      setMessages(finalMessages);
+      updateSessionMessages(currentSessionId, finalMessages);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleNewChat = () => {
-    setMessages([{ id: Date.now().toString(), role: Role.MODEL, text: INITIAL_GREETING, timestamp: new Date() }]);
+    const newSession = createNewSession();
+    setSessions(prev => [newSession, ...prev]);
+    setCurrentSessionId(newSession.id);
+    setActiveSessionId(newSession.id);
+    setMessages(newSession.messages);
     if (window.innerWidth < 1024) setIsSidebarOpen(false);
+  };
+
+  const handleSwitchSession = (sessionId: string) => {
+    const session = sessions.find(s => s.id === sessionId);
+    if (session) {
+      setCurrentSessionId(sessionId);
+      setActiveSessionId(sessionId);
+      setMessages(session.messages);
+      if (window.innerWidth < 1024) setIsSidebarOpen(false);
+    }
   };
 
   return (
@@ -93,7 +179,7 @@ const App: React.FC = () => {
       {/* 📱 Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden animate-fade-in"
+          className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm lg:hidden animate-fade-in"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -101,7 +187,7 @@ const App: React.FC = () => {
       {/* 🔮 SIDEBAR */}
       <aside className={`
         fixed inset-y-0 left-0 z-50 w-72 sidebar-glass transition-all duration-500 ease-in-out
-        transform lg:relative lg:translate-x-0
+        transform lg:relative lg:translate-x-0 lg:flex
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         <div className="flex flex-col h-full p-6">
@@ -113,7 +199,7 @@ const App: React.FC = () => {
             </h1>
             <div className="flex items-center gap-1.5 mt-0.5">
               <Circle size={8} className="fill-emerald-500 text-emerald-500 animate-pulse-slow" />
-              <span className="text-[10px] text-gray-200 font-bold uppercase tracking-widest">Neural Sync</span>
+              <span className="text-[10px] text-white/90 font-bold uppercase tracking-widest">Neural Sync</span>
             </div>
           </div>
 
@@ -128,16 +214,20 @@ const App: React.FC = () => {
 
           {/* Chat History Pills */}
           <div className="flex-1 overflow-y-auto space-y-3 scrollbar-none pr-2">
-            <div className="flex items-center gap-2 px-2 mb-5 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">
+            <div className="flex items-center gap-2 px-2 mb-5 text-[10px] font-black text-white/70 uppercase tracking-[0.2em]">
               <History size={12} />
               <span>Session Memory</span>
             </div>
-            {['Project Scope', 'Skill Evaluation', 'Contact Protocol'].map((item, i) => (
+            {sessions.map((session) => (
               <button
-                key={i}
-                className="glass-pill w-full text-left px-5 py-3.5 rounded-full text-xs text-gray-200 hover:text-white truncate font-medium"
+                key={session.id}
+                onClick={() => handleSwitchSession(session.id)}
+                className={`w-full text-left px-5 py-3.5 rounded-full text-xs truncate font-medium ${currentSessionId === session.id
+                  ? 'bg-gradient-to-r from-amber-500/20 to-rose-500/20 text-white border border-amber-500/30'
+                  : 'glass-pill text-white/80 hover:text-white'
+                  }`}
               >
-                {item}
+                {session.title}
               </button>
             ))}
           </div>
@@ -148,7 +238,7 @@ const App: React.FC = () => {
               href={PORTFOLIO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full glass-pill flex items-center gap-3 px-5 py-3.5 rounded-full text-gray-200 hover:text-amber-light text-xs transition-all font-medium"
+              className="w-full glass-pill flex items-center gap-3 px-5 py-3.5 rounded-full text-white/90 hover:text-amber-light text-xs font-medium"
             >
               <ExternalLink size={16} />
               <span>Enter Portfolio</span>
@@ -165,7 +255,7 @@ const App: React.FC = () => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="transition-all lg:hidden text-gray-300 glass-circle-btn"
+              className="lg:hidden text-white glass-circle-btn"
             >
               <Menu size={24} />
             </button>
@@ -207,11 +297,14 @@ const App: React.FC = () => {
               isLoading={isLoading && idx === messages.length - 1 && msg.role === Role.MODEL}
             />
           ))}
+          {isLoading && messages.length > 0 && messages[messages.length - 1].role === Role.USER && (
+            <TypingIndicator />
+          )}
           <div ref={messagesEndRef} className="h-4" />
         </div>
 
         {/* Floating Detached Input */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-16 pb-10 pointer-events-none">
+        <div className="fixed bottom-0 left-0 right-0 px-6 sm:px-16 pb-10 pointer-events-none z-50">
           <div className="max-w-3xl mx-auto pointer-events-auto">
             <ChatInput onSend={handleSendMessage} disabled={isLoading} />
           </div>
