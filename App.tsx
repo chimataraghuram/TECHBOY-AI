@@ -179,12 +179,18 @@ const App: React.FC = () => {
               <p className="text-[14px] sm:text-[16px] font-black whitespace-nowrap tracking-[0.15em] bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent uppercase leading-none">{PORTFOLIO_OWNER}</p>
             </div>
             <div className="relative group">
-              <div className="absolute -inset-3 bg-amber-glow/25 rounded-full blur-2xl group-hover:bg-amber-glow/50 transition-all duration-700 animate-pulse"></div>
-              <div className="relative w-20 h-20 rounded-full liquid-glass border-2 border-white/20 p-1 flex items-center justify-center shadow-[0_0_40px_rgba(255,154,60,0.4)] overflow-hidden scale-110">
+              {/* Massive Outer Glow */}
+              <div className="absolute -inset-6 bg-amber-glow/30 rounded-full blur-3xl group-hover:bg-amber-glow/60 transition-all duration-700 animate-pulse"></div>
+
+              {/* Glass Badge Ring */}
+              <div className="absolute -inset-2 rounded-full border border-white/10 glass-pill opacity-50"></div>
+
+              {/* Main Logo Container */}
+              <div className="relative w-24 h-24 rounded-full liquid-glass border-2 border-white/30 p-1.5 flex items-center justify-center shadow-[0_0_60px_rgba(255,154,60,0.5)] overflow-hidden scale-125 transition-transform duration-500 group-hover:scale-[1.35]">
                 <img
-                  src="/TECHBOY-AI/logo.jpg"
+                  src={`${import.meta.env.BASE_URL}logo.jpg`}
                   alt="Logo"
-                  className="w-full h-full rounded-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full rounded-full object-cover transition-transform duration-700 group-hover:scale-110 shadow-inner"
                 />
               </div>
             </div>
