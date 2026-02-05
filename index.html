@@ -16,9 +16,10 @@
         extend: {
           colors: {
             wine: {
-              darker: '#0A0508',
-              dark: '#140A12',
-              base: '#1F1217',
+              black: '#0A0508',
+              darker: '#140A12',
+              dark: '#1F1217',
+              base: '#2D1B22',
             },
             amber: {
               glow: '#FF9A3C',
@@ -77,47 +78,70 @@
     }
 
     body {
-      background-color: #0A0508;
+      background-color: #140A12;
       color: #f5f5f5;
       overflow: hidden;
       font-family: 'Outfit', sans-serif;
       position: relative;
     }
 
-    /* Fog Overlay */
+    /* Atmospheric Fog Overlays */
     body::after {
       content: '';
       position: fixed;
       inset: 0;
-      background: url('https://www.transparenttextures.com/patterns/foggy-birds.png');
-      opacity: 0.03;
+      background:
+        url('https://www.transparenttextures.com/patterns/carbon-fibre.png'),
+        linear-gradient(rgba(20, 10, 18, 0.4), rgba(20, 10, 18, 0.4));
+      opacity: 0.15;
+      mix-blend-mode: overlay;
       pointer-events: none;
       z-index: 100;
+    }
+
+    .mist-layer {
+      position: fixed;
+      inset: 0;
+      background: url('https://www.transparenttextures.com/patterns/foggy-birds.png');
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 99;
+      animation: subtle-drift 60s linear infinite;
+    }
+
+    @keyframes subtle-drift {
+      from {
+        background-position: 0 0;
+      }
+
+      to {
+        background-position: 1000px 1000px;
+      }
     }
 
     /* Radial background glows - Enhanced Depth */
     .bg-glow-amber {
       position: fixed;
-      top: -10%;
-      left: -10%;
-      width: 80%;
-      height: 80%;
-      background: radial-gradient(circle at center, rgba(255, 154, 60, 0.15) 0%, transparent 65%);
-      filter: blur(80px);
+      top: -15%;
+      left: -15%;
+      width: 90%;
+      height: 90%;
+      background: radial-gradient(circle at center, rgba(255, 154, 60, 0.18) 0%, transparent 70%);
+      filter: blur(120px);
       z-index: -1;
-      animation: pulse-slow 12s infinite alternate;
+      animation: pulse-slow 15s infinite alternate;
     }
 
     .bg-glow-rose {
       position: fixed;
-      bottom: -10%;
-      right: -10%;
-      width: 80%;
-      height: 80%;
-      background: radial-gradient(circle at center, rgba(255, 77, 109, 0.12) 0%, transparent 65%);
-      filter: blur(80px);
+      bottom: -15%;
+      right: -15%;
+      width: 90%;
+      height: 90%;
+      background: radial-gradient(circle at center, rgba(255, 77, 109, 0.15) 0%, transparent 70%);
+      filter: blur(120px);
       z-index: -1;
-      animation: pulse-slow 15s infinite alternate-reverse;
+      animation: pulse-slow 18s infinite alternate-reverse;
     }
 
     /* Glass System Controls */
@@ -275,12 +299,13 @@
 </head>
 
 <body>
+  <div class="mist-layer"></div>
   <div class="bg-glow-amber"></div>
   <div class="bg-glow-rose"></div>
   <div id="root">
     <div
-      style="height: 100vh; display: flex; align-items: center; justify-content: center; background: #0A0508; color: #FF9A3C; font-family: sans-serif;">
-      <p style="letter-spacing: 0.1em; font-weight: bold; animation: pulse 2s infinite;">INITIALIZING NEURAL NETWORK...
+      style="height: 100vh; display: flex; align-items: center; justify-content: center; background: #140A12; color: #FF9A3C; font-family: sans-serif;">
+      <p style="letter-spacing: 0.1em; font-weight: bold; animation: pulse 2s infinite;">TECHBOY AI...
       </p>
     </div>
   </div>
