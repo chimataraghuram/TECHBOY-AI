@@ -12,37 +12,40 @@ interface ChatMessageProps {
 const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading }) => {
   const isUser = message.role === Role.USER;
   const isError = message.isError;
+  const baseUrl = import.meta.env.BASE_URL;
 
   return (
-    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} group animate-fade-in`}>
-      <div className={`flex gap-3 sm:gap-4 max-w-full sm:max-w-[90%] ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
+    <div className="flex w-full justify-center group animate-fade-in">
+      <div className="grid grid-cols-1 sm:grid-cols-[60px_1fr_60px] gap-2 sm:gap-4 w-full max-w-full items-start">
 
-        {/* Avatar - High Contrast Glass Badge */}
-        <div className={`
-          flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center
-          transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
-          ${isUser
-            ? 'bg-rose-glow/30 border-rose-glow/50 shadow-[0_0_20px_rgba(255,77,109,0.2)]'
-            : isError
-              ? 'bg-red-500/30 border-red-500/50 text-red-100 shadow-[0_0_20px_rgba(239,68,68,0.2)]'
-              : 'liquid-glass border-white/30 shadow-[0_0_20px_rgba(255,154,60,0.2)]'
-          }
-        `}>
-          {isError ? (
-            <AlertCircle size={20} strokeWidth={2.5} />
-          ) : (
-            <img
-              src={isUser ? "/TECHBOY-AI/user.jpg" : "/TECHBOY-AI/logo.jpg"}
-              alt="Avatar"
-              className="w-full h-full object-cover"
-            />
-          )}
-        </div>
+        {/* Left Side (AI Avatar) */}
+        {!isUser ? (
+          <div className="flex justify-center pt-2">
+            <div className={`
+              flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center
+              transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
+              ${isError
+                ? 'bg-red-500/30 border-red-500/50 text-red-100 shadow-[0_0_20px_rgba(239,68,68,0.2)]'
+                : 'liquid-glass border-white/30 shadow-[0_0_20px_rgba(255,154,60,0.2)]'
+              }
+            `}>
+              {isError ? (
+                <AlertCircle size={20} strokeWidth={2.5} />
+              ) : (
+                <img
+                  src={`${baseUrl}logo.jpg`}
+                  alt="Avatar"
+                  className="w-full h-full object-cover"
+                />
+              )}
+            </div>
+          </div>
+        ) : <div className="hidden sm:block w-[60px]" />}
 
-        {/* Message Bubble */}
-        <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0 flex-1`}>
+        {/* Message Bubble - Centered Column */}
+        <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0`}>
           <div className={`
-            chat-bubble px-10 py-7 sm:px-12 sm:py-8 transition-all duration-500 hover:-translate-y-1
+            chat-bubble px-10 py-7 sm:px-12 sm:py-8 transition-all duration-500 hover:-translate-y-1 mx-auto
             ${isUser
               ? 'user-bubble text-white'
               : isError
@@ -72,7 +75,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
           </div>
 
           {/* Timestamp - Subtle */}
-          <div className="flex items-center gap-2 mt-2 px-1">
+          <div className={`flex items-center gap-2 mt-2 px-1 ${isUser ? 'mr-auto' : ''}`}>
             <span className="text-[10px] text-gray-300 font-medium tracking-wide">
               {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
@@ -84,6 +87,23 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
             )}
           </div>
         </div>
+
+        {/* Right Column (User Avatar) */}
+        {isUser ? (
+          <div className="flex justify-center pt-2">
+            <div className="
+              flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center
+              transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
+              bg-rose-glow/30 border-rose-glow/50 shadow-[0_0_20px_rgba(255,77,109,0.2)]
+            ">
+              <img
+                src={`${baseUrl}user.jpg`}
+                alt="User Avatar"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        ) : <div className="hidden sm:block w-[60px]" />}
       </div>
     </div>
   );
