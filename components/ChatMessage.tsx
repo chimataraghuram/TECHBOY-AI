@@ -20,27 +20,29 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
         {/* Avatar - High Contrast Glass Badge */}
         <div className={`
           flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center
-          transition-all duration-300 border backdrop-blur-3xl shadow-2xl
+          transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
           ${isUser
-            ? 'bg-rose-glow/30 border-rose-glow/50 text-white shadow-[0_0_20px_rgba(255,77,109,0.2)]'
+            ? 'bg-rose-glow/30 border-rose-glow/50 shadow-[0_0_20px_rgba(255,77,109,0.2)]'
             : isError
               ? 'bg-red-500/30 border-red-500/50 text-red-100 shadow-[0_0_20px_rgba(239,68,68,0.2)]'
-              : 'liquid-glass border-white/30 text-amber-glow shadow-[0_0_20px_rgba(255,154,60,0.2)]'
+              : 'liquid-glass border-white/30 shadow-[0_0_20px_rgba(255,154,60,0.2)]'
           }
         `}>
-          {isUser ? (
-            <User size={20} strokeWidth={2.5} />
-          ) : isError ? (
+          {isError ? (
             <AlertCircle size={20} strokeWidth={2.5} />
           ) : (
-            <Sparkles size={20} strokeWidth={2.5} className="animate-pulse" />
+            <img
+              src={isUser ? "/TECHBOY-AI/user.jpg" : "/TECHBOY-AI/logo.jpg"}
+              alt="Avatar"
+              className="w-full h-full object-cover"
+            />
           )}
         </div>
 
         {/* Message Bubble */}
         <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0 flex-1`}>
           <div className={`
-            chat-bubble px-6 py-4 sm:px-8 sm:py-5 transition-all duration-500
+            chat-bubble px-8 py-5 sm:px-10 sm:py-6 transition-all duration-500
             ${isUser
               ? 'user-bubble text-white'
               : isError

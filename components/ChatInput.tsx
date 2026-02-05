@@ -44,7 +44,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           ${disabled ? 'opacity-50 grayscale' : 'hover:border-amber-glow/60'}
         `}
       >
-        <div className="flex items-end gap-2 sm:gap-4 p-4 sm:p-5">
+        <div className="flex items-end gap-2 sm:gap-4 p-3 sm:p-4">
 
           {/* Action Group 1 */}
           <div className="flex items-center pb-1">
@@ -92,14 +92,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               type="submit"
               disabled={!input.trim() || disabled}
               className={`
-                w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-500 shadow-xl
+                w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all duration-500 shadow-xl
                 ${input.trim() && !disabled
-                  ? 'jelly-btn text-white scale-110 rotate-0'
+                  ? 'jelly-btn text-white scale-105 rotate-0'
                   : 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'
                 }
               `}
             >
-              <Send size={20} strokeWidth={2.5} className={input.trim() && !disabled ? 'ml-1' : ''} />
+              <Send size={18} strokeWidth={2.5} className={input.trim() && !disabled ? 'ml-0.5' : ''} />
             </button>
           </div>
         </div>

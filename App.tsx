@@ -83,7 +83,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="relative flex h-screen w-full bg-wine-darker overflow-hidden selection:bg-rose-glow/30 selection:text-white">
+    <div className="relative flex h-screen w-full bg-transparent overflow-hidden selection:bg-rose-glow/30 selection:text-white">
 
       {/* 🎬 Splash Screen Overlay - Always mounted but toggled by state */}
       {showSplash && (
@@ -106,26 +106,14 @@ const App: React.FC = () => {
       `}>
         <div className="flex flex-col h-full p-6">
 
-          {/* Logo & Branding - Enhanced Visibility */}
-          <div className="flex items-center gap-4 mb-12">
-            <div className="relative group">
-              <div className="absolute -inset-2 bg-amber-glow/20 rounded-full blur-xl group-hover:bg-amber-glow/40 transition-all duration-500"></div>
-              <div className="relative w-16 h-16 rounded-full liquid-glass border-2 border-white/20 p-1 flex items-center justify-center shadow-[0_0_30px_rgba(255,154,60,0.3)] overflow-hidden">
-                <img
-                  src="/logo.jpg"
-                  alt="Logo"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent">
-                TECHBOY AI
-              </h1>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <Circle size={8} className="fill-emerald-500 text-emerald-500 animate-pulse" />
-                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Neural Sync</span>
-              </div>
+          {/* Logo & Branding - Text Only */}
+          <div className="flex flex-col mb-12">
+            <h1 className="text-xl font-bold bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent">
+              TECHBOY AI
+            </h1>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <Circle size={8} className="fill-emerald-500 text-emerald-500 animate-pulse" />
+              <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Neural Sync</span>
             </div>
           </div>
 
@@ -182,22 +170,22 @@ const App: React.FC = () => {
               <Menu size={24} />
             </button>
             <div className="flex items-center gap-2.5">
-              <Sparkles size={18} className="text-amber-glow animate-float" />
-              <div className="flex flex-col">
-                <span className="hidden sm:inline text-xs font-bold text-gray-400 tracking-widest uppercase mb-0.5">Neural Model v2.5</span>
-                <span className="sm:hidden text-xs font-black text-amber-glow tracking-widest">v2.5</span>
-              </div>
+              <Sparkles size={20} className="text-amber-glow animate-float" />
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="hidden md:block text-right">
-              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-tighter">Personal Assistant for</p>
-              <p className="text-[13px] text-white font-black">{PORTFOLIO_OWNER}</p>
+          <div className="flex items-center gap-4 sm:gap-6">
+            <div className="text-right">
+              <p className="text-[14px] sm:text-[16px] font-black whitespace-nowrap tracking-[0.15em] bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent uppercase leading-none">{PORTFOLIO_OWNER}</p>
             </div>
-            <div className="w-12 h-12 rounded-full liquid-glass border border-white/10 flex items-center justify-center p-0.5 shadow-xl overflow-hidden">
-              <div className="w-full h-full rounded-full bg-gradient-to-br from-amber-glow/20 to-rose-glow/20 flex items-center justify-center">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.6)]"></div>
+            <div className="relative group">
+              <div className="absolute -inset-3 bg-amber-glow/25 rounded-full blur-2xl group-hover:bg-amber-glow/50 transition-all duration-700 animate-pulse"></div>
+              <div className="relative w-20 h-20 rounded-full liquid-glass border-2 border-white/20 p-1 flex items-center justify-center shadow-[0_0_40px_rgba(255,154,60,0.4)] overflow-hidden scale-110">
+                <img
+                  src="/TECHBOY-AI/logo.jpg"
+                  alt="Logo"
+                  className="w-full h-full rounded-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
               </div>
             </div>
           </div>
@@ -217,8 +205,8 @@ const App: React.FC = () => {
         </div>
 
         {/* Floating Detached Input */}
-        <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-12 pointer-events-none">
-          <div className="max-w-4xl mx-auto pointer-events-auto">
+        <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-12 pb-6 pointer-events-none">
+          <div className="max-w-3xl mx-auto pointer-events-auto">
             <ChatInput onSend={handleSendMessage} disabled={isLoading} />
           </div>
         </div>

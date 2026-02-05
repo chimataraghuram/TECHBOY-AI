@@ -9,7 +9,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+  <link rel="icon" type="image/jpeg" href="/TECHBOY-AI/logo.jpg" />
   <script>
     tailwind.config = {
       theme: {
@@ -70,8 +70,10 @@
   <style>
     :root {
       --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-blur: 30px;
+      --glass-blur: 32px;
       --glass-border: rgba(255, 154, 60, 0.35);
+      --amber-glow: rgba(255, 154, 60, 0.35);
+      --rose-glow: rgba(255, 77, 109, 0.35);
     }
 
     body {
@@ -79,31 +81,43 @@
       color: #f5f5f5;
       overflow: hidden;
       font-family: 'Outfit', sans-serif;
+      position: relative;
+    }
+
+    /* Fog Overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url('https://www.transparenttextures.com/patterns/foggy-birds.png');
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 100;
     }
 
     /* Radial background glows - Enhanced Depth */
     .bg-glow-amber {
       position: fixed;
-      top: -15%;
-      left: -15%;
-      width: 70%;
-      height: 70%;
-      background: radial-gradient(circle, rgba(255, 154, 60, 0.18) 0%, transparent 70%);
-      filter: blur(100px);
+      top: -10%;
+      left: -10%;
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle at center, rgba(255, 154, 60, 0.15) 0%, transparent 65%);
+      filter: blur(80px);
       z-index: -1;
-      animation: pulse-slow 8s infinite alternate;
+      animation: pulse-slow 12s infinite alternate;
     }
 
     .bg-glow-rose {
       position: fixed;
-      bottom: -15%;
-      right: -15%;
-      width: 70%;
-      height: 70%;
-      background: radial-gradient(circle, rgba(255, 77, 109, 0.18) 0%, transparent 70%);
-      filter: blur(100px);
+      bottom: -10%;
+      right: -10%;
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle at center, rgba(255, 77, 109, 0.12) 0%, transparent 65%);
+      filter: blur(80px);
       z-index: -1;
-      animation: pulse-slow 10s infinite alternate-reverse;
+      animation: pulse-slow 15s infinite alternate-reverse;
     }
 
     /* Glass System Controls */
@@ -113,68 +127,60 @@
       -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
       border: 1px solid var(--glass-border);
       box-shadow:
-        0 25px 50px -12px rgba(0, 0, 0, 0.7),
+        0 40px 100px -20px rgba(0, 0, 0, 0.6),
         inset 0 1px 1px rgba(255, 255, 255, 0.1);
     }
 
-    .glass-border-amber {
-      border: 1px solid transparent;
-      background-image: linear-gradient(rgba(20, 10, 18, 0.8), rgba(20, 10, 18, 0.8)),
-        linear-gradient(135deg, rgba(255, 154, 60, 0.5), rgba(255, 77, 109, 0.3));
-      background-origin: border-box;
-      background-clip: content-box, border-box;
-    }
-
-    /* Sidebar Glass with Inner Glow */
+    /* Sidebar Glass with Inner Amber Glow */
     .sidebar-glass {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(var(--glass-blur));
-      -webkit-backdrop-filter: blur(var(--glass-blur));
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
       border-right: 1px solid var(--glass-border);
       box-shadow:
         inset -1px 0 0 rgba(255, 255, 255, 0.05),
-        inset 10px 0 40px rgba(255, 154, 60, 0.05),
-        20px 0 50px rgba(0, 0, 0, 0.4);
+        inset 0 0 60px rgba(255, 154, 60, 0.1),
+        40px 0 80px rgba(0, 0, 0, 0.5);
     }
 
     /* Message Bubbles - Optimized for Glassmorphism */
     .chat-bubble {
-      border-radius: 26px;
+      border-radius: 28px;
       max-width: 85%;
       word-wrap: break-word;
       overflow-wrap: break-word;
-      hyphens: auto;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
     }
 
     .ai-bubble {
-      background: linear-gradient(135deg, rgba(255, 154, 60, 0.08), rgba(255, 255, 255, 0.03));
-      border: 1px solid rgba(255, 154, 60, 0.35);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
       box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.3),
-        0 0 20px rgba(255, 154, 60, 0.1),
-        inset 0 0 15px rgba(255, 154, 60, 0.05);
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 25px rgba(255, 154, 60, 0.15),
+        inset 0 0 20px rgba(255, 154, 60, 0.05);
     }
 
     .user-bubble {
-      background: linear-gradient(135deg, rgba(255, 77, 109, 0.15), rgba(255, 154, 60, 0.05));
+      background: rgba(255, 77, 109, 0.12);
       border: 1px solid rgba(255, 77, 109, 0.4);
       box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.3),
-        0 0 20px rgba(255, 77, 109, 0.1);
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 25px rgba(255, 77, 109, 0.2);
     }
 
-    /* Jelly Button */
+    /* Jelly Button (Amber -> Rose) */
     .jelly-btn {
       background: linear-gradient(135deg, #FF9A3C, #FF4D6D);
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+      box-shadow: 0 12px 30px rgba(255, 77, 109, 0.4);
+      border: none;
     }
 
     .jelly-btn:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 15px 35px rgba(255, 77, 109, 0.6);
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 20px 40px rgba(255, 77, 109, 0.6);
       filter: brightness(1.1);
     }
 
@@ -182,33 +188,35 @@
     .glass-pill {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       transition: all 0.3s ease;
+      border-radius: 9999px;
+      /* Force pill shape */
     }
 
     .glass-pill:hover {
       background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 154, 60, 0.4);
-      transform: translateY(-2px);
+      border-color: rgba(255, 154, 60, 0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
     /* Floating Input Bar - Detached */
     .floating-input-bar {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(var(--glass-blur));
       -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.8),
-        0 0 40px rgba(255, 154, 60, 0.1);
-      margin-bottom: clamp(1.5rem, 5vh, 3.5rem);
-      border-radius: 28px;
+        0 35px 90px rgba(0, 0, 0, 0.9),
+        0 0 50px rgba(255, 154, 60, 0.2);
+      border-radius: 30px;
     }
 
     /* Circular Glass Button */
     .glass-circle-btn {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -216,13 +224,31 @@
       align-items: center;
       justify-content: center;
       transition: all 0.3s ease;
+      backdrop-filter: blur(8px);
     }
 
     .glass-circle-btn:hover {
-      background: rgba(255, 154, 60, 0.2);
-      border-color: rgba(255, 154, 60, 0.4);
-      transform: scale(1.1);
+      background: rgba(255, 154, 60, 0.25);
+      border-color: rgba(255, 154, 60, 0.5);
+      transform: scale(1.1) translateY(-2px);
       color: white;
+      box-shadow: 0 0 20px rgba(255, 154, 60, 0.3);
+    }
+
+    /* Logo Badge */
+    .logo-badge-container {
+      position: relative;
+    }
+
+    .logo-badge-container::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 50%;
+      z-index: 0;
     }
 
     /* Custom scrollbar */

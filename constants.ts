@@ -1,7 +1,7 @@
 // This data simulates the content scraped from the portfolio.
 // In a real scenario, this could be dynamic, but for this app, we hardcode the persona.
 
-export const PORTFOLIO_OWNER = "Chimata Raghu Ram";
+export const PORTFOLIO_OWNER = "TECHBOY AI";
 export const PORTFOLIO_URL = "https://chimataraghuram.github.io/PORTFOLIO/";
 
 export const PORTFOLIO_CONTEXT = `
