@@ -42,7 +42,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
         {/* Message Bubble */}
         <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0 flex-1`}>
           <div className={`
-            chat-bubble px-8 py-5 sm:px-10 sm:py-6 transition-all duration-500
+            chat-bubble px-10 py-7 sm:px-12 sm:py-8 transition-all duration-500
             ${isUser
               ? 'user-bubble text-white'
               : isError
