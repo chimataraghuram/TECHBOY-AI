@@ -50,7 +50,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           <div className="flex items-center pb-2">
             <button
               type="button"
-              className="glass-circle-btn text-gray-200 hover:text-white"
+              className="glass-circle-btn text-white/90 hover:text-white"
               title="Attach File"
             >
               <Paperclip size={18} />
@@ -67,7 +67,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               disabled={disabled}
               placeholder="Query TECHBOY AI..."
               className="
-                w-full bg-transparent text-white placeholder:text-gray-400
+                w-full bg-transparent text-white placeholder:text-gray-300
                 text-[15px] sm:text-[17px] resize-none focus:outline-none 
                 py-3 max-h-[220px] leading-relaxed
                 scrollbar-none font-medium
@@ -83,7 +83,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           <div className="flex items-center gap-2 sm:gap-3 pb-2">
             <button
               type="button"
-              className="hidden sm:flex glass-circle-btn text-gray-200 hover:text-white"
+              className="hidden sm:flex glass-circle-btn text-white/90 hover:text-white"
               title="Voice Input"
             >
               <Mic size={18} />
