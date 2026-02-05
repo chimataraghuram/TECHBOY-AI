@@ -113,7 +113,7 @@ const App: React.FC = () => {
             </h1>
             <div className="flex items-center gap-1.5 mt-0.5">
               <Circle size={8} className="fill-emerald-500 text-emerald-500 animate-pulse" />
-              <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Neural Sync</span>
+              <span className="text-[10px] text-gray-200 font-bold uppercase tracking-widest">Neural Sync</span>
             </div>
           </div>
 
@@ -128,14 +128,14 @@ const App: React.FC = () => {
 
           {/* Chat History Pills */}
           <div className="flex-1 overflow-y-auto space-y-3 scrollbar-none pr-2">
-            <div className="flex items-center gap-2 px-2 mb-5 text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">
+            <div className="flex items-center gap-2 px-2 mb-5 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">
               <History size={12} />
               <span>Session Memory</span>
             </div>
             {['Project Scope', 'Skill Evaluation', 'Contact Protocol'].map((item, i) => (
               <button
                 key={i}
-                className="glass-pill w-full text-left px-5 py-3.5 rounded-full text-xs text-gray-400 hover:text-white truncate"
+                className="glass-pill w-full text-left px-5 py-3.5 rounded-full text-xs text-gray-200 hover:text-white truncate font-medium"
               >
                 {item}
               </button>
@@ -148,7 +148,7 @@ const App: React.FC = () => {
               href={PORTFOLIO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full glass-pill flex items-center gap-3 px-5 py-3.5 rounded-full text-gray-400 hover:text-amber-light text-xs transition-all"
+              className="w-full glass-pill flex items-center gap-3 px-5 py-3.5 rounded-full text-gray-200 hover:text-amber-light text-xs transition-all font-medium"
             >
               <ExternalLink size={16} />
               <span>Enter Portfolio</span>

@@ -73,11 +73,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
 
           {/* Timestamp - Subtle */}
           <div className="flex items-center gap-2 mt-2 px-1">
-            <span className="text-[10px] text-gray-500 font-medium tracking-wide">
+            <span className="text-[10px] text-gray-300 font-medium tracking-wide">
               {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
             {!isUser && !isError && (
-              <div className="flex items-center gap-1 text-[10px] text-amber-glow/40">
+              <div className="flex items-center gap-1 text-[10px] text-amber-glow/70">
                 <Terminal size={10} />
                 <span>Neural Output</span>
               </div>
