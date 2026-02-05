@@ -90,14 +90,23 @@
       position: relative;
     }
 
-    /* Atmospheric Fog Overlays */
+    /* Atmospheric Fog & Noise Overlays */
+    .noise-layer {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url('https://www.transparenttextures.com/patterns/black-paper.png');
+      opacity: 0.12;
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+      z-index: 98;
+    }
+
     body::after {
       content: '';
       position: fixed;
       inset: 0;
-      background:
-        url('https://www.transparenttextures.com/patterns/carbon-fibre.png'),
-        linear-gradient(rgba(20, 10, 18, 0.4), rgba(20, 10, 18, 0.4));
+      background: linear-gradient(rgba(20, 10, 18, 0.4), rgba(20, 10, 18, 0.4));
       opacity: 0.15;
       mix-blend-mode: overlay;
       pointer-events: none;
@@ -310,6 +319,7 @@
 </head>
 
 <body>
+  <div class="noise-layer"></div>
   <div class="mist-layer"></div>
   <div class="bg-glow-amber"></div>
   <div class="bg-glow-rose"></div>
