@@ -65,7 +65,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={disabled}
-              placeholder="Query TECHBOY AI..."
+              placeholder="Ask anything or Ask about Raghu"
               className="
                 w-full bg-transparent text-white placeholder:text-gray-300
                 text-[15px] sm:text-[17px] resize-none focus:outline-none 
