@@ -178,7 +178,7 @@ Ask me about coding, general topics, or my projects!`;var dd;(function(l){l.STRI
           transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
           ${c?"bg-rose-glow/30 border-rose-glow/50 shadow-[0_0_20px_rgba(255,77,109,0.2)]":s?"bg-red-500/30 border-red-500/50 text-red-100 shadow-[0_0_20px_rgba(239,68,68,0.2)]":"liquid-glass border-white/30 shadow-[0_0_20px_rgba(255,154,60,0.2)]"}
         `,children:s?V.jsx($b,{size:20,strokeWidth:2.5}):V.jsx("img",{src:c?"/TECHBOY-AI/user.jpg":"/TECHBOY-AI/logo.jpg",alt:"Avatar",className:"w-full h-full object-cover"})}),V.jsxs("div",{className:`flex flex-col ${c?"items-end":"items-start"} min-w-0 flex-1`,children:[V.jsx("div",{className:`
-            chat-bubble px-8 py-5 sm:px-10 sm:py-6 transition-all duration-500
+            chat-bubble px-10 py-7 sm:px-12 sm:py-8 transition-all duration-500
             ${c?"user-bubble text-white":s?"bg-red-500/10 border border-red-500/40 text-red-50 shadow-inner":"ai-bubble"}
           `,children:c?V.jsx("p",{className:"whitespace-pre-wrap text-[15px] sm:text-[16px] leading-relaxed font-medium tracking-tight",children:l.text}):V.jsx("div",{className:`
                 prose prose-invert prose-sm sm:prose-base max-w-none
