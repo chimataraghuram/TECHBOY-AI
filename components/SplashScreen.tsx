@@ -59,7 +59,10 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                     <p className="text-amber-glow font-bold tracking-[0.4em] uppercase text-xs sm:text-sm">
                         TECHBOY AI
                     </p>
-                    <div className="mt-2 flex gap-1 justify-center">
+                    <p className="mt-1 text-white/40 font-medium text-[10px] tracking-widest">
+                        cooked by Raghu with ❤️
+                    </p>
+                    <div className="mt-4 flex gap-1 justify-center">
                         <div className="w-1.5 h-1.5 rounded-full bg-rose-glow animate-bounce [animation-delay:-0.3s]"></div>
                         <div className="w-1.5 h-1.5 rounded-full bg-amber-glow animate-bounce [animation-delay:-0.15s]"></div>
                         <div className="w-1.5 h-1.5 rounded-full bg-rose-glow animate-bounce"></div>
