@@ -213,21 +213,20 @@
       filter: brightness(1.05);
     }
 
-    /* Glass Pill Button */
+    /* Glass Pill Button - More Blur & Transparent */
     .glass-pill {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(12px);
-      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 154, 60, 0.2);
+      backdrop-filter: blur(25px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 9999px;
-      /* Force pill shape */
     }
 
     .glass-pill:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 154, 60, 0.4);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 154, 60, 0.45);
       transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
 
     /* Floating Input Bar - Detached */
