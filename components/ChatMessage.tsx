@@ -42,7 +42,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
         {/* Message Bubble */}
         <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0 flex-1`}>
           <div className={`
-            chat-bubble px-10 py-7 sm:px-12 sm:py-8 transition-all duration-500
+            chat-bubble px-10 py-7 sm:px-12 sm:py-8 transition-all duration-500 hover:-translate-y-1
             ${isUser
               ? 'user-bubble text-white'
               : isError
@@ -64,7 +64,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
                 prose-code:text-amber-light prose-code:bg-black/40 prose-code:px-2 prose-code:py-1 
                 prose-code:rounded-lg prose-code:before:content-none prose-code:after:content-none
                 prose-pre:bg-black/60 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-2xl prose-pre:shadow-2xl
-                ${isLoading ? 'after:content-["▋"] after:animate-pulse after:ml-1 after:text-amber-glow' : ''}
+                ${isLoading ? 'after:content-["▋"] after:animate-pulse-slow after:ml-1 after:text-amber-glow' : ''}
               `}>
                 <ReactMarkdown>{message.text}</ReactMarkdown>
               </div>

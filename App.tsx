@@ -112,7 +112,7 @@ const App: React.FC = () => {
               TECHBOY AI
             </h1>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <Circle size={8} className="fill-emerald-500 text-emerald-500 animate-pulse" />
+              <Circle size={8} className="fill-emerald-500 text-emerald-500 animate-pulse-slow" />
               <span className="text-[10px] text-gray-200 font-bold uppercase tracking-widest">Neural Sync</span>
             </div>
           </div>
@@ -180,7 +180,7 @@ const App: React.FC = () => {
             </div>
             <div className="relative group">
               {/* Refined Outer Glow */}
-              <div className="absolute -inset-4 bg-amber-glow/25 rounded-full blur-2xl group-hover:bg-amber-glow/50 transition-all duration-700 animate-pulse"></div>
+              <div className="absolute -inset-4 bg-amber-glow/25 rounded-full blur-2xl group-hover:bg-amber-glow/50 transition-all duration-700 animate-pulse-slow"></div>
 
               {/* Glass Badge Ring */}
               <div className="absolute -inset-1 rounded-full border border-white/10 glass-pill opacity-40"></div>
