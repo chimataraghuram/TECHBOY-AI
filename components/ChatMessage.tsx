@@ -51,13 +51,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
             }
           `}>
             {isUser ? (
-              <p className="whitespace-pre-wrap text-[15px] sm:text-[16px] leading-relaxed font-medium tracking-tight">
+              <p className="whitespace-pre-wrap text-[15px] sm:text-[16px] leading-[1.8] font-medium tracking-tight">
                 {message.text}
               </p>
             ) : (
               <div className={`
                 prose prose-invert prose-sm sm:prose-base max-w-none
-                prose-p:leading-relaxed prose-p:my-2.5 prose-p:text-gray-50
+                prose-p:leading-[1.8] prose-p:my-4 prose-p:text-gray-50
                 prose-headings:text-amber-light prose-headings:font-bold prose-headings:mb-4
                 prose-a:text-amber-glow prose-a:underline decoration-amber-glow/30 hover:decoration-amber-glow transition-all
                 prose-strong:text-amber-glow prose-strong:font-black
