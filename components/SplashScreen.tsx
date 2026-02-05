@@ -55,14 +55,14 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                 </div>
 
                 {/* Subtext for premium feel */}
-                <div className="mt-10 text-center animate-pulse">
-                    <p className="text-amber-glow font-black tracking-[0.5em] uppercase text-base sm:text-2xl">
+                <div className="mt-12 text-center animate-pulse">
+                    <p className="text-amber-glow font-black tracking-[0.6em] uppercase text-3xl sm:text-6xl">
                         TECHBOY AI
                     </p>
-                    <p className="mt-2 text-white/60 font-semibold text-xs sm:text-base tracking-[0.2em]">
+                    <p className="mt-3 text-white/40 font-medium text-[10px] sm:text-xs tracking-[0.3em]">
                         cooked by Raghu with ❤️
                     </p>
-                    <div className="mt-6 flex gap-1 justify-center">
+                    <div className="mt-8 flex gap-1 justify-center">
                         <div className="w-1.5 h-1.5 rounded-full bg-rose-glow animate-bounce [animation-delay:-0.3s]"></div>
                         <div className="w-1.5 h-1.5 rounded-full bg-amber-glow animate-bounce [animation-delay:-0.15s]"></div>
                         <div className="w-1.5 h-1.5 rounded-full bg-rose-glow animate-bounce"></div>
