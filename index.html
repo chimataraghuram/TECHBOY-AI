@@ -70,8 +70,8 @@
   </script>
   <style>
     :root {
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-blur: 32px;
+      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-blur: 35px;
       --glass-border: rgba(255, 154, 60, 0.35);
       --amber-glow: rgba(255, 154, 60, 0.35);
       --rose-glow: rgba(255, 77, 109, 0.35);
@@ -151,20 +151,20 @@
       -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
       border: 1px solid var(--glass-border);
       box-shadow:
-        0 40px 100px -20px rgba(0, 0, 0, 0.6),
-        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        0 50px 100px -20px rgba(0, 0, 0, 0.8),
+        inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
     /* Sidebar Glass with Inner Amber Glow */
     .sidebar-glass {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(var(--glass-blur)) saturate(150%);
       -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
       border-right: 1px solid var(--glass-border);
       box-shadow:
-        inset -1px 0 0 rgba(255, 255, 255, 0.05),
-        inset 0 0 60px rgba(255, 154, 60, 0.1),
-        40px 0 80px rgba(0, 0, 0, 0.5);
+        inset -1px 0 0 rgba(255, 255, 255, 0.1),
+        inset 0 0 60px rgba(255, 154, 60, 0.15),
+        60px 0 100px rgba(0, 0, 0, 0.7);
     }
 
     /* Message Bubbles - Optimized for Glassmorphism */
@@ -232,8 +232,8 @@
       -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       box-shadow:
-        0 35px 90px rgba(0, 0, 0, 0.9),
-        0 0 50px rgba(255, 154, 60, 0.2);
+        0 45px 100px rgba(0, 0, 0, 1),
+        0 0 60px rgba(255, 154, 60, 0.25);
       border-radius: 30px;
     }
 
