@@ -227,13 +227,14 @@
 
     /* Floating Input Bar - Detached */
     .floating-input-bar {
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(var(--glass-blur));
-      -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       box-shadow:
-        0 45px 100px rgba(0, 0, 0, 1),
-        0 0 60px rgba(255, 154, 60, 0.25);
+        0 60px 120px rgba(0, 0, 0, 1),
+        0 0 80px rgba(0, 0, 0, 0.5),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
       border-radius: 30px;
     }
 

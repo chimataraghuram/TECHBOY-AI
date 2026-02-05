@@ -205,7 +205,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Floating Detached Input */}
-        <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-12 pb-6 pointer-events-none">
+        <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-16 pb-10 pointer-events-none">
           <div className="max-w-3xl mx-auto pointer-events-auto">
             <ChatInput onSend={handleSendMessage} disabled={isLoading} />
           </div>

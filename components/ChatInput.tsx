@@ -44,21 +44,21 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           ${disabled ? 'opacity-50 grayscale' : 'hover:border-amber-glow/60'}
         `}
       >
-        <div className="flex items-end gap-2 sm:gap-4 p-3 sm:p-4">
+        <div className="flex items-end gap-2 sm:gap-4 p-4">
 
           {/* Action Group 1 */}
-          <div className="flex items-center pb-1">
+          <div className="flex items-center pb-2">
             <button
               type="button"
-              className="glass-circle-btn text-gray-400"
+              className="glass-circle-btn text-gray-400 hover:text-white"
               title="Attach File"
             >
-              <Paperclip size={20} />
+              <Paperclip size={18} />
             </button>
           </div>
 
           {/* Text Area */}
-          <div className="flex-1 relative flex items-center min-h-[44px]">
+          <div className="flex-1 relative flex items-center min-h-[48px]">
             <textarea
               ref={textareaRef}
               value={input}
@@ -69,7 +69,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               className="
                 w-full bg-transparent text-white placeholder:text-gray-500
                 text-[15px] sm:text-[17px] resize-none focus:outline-none 
-                py-2.5 max-h-[220px] leading-relaxed
+                py-3 max-h-[220px] leading-relaxed
                 scrollbar-none font-medium
               "
               rows={1}
@@ -80,22 +80,22 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </div>
 
           {/* Action Group 2 */}
-          <div className="flex items-center gap-2 sm:gap-3 pb-1">
+          <div className="flex items-center gap-2 sm:gap-3 pb-2">
             <button
               type="button"
-              className="hidden sm:flex glass-circle-btn text-gray-400"
+              className="hidden sm:flex glass-circle-btn text-gray-400 hover:text-white"
               title="Voice Input"
             >
-              <Mic size={20} />
+              <Mic size={18} />
             </button>
             <button
               type="submit"
               disabled={!input.trim() || disabled}
               className={`
-                w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all duration-500 shadow-xl
+                glass-circle-btn transition-all duration-500 shadow-xl
                 ${input.trim() && !disabled
-                  ? 'jelly-btn text-white scale-105 rotate-0'
-                  : 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'
+                  ? 'jelly-btn text-white scale-110 !border-none'
+                  : 'text-gray-600 cursor-not-allowed'
                 }
               `}
             >
