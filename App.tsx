@@ -198,7 +198,7 @@ const App: React.FC = () => {
         </header>
 
         {/* Messages Feed */}
-        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-4 sm:px-10 pt-20 pb-32 space-y-8 scroll-smooth">
+        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-4 sm:px-10 pt-20 pb-52 space-y-8 scroll-smooth">
           {messages.map((msg, idx) => (
             <ChatMessage
               key={msg.id}
