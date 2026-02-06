@@ -48,10 +48,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
             chat-bubble px-5 py-3.5 sm:px-6 sm:py-5 transition-all duration-500
             max-w-[85%] md:max-w-[75%] lg:max-w-[70%] text-left
             ${isUser
-              ? 'user-bubble text-white rounded-tr-sm'
+              ? 'user-bubble text-white'
               : isError
-                ? 'bg-red-500/10 border border-red-500/40 text-red-50 shadow-inner rounded-tl-sm'
-                : 'ai-bubble rounded-tl-sm'
+                ? 'bg-red-500/10 border border-red-500/40 text-red-50 shadow-inner'
+                : 'ai-bubble'
             }
           `}>
             {isUser ? (
