@@ -170,7 +170,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                                     )}
                                     <div
                                         onClick={(e) => toggleMenu(e, session.id)}
-                                        className={`p-2 rounded-full hover:bg-white/10 transition-colors ${activeMenuId === session.id ? 'opacity-100 bg-white/10 text-white' : 'opacity-100 lg:opacity-0 lg:group-hover:opacity-100'
+                                        className={`p-2 rounded-full hover:bg-white/10 transition-all duration-200 ${activeMenuId === session.id ? 'opacity-100 bg-white/10 text-white' : 'opacity-60 lg:opacity-0 lg:group-hover:opacity-60 hover:!opacity-100'
                                             }`}
                                     >
                                         <MoreVertical size={16} />
