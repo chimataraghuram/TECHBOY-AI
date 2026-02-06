@@ -16,12 +16,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
 
   return (
     <div className={`flex w-full mb-6 ${isUser ? 'justify-end' : 'justify-start'} group animate-fade-in`}>
-      <div className={`flex w-full max-w-4xl gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
+      <div className={`flex w-full max-w-4xl gap-3 sm:gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'} items-start`}>
 
         {/* Avatar */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 mt-1">
           <div className={`
-            w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center
+            w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center
             transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
             ${isUser
               ? 'bg-rose-glow/30 border-rose-glow/50 shadow-[0_0_20px_rgba(255,77,109,0.2)]'
@@ -31,7 +31,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
             }
           `}>
             {isError ? (
-              <AlertCircle size={20} strokeWidth={2.5} />
+              <AlertCircle size={16} className="sm:w-5 sm:h-5" strokeWidth={2.5} />
             ) : (
               <img
                 src={`${baseUrl}${isUser ? 'user.jpg' : 'logo.jpg'}`}
@@ -45,8 +45,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
         {/* Message Content Component */}
         <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0 flex-1`}>
           <div className={`
-            chat-bubble px-6 py-4 sm:px-8 sm:py-6 transition-all duration-500
-            max-w-[90%] sm:max-w-2xl text-left
+            chat-bubble px-5 py-3 sm:px-8 sm:py-6 transition-all duration-500
+            max-w-[85%] md:max-w-[75%] lg:max-w-[70%] text-left
             ${isUser
               ? 'user-bubble text-white rounded-tr-sm'
               : isError
