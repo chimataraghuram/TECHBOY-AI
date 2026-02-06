@@ -25,30 +25,55 @@ const Sidebar: React.FC<SidebarProps> = ({
     onRenameSession
 }) => {
     const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
+    const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
+    const [editTitle, setEditTitle] = useState("");
     const menuRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
                 setActiveMenuId(null);
+                // Also save rename if clicking outside
+                if (editingSessionId) {
+                    saveRename();
+                }
             }
         };
 
-        if (activeMenuId) {
+        if (activeMenuId || editingSessionId) {
             document.addEventListener('mousedown', handleClickOutside);
         }
 
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [activeMenuId]);
+    }, [activeMenuId, editingSessionId, editTitle]);
 
-    const handleRename = (e: React.MouseEvent, session: ChatSession) => {
+    useEffect(() => {
+        if (editingSessionId && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [editingSessionId]);
+
+    const handleRenameStart = (e: React.MouseEvent, session: ChatSession) => {
         e.stopPropagation();
         setActiveMenuId(null);
-        const newTitle = window.prompt("Enter new chat name:", session.title);
-        if (newTitle && newTitle.trim()) {
-            onRenameSession(session.id, newTitle.trim());
+        setEditingSessionId(session.id);
+        setEditTitle(session.title);
+    };
+
+    const saveRename = () => {
+        if (editingSessionId && editTitle.trim()) {
+            onRenameSession(editingSessionId, editTitle.trim());
+        }
+        setEditingSessionId(null);
+        setEditTitle("");
+    };
+
+    const handleRenameKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            saveRename();
         }
     };
 
@@ -129,7 +154,20 @@ const Sidebar: React.FC<SidebarProps> = ({
                                         : 'border-transparent text-white/60 hover:bg-white/5 hover:text-white hover:border-white/10'
                                         }`}
                                 >
-                                    <span className="truncate max-w-[170px]">{session.title}</span>
+                                    {editingSessionId === session.id ? (
+                                        <input
+                                            ref={inputRef}
+                                            type="text"
+                                            value={editTitle}
+                                            onChange={(e) => setEditTitle(e.target.value)}
+                                            onKeyDown={handleRenameKeyDown}
+                                            onBlur={saveRename}
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="bg-transparent text-white outline-none w-full truncate border-b border-white/20 pb-0.5"
+                                        />
+                                    ) : (
+                                        <span className="truncate max-w-[170px]">{session.title}</span>
+                                    )}
                                     <div
                                         onClick={(e) => toggleMenu(e, session.id)}
                                         className={`p-1.5 rounded-full hover:bg-white/10 transition-colors ${activeMenuId === session.id ? 'opacity-100 bg-white/10 text-white' : 'opacity-0 group-hover:opacity-100'
@@ -144,7 +182,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                                     <div className="absolute right-0 top-full mt-2 w-32 z-50 overflow-hidden rounded-xl border border-white/10 bg-[#1a1016]/90 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] animate-fade-in origin-top-right">
                                         <div className="py-1">
                                             <button
-                                                onClick={(e) => handleRename(e, session)}
+                                                onClick={(e) => handleRenameStart(e, session)}
                                                 className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-white/80 hover:bg-white/10 hover:text-white transition-colors text-left"
                                             >
                                                 <Edit2 size={12} />
