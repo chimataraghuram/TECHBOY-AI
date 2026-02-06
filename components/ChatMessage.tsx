@@ -15,13 +15,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
   const baseUrl = import.meta.env.BASE_URL;
 
   return (
-    <div className={`flex w-full mb-6 ${isUser ? 'justify-end' : 'justify-start'} group animate-fade-in`}>
-      <div className={`flex w-full max-w-4xl gap-3 sm:gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'} items-start`}>
+    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} group animate-fade-in`}>
+      <div className={`flex w-full max-w-4xl gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'} items-start`}>
 
         {/* Avatar */}
-        <div className="flex-shrink-0 mt-1">
+        <div className="flex-shrink-0 mt-0.5">
           <div className={`
-            w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center
+            w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-2xl flex items-center justify-center
             transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
             ${isUser
               ? 'bg-rose-glow/30 border-rose-glow/50 shadow-[0_0_20px_rgba(255,77,109,0.2)]'
@@ -45,7 +45,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
         {/* Message Content Component */}
         <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0 flex-1`}>
           <div className={`
-            chat-bubble px-5 py-3 sm:px-8 sm:py-6 transition-all duration-500
+            chat-bubble px-5 py-3.5 sm:px-6 sm:py-5 transition-all duration-500
             max-w-[85%] md:max-w-[75%] lg:max-w-[70%] text-left
             ${isUser
               ? 'user-bubble text-white rounded-tr-sm'
