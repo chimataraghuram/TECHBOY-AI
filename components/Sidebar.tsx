@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquarePlus, History, ExternalLink, X, Circle } from 'lucide-react';
+import { MessageSquarePlus, History, ExternalLink, X, Circle, PanelLeft } from 'lucide-react';
 import { ChatSession } from '../types';
 import { PORTFOLIO_URL } from '../constants';
 
@@ -32,10 +32,11 @@ const Sidebar: React.FC<SidebarProps> = ({
 
             {/* 🔮 SIDEBAR */}
             <aside className={`
-        fixed inset-y-0 left-0 z-50 w-[280px] sidebar-glass transition-transform duration-500 ease-in-out
-        lg:relative lg:translate-x-0 lg:flex lg:z-auto
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-      `}>
+                fixed inset-y-0 left-0 z-50 h-full sidebar-glass transition-all duration-500 ease-in-out overflow-hidden
+                lg:relative lg:z-auto lg:translate-x-0
+                w-[280px]
+                ${isOpen ? 'translate-x-0 lg:w-[280px]' : '-translate-x-full lg:w-0'}
+            `}>
                 <div className="flex flex-col h-full p-6">
 
                     {/* Logo & Branding - Text Only */}
@@ -50,12 +51,12 @@ const Sidebar: React.FC<SidebarProps> = ({
                             </div>
                         </div>
 
-                        {/* 📱 Close Button (Mobile Only) */}
+                        {/* 📱 Mobile Toggle Button */}
                         <button
                             onClick={onClose}
                             className="lg:hidden p-2 text-white/70 hover:text-white transition-colors"
                         >
-                            <X size={24} />
+                            <PanelLeft size={24} />
                         </button>
                     </div>
 
@@ -78,10 +79,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                             <button
                                 key={session.id}
                                 onClick={() => onSwitchSession(session.id)}
-                                className={`w-full text-left px-5 py-3.5 rounded-full text-xs truncate font-medium ${currentSessionId === session.id
+                                className={`w - full text - left px - 5 py - 3.5 rounded - full text - xs truncate font - medium ${currentSessionId === session.id
                                     ? 'bg-gradient-to-r from-amber-500/20 to-rose-500/20 text-white border border-amber-500/30'
                                     : 'glass-pill text-white/80 hover:text-white'
-                                    }`}
+                                    } `}
                             >
                                 {session.title}
                             </button>

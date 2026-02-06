@@ -17,7 +17,8 @@ import Sidebar from './components/Sidebar';
 import {
   Menu,
   Sparkles,
-  Settings
+  Settings,
+  PanelLeft
 } from 'lucide-react';
 import SplashScreen from './components/SplashScreen';
 
@@ -189,10 +190,10 @@ const App: React.FC = () => {
         <header className="sticky top-0 z-30 liquid-glass border-b border-white/5 px-6 h-20 flex items-center justify-between mx-4 my-2 rounded-2xl shadow-2xl">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => setIsSidebarOpen(true)}
-              className="lg:hidden text-white glass-circle-btn"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="text-white glass-circle-btn transition-transform hover:scale-110 active:scale-95"
             >
-              <Menu size={24} />
+              <PanelLeft size={24} />
             </button>
             <div className="flex items-center gap-2.5">
               <Sparkles size={20} className="text-amber-glow animate-float" />
