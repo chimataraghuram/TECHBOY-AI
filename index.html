@@ -95,9 +95,10 @@
       content: '';
       position: fixed;
       inset: 0;
-      background: url('https://www.transparenttextures.com/patterns/black-paper.png');
-      opacity: 0.12;
-      mix-blend-mode: soft-light;
+      /* SVG Noise Pattern */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      mix-blend-mode: overlay;
       pointer-events: none;
       z-index: 98;
     }
@@ -160,25 +161,25 @@
 
     /* Glass System Controls */
     .liquid-glass {
-      background: var(--glass-bg);
+      background: rgba(20, 10, 18, 0.6);
       backdrop-filter: blur(var(--glass-blur)) saturate(180%);
       -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
       border: 1px solid var(--glass-border);
       box-shadow:
         0 50px 100px -20px rgba(0, 0, 0, 0.8),
-        inset 0 1px 1px rgba(255, 255, 255, 0.25);
+        inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
     /* Sidebar Glass - Lighter & More Translucent */
     .sidebar-glass {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(10, 5, 8, 0.6);
       backdrop-filter: blur(var(--glass-blur)) saturate(140%);
       -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
       border-right: 1px solid var(--glass-border);
       box-shadow:
-        inset -1px 0 0 rgba(255, 255, 255, 0.1),
-        inset 0 0 80px rgba(255, 154, 60, 0.2),
-        40px 0 120px rgba(0, 0, 0, 0.8);
+        inset -1px 0 0 rgba(255, 255, 255, 0.05),
+        inset 0 0 80px rgba(255, 154, 60, 0.1),
+        40px 0 120px rgba(0, 0, 0, 0.9);
     }
 
     /* Message Bubbles - Optimized for Glassmorphism */
@@ -192,69 +193,113 @@
     }
 
     .ai-bubble {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--glass-border);
+      background: rgba(30, 20, 30, 0.7);
+      border: 1px solid rgba(255, 154, 60, 0.3);
       box-shadow:
-        0 25px 50px rgba(0, 0, 0, 0.5),
-        0 0 40px rgba(255, 154, 60, 0.1),
-        inset 0 0 30px rgba(255, 154, 60, 0.05);
+        0 25px 50px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(255, 154, 60, 0.05),
+        inset 0 0 30px rgba(255, 154, 60, 0.02);
+      color: #ffffff;
     }
 
     .user-bubble {
-      background: rgba(255, 77, 109, 0.15);
-      border: 1px solid rgba(255, 77, 109, 0.4);
+      background: rgba(255, 77, 109, 0.25);
+      border: 1px solid rgba(255, 77, 109, 0.5);
       box-shadow:
         0 25px 50px rgba(0, 0, 0, 0.5),
-        0 0 40px rgba(255, 77, 109, 0.15);
+        0 0 40px rgba(255, 77, 109, 0.2);
+      color: #ffffff;
+    }
+
+    /* Global Button Micro-interactions */
+    button,
+    .clickable {
+      cursor: pointer;
+      transition: all 300ms ease;
+    }
+
+    /* Apply hover lift to all buttons unless overridden */
+    button:not(.no-lift):hover,
+    .glass-pill:hover,
+    .clickable:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.1);
+    }
+
+    /* Subtle press animation */
+    button:not(.no-lift):active,
+    .glass-pill:active,
+    .clickable:active {
+      transform: translateY(0) scale(0.98);
+      filter: brightness(0.95);
+    }
+
+    @keyframes subtle-glow {
+
+      0%,
+      100% {
+        box-shadow: 0 12px 30px rgba(255, 77, 109, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 12px 40px rgba(255, 154, 60, 0.6);
+      }
     }
 
     /* Jelly Button (Amber -> Rose) */
     .jelly-btn {
       background: linear-gradient(135deg, #FF9A3C, #FF4D6D);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 300ms ease;
       box-shadow: 0 12px 30px rgba(255, 77, 109, 0.4);
       border: none;
+      animation: subtle-glow 3s infinite ease-in-out;
+      color: #ffffff;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
     .jelly-btn:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 15px 35px rgba(255, 77, 109, 0.5);
-      filter: brightness(1.05);
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 15px 35px rgba(255, 77, 109, 0.6);
+      filter: brightness(1.1);
     }
 
     /* Glass Pill Button - More Blur & Transparent */
     .glass-pill {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 154, 60, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 154, 60, 0.2);
       backdrop-filter: blur(25px);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 300ms ease;
       border-radius: 9999px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.9);
     }
 
     .glass-pill:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 154, 60, 0.25);
-      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 154, 60, 0.4);
+      transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      color: #ffffff;
     }
 
     /* Floating Input Bar - Detached */
     .floating-input-bar {
-      background: rgba(255, 250, 244, 0.09);
+      background: rgba(40, 30, 40, 0.8);
       backdrop-filter: blur(var(--glass-blur)) saturate(160%);
       -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow:
         0 60px 120px rgba(0, 0, 0, 1),
-        0 0 80px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(0, 0, 0, 0.6),
         inset 0 1px 1px rgba(255, 255, 255, 0.1);
       border-radius: 30px;
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 300ms ease;
     }
 
     .floating-input-bar:focus-within {
       animation: glowPulse 4s ease-in-out infinite;
-      border-color: rgba(255, 154, 60, 0.2);
+      border-color: rgba(255, 154, 60, 0.4);
+      background: rgba(40, 30, 40, 0.9);
     }
 
     /* Circular Glass Button */
@@ -262,51 +307,23 @@
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
+      transition: all 300ms ease;
       backdrop-filter: blur(8px);
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.9);
     }
 
     .glass-circle-btn:hover {
-      background: rgba(255, 154, 60, 0.15);
-      border-color: rgba(255, 154, 60, 0.2);
-      transform: scale(1.05) translateY(-1px);
+      background: rgba(255, 154, 60, 0.2);
+      border-color: rgba(255, 154, 60, 0.4);
+      transform: scale(1.1) translateY(-2px);
       color: white;
-      box-shadow: 0 0 15px rgba(255, 154, 60, 0.15);
-    }
-
-    /* Logo Badge */
-    .logo-badge-container {
-      position: relative;
-    }
-
-    .logo-badge-container::before {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 50%;
-      z-index: 0;
-    }
-
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 154, 60, 0.25);
-      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 154, 60, 0.2);
     }
 
     @media (max-width: 640px) {
@@ -315,7 +332,7 @@
       }
     }
   </style>
-  <script type="module" crossorigin src="/TECHBOY-AI/assets/index-Dcc6C0QP.js"></script>
+  <script type="module" crossorigin src="/TECHBOY-AI/assets/index-aiYWWuvF.js"></script>
 </head>
 
 <body>
