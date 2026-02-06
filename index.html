@@ -219,8 +219,19 @@
     }
 
     /* Apply hover lift to all buttons unless overridden */
-    button:not(.no-lift):hover {
-      transform: translateY(-2px);
+    button:not(.no-lift):hover,
+    .glass-pill:hover,
+    .clickable:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.1);
+    }
+
+    /* Subtle press animation */
+    button:not(.no-lift):active,
+    .glass-pill:active,
+    .clickable:active {
+      transform: translateY(0) scale(0.98);
+      filter: brightness(0.95);
     }
 
     @keyframes subtle-glow {
@@ -313,36 +324,6 @@
       transform: scale(1.1) translateY(-2px);
       color: white;
       box-shadow: 0 0 15px rgba(255, 154, 60, 0.2);
-    }
-
-    /* Logo Badge */
-    .logo-badge-container {
-      position: relative;
-    }
-
-    .logo-badge-container::before {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 50%;
-      z-index: 0;
-    }
-
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 154, 60, 0.25);
-      border-radius: 10px;
     }
 
     @media (max-width: 640px) {

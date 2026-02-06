@@ -10,14 +10,16 @@ export const getSessions = (): ChatSession[] => {
         if (!stored) return [];
         const sessions: ChatSession[] = JSON.parse(stored);
         
-        // Convert string timestamps back to Date objects
-        return sessions.map(session => ({
-            ...session,
-            messages: session.messages.map(msg => ({
-                ...msg,
-                timestamp: new Date(msg.timestamp)
+        // Convert string timestamps back to Date objects and sort by recent
+        return sessions
+            .map(session => ({
+                ...session,
+                messages: session.messages.map(msg => ({
+                    ...msg,
+                    timestamp: new Date(msg.timestamp)
+                }))
             }))
-        }));
+            .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
     } catch (error) {
         console.error("Failed to load sessions", error);
         return [];

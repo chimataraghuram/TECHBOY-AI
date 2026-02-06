@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Message, Role, ChatSession } from './types';
-import { INITIAL_GREETING, PORTFOLIO_URL, PORTFOLIO_OWNER } from './constants';
+import { INITIAL_GREETING, PORTFOLIO_OWNER } from './constants';
 import { sendMessageStream } from './services/aiService';
 import {
   getSessions,
@@ -13,14 +13,11 @@ import {
 import ChatMessage from './components/ChatMessage';
 import TypingIndicator from './components/TypingIndicator';
 import ChatInput from './components/ChatInput';
+import Sidebar from './components/Sidebar';
 import {
-  MessageSquarePlus,
-  Settings,
-  ExternalLink,
   Menu,
-  History,
   Sparkles,
-  Circle
+  Settings
 } from 'lucide-react';
 import SplashScreen from './components/SplashScreen';
 
@@ -33,7 +30,6 @@ const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Initialize data
   // Initialize data
   useEffect(() => {
     // Load sessions
@@ -95,9 +91,9 @@ const App: React.FC = () => {
 
       saveSession(updatedSession);
 
-      const newArr = [...prev];
-      newArr[idx] = updatedSession;
-      return newArr;
+      // Move updated session to top
+      const otherSessions = prev.filter(s => s.id !== sessionId);
+      return [updatedSession, ...otherSessions];
     });
   };
 
@@ -176,76 +172,15 @@ const App: React.FC = () => {
         <SplashScreen onComplete={() => setShowSplash(false)} />
       )}
 
-      {/* 📱 Mobile Sidebar Overlay */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm lg:hidden animate-fade-in"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
-
-      {/* 🔮 SIDEBAR */}
-      <aside className={`
-        fixed inset-y-0 left-0 z-50 w-72 sidebar-glass transition-all duration-500 ease-in-out
-        transform lg:relative lg:translate-x-0 lg:flex
-        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-      `}>
-        <div className="flex flex-col h-full p-6">
-
-          {/* Logo & Branding - Text Only */}
-          <div className="flex flex-col mb-12">
-            <h1 className="text-xl font-bold bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent">
-              TECHBOY AI
-            </h1>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <Circle size={8} className="fill-emerald-500 text-emerald-500 animate-pulse-slow" />
-              <span className="text-[10px] text-white/90 font-bold uppercase tracking-widest">Neural Sync</span>
-            </div>
-          </div>
-
-          {/* New Chat Jelly Button */}
-          <button
-            onClick={handleNewChat}
-            className="jelly-btn w-full flex items-center justify-center gap-2 py-4 rounded-full text-white font-bold mb-10 shadow-lg"
-          >
-            <MessageSquarePlus size={20} />
-            <span>Reset Neural Link</span>
-          </button>
-
-          {/* Chat History Pills */}
-          <div className="flex-1 overflow-y-auto space-y-3 scrollbar-none pr-2">
-            <div className="flex items-center gap-2 px-2 mb-5 text-[10px] font-black text-white/70 uppercase tracking-[0.2em]">
-              <History size={12} />
-              <span>Session Memory</span>
-            </div>
-            {sessions.map((session) => (
-              <button
-                key={session.id}
-                onClick={() => handleSwitchSession(session.id)}
-                className={`w-full text-left px-5 py-3.5 rounded-full text-xs truncate font-medium ${currentSessionId === session.id
-                  ? 'bg-gradient-to-r from-amber-500/20 to-rose-500/20 text-white border border-amber-500/30'
-                  : 'glass-pill text-white/80 hover:text-white'
-                  }`}
-              >
-                {session.title}
-              </button>
-            ))}
-          </div>
-
-          {/* Footer Controls */}
-          <div className="mt-6 pt-6 border-t border-white/5 space-y-2">
-            <a
-              href={PORTFOLIO_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full glass-pill flex items-center gap-3 px-5 py-3.5 rounded-full text-white/90 hover:text-amber-light text-xs font-medium"
-            >
-              <ExternalLink size={16} />
-              <span>Enter Portfolio</span>
-            </a>
-          </div>
-        </div>
-      </aside>
+      {/* 🔮 SIDEBAR COMPONENT */}
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        onNewChat={handleNewChat}
+        sessions={sessions}
+        currentSessionId={currentSessionId}
+        onSwitchSession={handleSwitchSession}
+      />
 
       {/* 🗨️ MAIN CHAT */}
       <main className="relative flex flex-col flex-1 min-w-0">
@@ -304,7 +239,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Floating Detached Input */}
-        <div className="fixed bottom-0 left-0 right-0 px-6 sm:px-16 pb-10 pointer-events-none z-50">
+        <div className="fixed bottom-0 left-0 right-0 lg:left-[280px] px-6 sm:px-16 pb-10 pointer-events-none z-50">
           <div className="max-w-3xl mx-auto pointer-events-auto">
             <ChatInput onSend={handleSendMessage} disabled={isLoading} />
           </div>

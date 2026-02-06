@@ -46,7 +46,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
         <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0`}>
           <div className={`
             chat-bubble px-10 py-7 sm:px-12 sm:py-8 transition-all duration-500 hover:-translate-y-1
-            max-w-[85%] sm:max-w-2xl
+            max-w-[85%] sm:max-w-3xl
             ${isUser
               ? 'user-bubble text-white'
               : isError
@@ -77,7 +77,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
 
           {/* Timestamp - Subtle */}
           <div className={`flex items-center gap-2 mt-2 px-1`}>
-            <span className="text-[10px] text-white/50 font-medium tracking-wide">
+            <span className="text-[11px] text-white/60 font-medium tracking-wide">
               {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
             {!isUser && !isError && (

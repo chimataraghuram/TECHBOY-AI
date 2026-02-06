@@ -22,10 +22,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Enter sends the message
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       e.preventDefault();
       handleSubmit();
     }
+    // Shift+Enter inserts a newline (default behavior), so we don't preventDefault
   };
 
   useEffect(() => {
@@ -65,7 +67,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={disabled}
-              placeholder="Ask anything or Ask about Raghu"
+              placeholder="Ask anything (Shift+Enter for new line)..."
               className="
                 w-full bg-transparent text-white placeholder:text-white/40
                 text-[15px] sm:text-[17px] resize-none focus:outline-none 
@@ -107,7 +109,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
         {/* Footer Hint (Desktop Only) */}
         <div className="hidden sm:flex justify-center pb-2 opacity-60 hover:opacity-100 transition-opacity">
           <p className="text-[10px] text-amber-light font-bold tracking-widest uppercase">
-            Neural Processing Active • Press Enter
+            COOKED BY RAGHU WITH ❤️
           </p>
         </div>
       </form>
