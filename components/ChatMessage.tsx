@@ -15,59 +15,59 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
   const baseUrl = import.meta.env.BASE_URL;
 
   return (
-    <div className="flex w-full justify-center group animate-fade-in">
-      <div className="grid grid-cols-1 sm:grid-cols-[60px_1fr_60px] gap-2 sm:gap-4 w-full max-w-full items-start">
+    <div className={`flex w-full mb-6 ${isUser ? 'justify-end' : 'justify-start'} group animate-fade-in`}>
+      <div className={`flex w-full max-w-4xl gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
 
-        {/* Left Side (AI Avatar) */}
-        {!isUser ? (
-          <div className="flex justify-center pt-2">
-            <div className={`
-              flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center
-              transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
-              ${isError
+        {/* Avatar */}
+        <div className="flex-shrink-0">
+          <div className={`
+            w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center
+            transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
+            ${isUser
+              ? 'bg-rose-glow/30 border-rose-glow/50 shadow-[0_0_20px_rgba(255,77,109,0.2)]'
+              : isError
                 ? 'bg-red-500/30 border-red-500/50 text-red-100 shadow-[0_0_20px_rgba(239,68,68,0.2)]'
                 : 'liquid-glass border-white/30 shadow-[0_0_20px_rgba(255,154,60,0.2)]'
-              }
-            `}>
-              {isError ? (
-                <AlertCircle size={20} strokeWidth={2.5} />
-              ) : (
-                <img
-                  src={`${baseUrl}logo.jpg`}
-                  alt="Avatar"
-                  className="w-full h-full object-cover"
-                />
-              )}
-            </div>
+            }
+          `}>
+            {isError ? (
+              <AlertCircle size={20} strokeWidth={2.5} />
+            ) : (
+              <img
+                src={`${baseUrl}${isUser ? 'user.jpg' : 'logo.jpg'}`}
+                alt={isUser ? "User" : "AI"}
+                className="w-full h-full object-cover"
+              />
+            )}
           </div>
-        ) : <div className="hidden sm:block w-[60px]" />}
+        </div>
 
-        {/* Message Bubble - Centered Column */}
-        <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0`}>
+        {/* Message Content Component */}
+        <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0 flex-1`}>
           <div className={`
-            chat-bubble px-10 py-7 sm:px-12 sm:py-8 transition-all duration-500 hover:-translate-y-1
-            max-w-[85%] sm:max-w-3xl
+            chat-bubble px-6 py-4 sm:px-8 sm:py-6 transition-all duration-500
+            max-w-[90%] sm:max-w-2xl text-left
             ${isUser
-              ? 'user-bubble text-white'
+              ? 'user-bubble text-white rounded-tr-sm'
               : isError
-                ? 'bg-red-500/10 border border-red-500/40 text-red-50 shadow-inner'
-                : 'ai-bubble'
+                ? 'bg-red-500/10 border border-red-500/40 text-red-50 shadow-inner rounded-tl-sm'
+                : 'ai-bubble rounded-tl-sm'
             }
           `}>
             {isUser ? (
-              <p className="whitespace-pre-wrap text-[15px] sm:text-[16px] leading-[1.8] font-medium tracking-tight">
+              <p className="whitespace-pre-wrap text-[15px] sm:text-[16px] leading-relaxed font-medium tracking-wide">
                 {message.text}
               </p>
             ) : (
               <div className={`
                 prose prose-invert prose-sm sm:prose-base max-w-none
-                prose-p:leading-[1.8] prose-p:my-4 prose-p:text-gray-50
-                prose-headings:text-amber-light prose-headings:font-bold prose-headings:mb-4
+                prose-p:leading-relaxed prose-p:my-2 prose-p:text-gray-100
+                prose-headings:text-amber-light prose-headings:font-bold prose-headings:mb-3
                 prose-a:text-amber-glow prose-a:underline decoration-amber-glow/30 hover:decoration-amber-glow transition-all
                 prose-strong:text-amber-glow prose-strong:font-black
-                prose-code:text-amber-light prose-code:bg-black/40 prose-code:px-2 prose-code:py-1 
+                prose-code:text-amber-light prose-code:bg-black/40 prose-code:px-1.5 prose-code:py-0.5
                 prose-code:rounded-lg prose-code:before:content-none prose-code:after:content-none
-                prose-pre:bg-black/60 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-2xl prose-pre:shadow-2xl
+                prose-pre:bg-black/60 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-xl prose-pre:shadow-2xl
                 ${isLoading ? 'after:content-["▋"] after:animate-pulse-slow after:ml-1 after:text-amber-glow' : ''}
               `}>
                 <ReactMarkdown>{message.text}</ReactMarkdown>
@@ -75,36 +75,30 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
             )}
           </div>
 
-          {/* Timestamp - Subtle */}
-          <div className={`flex items-center gap-2 mt-2 px-1`}>
-            <span className="text-[11px] text-white/60 font-medium tracking-wide">
-              {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </span>
+          {/* Timestamp */}
+          <div className={`flex items-center gap-2 mt-2 px-1 opacity-60 hover:opacity-100 transition-opacity`}>
+            {isUser && (
+              <span className="text-[10px] sm:text-[11px] font-medium tracking-wider text-white">
+                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </span>
+            )}
+
             {!isUser && !isError && (
-              <div className="flex items-center gap-1 text-[10px] text-amber-glow/70">
+              <div className="flex items-center gap-1.5 text-[10px] text-amber-glow">
                 <Terminal size={10} />
-                <span>Neural Output</span>
+                <span className="uppercase tracking-wider font-bold">Neural Output</span>
+                <div className="w-1 h-1 rounded-full bg-amber-glow animate-pulse"></div>
               </div>
+            )}
+
+            {!isUser && (
+              <span className="text-[10px] sm:text-[11px] font-medium tracking-wider text-white">
+                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </span>
             )}
           </div>
         </div>
 
-        {/* Right Column (User Avatar) */}
-        {isUser ? (
-          <div className="flex justify-center pt-2">
-            <div className="
-              flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center
-              transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
-              bg-rose-glow/30 border-rose-glow/50 shadow-[0_0_20px_rgba(255,77,109,0.2)]
-            ">
-              <img
-                src={`${baseUrl}user.jpg`}
-                alt="User Avatar"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-        ) : <div className="hidden sm:block w-[60px]" />}
       </div>
     </div>
   );
