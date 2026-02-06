@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquarePlus, History, ExternalLink, X, Circle, PanelLeft } from 'lucide-react';
+import { MessageSquarePlus, History, ExternalLink, X, Circle, PanelLeft, MoreHorizontal } from 'lucide-react';
 import { ChatSession } from '../types';
 import { PORTFOLIO_URL } from '../constants';
 
@@ -79,12 +79,16 @@ const Sidebar: React.FC<SidebarProps> = ({
                             <button
                                 key={session.id}
                                 onClick={() => onSwitchSession(session.id)}
-                                className={`w - full text - left px - 5 py - 3.5 rounded - full text - xs truncate font - medium ${currentSessionId === session.id
-                                    ? 'bg-gradient-to-r from-amber-500/20 to-rose-500/20 text-white border border-amber-500/30'
-                                    : 'glass-pill text-white/80 hover:text-white'
-                                    } `}
+                                className={`group w-full flex items-center justify-between px-4 py-3 rounded-full text-xs font-medium transition-all duration-200 ${
+                                    currentSessionId === session.id
+                                        ? 'bg-gradient-to-r from-amber-500/20 to-rose-500/20 text-white border border-amber-500/30 shadow-[0_0_15px_rgba(255,154,60,0.1)]'
+                                        : 'text-white/70 hover:bg-white/5 hover:text-white'
+                                }`}
                             >
-                                {session.title}
+                                <span className="truncate max-w-[170px]">{session.title}</span>
+                                <div className={`opacity-0 group-hover:opacity-100 transition-opacity ${currentSessionId === session.id ? 'opacity-100 text-amber-glow' : ''}`}>
+                                    <MoreHorizontal size={16} />
+                                </div>
                             </button>
                         ))}
                     </div>
