@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquarePlus, History, ExternalLink, X, Circle, PanelLeft, MoreHorizontal, Edit2, Trash2 } from 'lucide-react';
+import { MessageSquarePlus, History, ExternalLink, X, Circle, PanelLeft, MoreVertical, Edit2, Trash2 } from 'lucide-react';
 import { ChatSession } from '../types';
 import { PORTFOLIO_URL } from '../constants';
 
@@ -125,8 +125,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                                 <button
                                     onClick={() => onSwitchSession(session.id)}
                                     className={`group w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-medium transition-all duration-200 border ${currentSessionId === session.id
-                                            ? 'bg-white/10 text-white border-amber-500/30 shadow-[0_4px_20px_rgba(0,0,0,0.2)]'
-                                            : 'border-transparent text-white/60 hover:bg-white/5 hover:text-white hover:border-white/10'
+                                        ? 'bg-white/10 text-white border-amber-500/30 shadow-[0_4px_20px_rgba(0,0,0,0.2)]'
+                                        : 'border-transparent text-white/60 hover:bg-white/5 hover:text-white hover:border-white/10'
                                         }`}
                                 >
                                     <span className="truncate max-w-[170px]">{session.title}</span>
@@ -135,7 +135,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                                         className={`p-1.5 rounded-full hover:bg-white/10 transition-colors ${activeMenuId === session.id ? 'opacity-100 bg-white/10 text-white' : 'opacity-0 group-hover:opacity-100'
                                             }`}
                                     >
-                                        <MoreHorizontal size={14} />
+                                        <MoreVertical size={14} />
                                     </div>
                                 </button>
 
