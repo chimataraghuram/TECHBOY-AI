@@ -9,7 +9,7 @@ export const getSessions = (): ChatSession[] => {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (!stored) return [];
         const sessions: ChatSession[] = JSON.parse(stored);
-        
+
         // Convert string timestamps back to Date objects and sort by recent
         return sessions
             .map(session => ({
@@ -69,15 +69,21 @@ export const setActiveSessionId = (id: string) => {
     localStorage.setItem(ACTIVE_SESSION_KEY, id);
 };
 
-export const updateSessionTitle = (sessionId: string, firstMessage: string) => {
+export const updateSessionTitle = (sessionId: string, title: string) => {
     const sessions = getSessions();
     const index = sessions.findIndex(s => s.id === sessionId);
     if (index >= 0) {
-        // Simple truncation for title
-        let title = firstMessage.substring(0, 30);
-        if (firstMessage.length > 30) title += "...";
-
         sessions[index].title = title;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
     }
-}
+};
+
+export const deleteSession = (sessionId: string) => {
+    const sessions = getSessions();
+    const filtered = sessions.filter(s => s.id !== sessionId);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+};
+
+export const renameSession = (sessionId: string, newTitle: string) => {
+    updateSessionTitle(sessionId, newTitle);
+};

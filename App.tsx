@@ -8,7 +8,9 @@ import {
   saveSession,
   setActiveSessionId,
   getActiveSessionId,
-  updateSessionTitle
+  updateSessionTitle,
+  deleteSession,
+  renameSession
 } from './services/chatService';
 import ChatMessage from './components/ChatMessage';
 import TypingIndicator from './components/TypingIndicator';
@@ -165,6 +167,25 @@ const App: React.FC = () => {
     }
   };
 
+  const handleDeleteSession = (sessionId: string) => {
+    deleteSession(sessionId);
+    const updatedSessions = sessions.filter(s => s.id !== sessionId);
+    setSessions(updatedSessions);
+
+    if (currentSessionId === sessionId) {
+      if (updatedSessions.length > 0) {
+        handleSwitchSession(updatedSessions[0].id);
+      } else {
+        handleNewChat();
+      }
+    }
+  };
+
+  const handleRenameSession = (sessionId: string, newTitle: string) => {
+    renameSession(sessionId, newTitle);
+    setSessions(prev => prev.map(s => s.id === sessionId ? { ...s, title: newTitle } : s));
+  };
+
   return (
     <div className="relative flex h-screen w-full bg-transparent overflow-hidden selection:bg-rose-glow/30 selection:text-white">
 
@@ -181,6 +202,8 @@ const App: React.FC = () => {
         sessions={sessions}
         currentSessionId={currentSessionId}
         onSwitchSession={handleSwitchSession}
+        onDeleteSession={handleDeleteSession}
+        onRenameSession={handleRenameSession}
       />
 
       {/* 🗨️ MAIN CHAT */}

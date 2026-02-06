@@ -1,5 +1,5 @@
-import React from 'react';
-import { MessageSquarePlus, History, ExternalLink, X, Circle, PanelLeft, MoreHorizontal } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { MessageSquarePlus, History, ExternalLink, X, Circle, PanelLeft, MoreHorizontal, Edit2, Trash2 } from 'lucide-react';
 import { ChatSession } from '../types';
 import { PORTFOLIO_URL } from '../constants';
 
@@ -10,6 +10,8 @@ interface SidebarProps {
     sessions: ChatSession[];
     currentSessionId: string | null;
     onSwitchSession: (id: string) => void;
+    onDeleteSession: (id: string) => void;
+    onRenameSession: (id: string, newTitle: string) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -19,7 +21,50 @@ const Sidebar: React.FC<SidebarProps> = ({
     sessions,
     currentSessionId,
     onSwitchSession,
+    onDeleteSession,
+    onRenameSession
 }) => {
+    const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setActiveMenuId(null);
+            }
+        };
+
+        if (activeMenuId) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [activeMenuId]);
+
+    const handleRename = (e: React.MouseEvent, session: ChatSession) => {
+        e.stopPropagation();
+        setActiveMenuId(null);
+        const newTitle = window.prompt("Enter new chat name:", session.title);
+        if (newTitle && newTitle.trim()) {
+            onRenameSession(session.id, newTitle.trim());
+        }
+    };
+
+    const handleDelete = (e: React.MouseEvent, sessionId: string) => {
+        e.stopPropagation();
+        setActiveMenuId(null);
+        if (window.confirm("Are you sure you want to delete this chat?")) {
+            onDeleteSession(sessionId);
+        }
+    };
+
+    const toggleMenu = (e: React.MouseEvent, sessionId: string) => {
+        e.stopPropagation();
+        setActiveMenuId(activeMenuId === sessionId ? null : sessionId);
+    };
+
     return (
         <>
             {/* 📱 Mobile Sidebar Overlay */}
@@ -70,26 +115,52 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </button>
 
                     {/* Chat History Pills */}
-                    <div className="flex-1 overflow-y-auto space-y-3 scrollbar-none pr-2">
-                        <div className="flex items-center gap-2 px-2 mb-5 text-[10px] font-black text-white/70 uppercase tracking-[0.2em]">
+                    <div className="flex-1 overflow-y-auto space-y-2 scrollbar-none pr-1 pb-4" ref={menuRef}>
+                        <div className="flex items-center gap-2 px-2 mb-4 text-[10px] font-black text-white/50 uppercase tracking-[0.2em]">
                             <History size={12} />
                             <span>Session Memory</span>
                         </div>
                         {sessions.map((session) => (
-                            <button
-                                key={session.id}
-                                onClick={() => onSwitchSession(session.id)}
-                                className={`group w-full flex items-center justify-between px-4 py-3 rounded-full text-xs font-medium transition-all duration-200 ${
-                                    currentSessionId === session.id
-                                        ? 'bg-gradient-to-r from-amber-500/20 to-rose-500/20 text-white border border-amber-500/30 shadow-[0_0_15px_rgba(255,154,60,0.1)]'
-                                        : 'text-white/70 hover:bg-white/5 hover:text-white'
-                                }`}
-                            >
-                                <span className="truncate max-w-[170px]">{session.title}</span>
-                                <div className={`opacity-0 group-hover:opacity-100 transition-opacity ${currentSessionId === session.id ? 'opacity-100 text-amber-glow' : ''}`}>
-                                    <MoreHorizontal size={16} />
-                                </div>
-                            </button>
+                            <div key={session.id} className="relative">
+                                <button
+                                    onClick={() => onSwitchSession(session.id)}
+                                    className={`group w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-medium transition-all duration-200 border ${currentSessionId === session.id
+                                            ? 'bg-white/10 text-white border-amber-500/30 shadow-[0_4px_20px_rgba(0,0,0,0.2)]'
+                                            : 'border-transparent text-white/60 hover:bg-white/5 hover:text-white hover:border-white/10'
+                                        }`}
+                                >
+                                    <span className="truncate max-w-[170px]">{session.title}</span>
+                                    <div
+                                        onClick={(e) => toggleMenu(e, session.id)}
+                                        className={`p-1.5 rounded-full hover:bg-white/10 transition-colors ${activeMenuId === session.id ? 'opacity-100 bg-white/10 text-white' : 'opacity-0 group-hover:opacity-100'
+                                            }`}
+                                    >
+                                        <MoreHorizontal size={14} />
+                                    </div>
+                                </button>
+
+                                {/* Dropdown Menu */}
+                                {activeMenuId === session.id && (
+                                    <div className="absolute right-0 top-full mt-2 w-32 z-50 overflow-hidden rounded-xl border border-white/10 bg-[#1a1016]/90 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] animate-fade-in origin-top-right">
+                                        <div className="py-1">
+                                            <button
+                                                onClick={(e) => handleRename(e, session)}
+                                                className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-white/80 hover:bg-white/10 hover:text-white transition-colors text-left"
+                                            >
+                                                <Edit2 size={12} />
+                                                Rename
+                                            </button>
+                                            <button
+                                                onClick={(e) => handleDelete(e, session.id)}
+                                                className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors text-left border-t border-white/5"
+                                            >
+                                                <Trash2 size={12} />
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         ))}
                     </div>
 
