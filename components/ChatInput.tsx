@@ -67,7 +67,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={disabled}
-              placeholder="Ask anything (Shift+Enter for new line)..."
+              placeholder="Ask anything..."
               className="
                 w-full bg-transparent text-white placeholder:text-white/40
                 text-[15px] sm:text-[17px] resize-none focus:outline-none 
