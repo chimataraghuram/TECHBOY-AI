@@ -19,6 +19,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [showMentions, setShowMentions] = useState(false);
+  const [mentions, setMentions] = useState<string[]>([]);
   const [mentionPos, setMentionPos] = useState({ start: 0, end: 0 });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -32,9 +33,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (input.trim() && !disabled) {
-      onSend(input);
+    const finalMessage = [...mentions, input].join(' ').trim();
+    if (finalMessage && !disabled) {
+      onSend(finalMessage);
       setInput('');
+      setMentions([]);
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
       }
@@ -62,24 +65,26 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   };
 
   const insertMention = (mentionValue: string) => {
+    if (!mentions.includes(mentionValue)) {
+      setMentions(prev => [...prev, mentionValue]);
+    }
+    
+    // Remove the '@' or partial mention text that triggered this
     const before = input.slice(0, mentionPos.start);
     const after = input.slice(mentionPos.end);
-    const newValue = before + mentionValue + ' ' + after;
-    setInput(newValue);
+    setInput(before + after);
     setShowMentions(false);
 
-    // Auto-focus and place cursor after mention
+    // Auto-focus the textarea
     setTimeout(() => {
       if (textareaRef.current) {
         textareaRef.current.focus();
-        const newPos = mentionPos.start + mentionValue.length + 1;
-        textareaRef.current.setSelectionRange(newPos, newPos);
       }
     }, 0);
   };
 
   const removeMention = (mentionValue: string) => {
-    setInput(input.replace(mentionValue, '').replace(/\s\s+/g, ' ').trim());
+    setMentions(prev => prev.filter(m => m !== mentionValue));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -265,34 +270,22 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
             )}
           </div>
 
-          {/* Text Area with Highlight Backdrop */}
-          <div className="flex-grow relative flex items-center min-h-[54px] sm:min-h-[48px]">
-            {/* Decoration Layer */}
-            <div
-              className="
-                absolute inset-0 pointer-events-none whitespace-pre-wrap break-words
-                text-[16px] sm:text-[17px] py-3.5 sm:py-3 leading-relaxed
-                font-medium opacity-100 pl-[1px] pr-8 sm:pr-10 z-20
-              "
-              aria-hidden="true"
-            >
-              {input.split(/(@Ask About Raghu \(Developer\))/g).map((part, i) =>
-                part === "@Ask About Raghu (Developer)"
-                  ? (
-                    <span key={i} className="mention-tag group/tag">
-                      {part}
-                      <button
-                        type="button"
-                        onClick={() => removeMention(part)}
-                        className="ml-1.5 p-0.5 rounded-full hover:bg-white/20 transition-colors pointer-events-auto inline-flex items-center justify-center active:scale-95"
-                        title="Remove mention"
-                      >
-                        <X size={12} className="text-amber-glow" />
-                      </button>
-                    </span>
-                  )
-                  : <span key={i} className="text-white">{part}</span>
-              )}
+          {/* Input Area with Separate Chips */}
+          <div className="flex-grow flex items-center gap-2 min-h-[54px] sm:min-h-[48px] overflow-hidden">
+            <div className="flex items-center gap-2 flex-wrap max-w-[50%]">
+              {mentions.map((mention, i) => (
+                <span key={i} className="mention-tag group/tag !mr-0">
+                  <span className="truncate max-w-[120px]">{mention}</span>
+                  <button
+                    type="button"
+                    onClick={() => removeMention(mention)}
+                    className="ml-1.5 p-0.5 rounded-full hover:bg-white/20 transition-colors inline-flex items-center justify-center active:scale-95 flex-shrink-0"
+                    title="Remove mention"
+                  >
+                    <X size={12} className="text-amber-glow" />
+                  </button>
+                </span>
+              ))}
             </div>
 
             <textarea
@@ -301,13 +294,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               disabled={disabled}
-              placeholder={(!input.trim() && !isListening) ? "Ask anything..." : isListening ? "Listening..." : ""}
+              placeholder={(!input.trim() && mentions.length === 0 && !isListening) ? "Ask anything..." : isListening ? "Listening..." : ""}
               className="
-                w-full bg-transparent text-transparent caret-white placeholder:text-white/40
+                flex-grow bg-transparent text-white caret-white placeholder:text-white/40
                 text-[16px] sm:text-[17px] resize-none focus:outline-none 
                 py-3.5 sm:py-3 max-h-[200px] leading-relaxed
                 scrollbar-none font-medium transition-all duration-200
-                relative z-10 pr-8 sm:pr-10
+                relative z-10 pr-2
               "
               rows={1}
             />
