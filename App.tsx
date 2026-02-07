@@ -197,7 +197,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="relative flex h-screen w-full bg-transparent overflow-hidden selection:bg-rose-glow/30 selection:text-white">
+    <div className="relative flex h-[100dvh] w-full bg-transparent overflow-hidden selection:bg-rose-glow/30 selection:text-white">
 
       {/* 🎬 Splash Screen Overlay - Always mounted but toggled by state */}
       {showSplash && (
@@ -219,7 +219,7 @@ const App: React.FC = () => {
 
       {/* 🗨️ MAIN CHAT */}
       <main className={`
-        relative flex flex-col flex-1 h-screen min-w-0 overflow-hidden 
+        relative flex flex-col flex-1 h-[100dvh] min-w-0 overflow-hidden 
         transition-[transform,filter] duration-300 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]
         will-change-[transform,filter]
         ${isSidebarOpen
@@ -275,8 +275,8 @@ const App: React.FC = () => {
           </div>
         </header>
 
-        {/* Messages Feed - Balanced Spacing */}
-        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-5 sm:px-10 py-5 sm:py-8 space-y-4 sm:space-y-6 scroll-smooth">
+        {/* Messages Feed - Scrolled Area */}
+        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-5 sm:px-10 py-5 sm:py-8 space-y-4 sm:space-y-6 scroll-smooth pb-32 sm:pb-32">
           {messages.map((msg, idx) => (
             <ChatMessage
               key={msg.id}
@@ -291,9 +291,9 @@ const App: React.FC = () => {
           <div ref={messagesEndRef} className="h-4" />
         </div>
 
-        {/* Detached Input Container - Stays at bottom */}
-        <div className="w-full px-4 sm:px-16 pb-4 sm:pb-8 z-50">
-          <div className="max-w-3xl mx-auto">
+        {/* Fixed Input Container */}
+        <div className="fixed bottom-0 left-0 w-full px-4 sm:px-16 pb-4 sm:pb-8 z-50 pointer-events-none">
+          <div className="max-w-3xl mx-auto pointer-events-auto">
             <ChatInput onSend={handleSendMessage} disabled={isLoading} />
           </div>
         </div>
