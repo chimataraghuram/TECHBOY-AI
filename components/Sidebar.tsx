@@ -116,8 +116,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             `}>
                 <div className={`flex flex-col h-full ${isOpen ? 'p-6' : 'p-2 py-4 items-center'} justify-between`}>
 
-                    {/* TOP SECTION */}
-                    <div className="flex flex-col w-full">
+                    {/* TOP SECTION - Flex Grow to fill space */}
+                    <div className="flex flex-col flex-1 min-h-0 w-full">
 
                         {/* 1. Header Row (Toggle + Brand) */}
                         <div className={`flex w-full mb-6 ${isOpen ? 'items-center justify-between flex-row-reverse' : 'flex-col items-center gap-6'}`}>
@@ -182,9 +182,9 @@ const Sidebar: React.FC<SidebarProps> = ({
                             )}
                         </button>
 
-                        {/* 3. Session List */}
+                        {/* 3. Session List - Scrollable Area */}
                         {isOpen ? (
-                            <div className="flex-1 overflow-y-auto space-y-2 scrollbar-none pr-1 pb-4 max-h-[calc(100vh-320px)]" ref={menuRef}>
+                            <div className="flex-1 overflow-y-auto space-y-2 scrollbar-none pr-1 pb-4 min-h-0" ref={menuRef}>
                                 <div className="flex items-center gap-2 px-2 mb-2 text-[10px] font-black text-white/70 uppercase tracking-[0.2em]">
                                     <History size={12} />
                                     <span>Chat History</span>
