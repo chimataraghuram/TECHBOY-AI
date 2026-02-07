@@ -212,8 +212,8 @@ const App: React.FC = () => {
         ${isSidebarOpen ? 'scale-[0.98] blur-[3px] lg:scale-100 lg:blur-0' : 'scale-100 blur-0'}
       `}>
 
-        {/* Header Bar - Modular Glass for Mobile, Unified for Desktop */}
-        <header className="sticky top-0 z-30 px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between mx-0 sm:mx-4 my-1 sm:my-2 rounded-xl sm:rounded-2xl transition-all duration-300">
+        {/* Header Bar - Floating Modular Elements */}
+        <header className="sticky top-0 z-30 px-4 sm:px-6 h-auto sm:h-20 flex items-center justify-between mx-2 sm:mx-4 my-2 sm:my-2 rounded-xl sm:rounded-2xl transition-all duration-300 border-none bg-transparent shadow-none">
 
           {/* Left: Hamburger (Glass Capsule) */}
           <div className="z-10 flex items-center">
