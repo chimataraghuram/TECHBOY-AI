@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Paperclip, Mic, Sparkles } from 'lucide-react';
+import { Send, Plus, Image, Film, FileText, Mic, Sparkles } from 'lucide-react';
 
 interface ChatInputProps {
   onSend: (text: string) => void;
@@ -8,7 +8,9 @@ interface ChatInputProps {
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const [input, setInput] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -22,12 +24,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Enter sends the message
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       e.preventDefault();
       handleSubmit();
     }
-    // Shift+Enter inserts a newline (default behavior), so we don't preventDefault
   };
 
   useEffect(() => {
@@ -36,6 +36,28 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
       textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 180)}px`;
     }
   }, [input]);
+
+  // Handle click outside to close menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
+  const menuOptions = [
+    { icon: <Image size={18} />, label: 'Upload Photo' },
+    { icon: <Film size={18} />, label: 'Upload Video' },
+    { icon: <FileText size={18} />, label: 'Upload File' },
+  ];
 
   return (
     <div className="w-full h-full flex flex-col items-center">
@@ -48,15 +70,37 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
       >
         <div className="flex items-end gap-2 sm:gap-4 p-2.5 sm:p-4">
 
-          {/* Action Group 1 - Hidden on mobile for cleaner look */}
-          <div className="hidden sm:flex items-center pb-2">
+          {/* Plus Button & Dropdown */}
+          <div className="flex items-center pb-2 relative" ref={menuRef}>
             <button
               type="button"
-              className="glass-circle-btn text-white/90 hover:text-white"
-              title="Attach File"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className={`glass-circle-btn text-white/90 hover:text-white ${isMenuOpen ? 'border-amber-glow shadow-[0_0_15px_rgba(255,154,60,0.4)]' : ''}`}
+              title="Add attachment"
             >
-              <Paperclip size={18} />
+              <Plus size={20} className={`transition-transform duration-300 ${isMenuOpen ? 'rotate-45' : ''}`} />
             </button>
+
+            {/* Dropdown Menu */}
+            {isMenuOpen && (
+              <div className="absolute bottom-full left-0 mb-4 w-48 liquid-glass rounded-2xl overflow-hidden z-50 animate-fade-in origin-bottom-left">
+                <div className="p-1.5 flex flex-col gap-1">
+                  {menuOptions.map((option, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all group"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <span className="text-amber-glow/70 group-hover:text-amber-glow transition-colors">
+                        {option.icon}
+                      </span>
+                      <span className="font-medium tracking-wide">{option.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Text Area */}
