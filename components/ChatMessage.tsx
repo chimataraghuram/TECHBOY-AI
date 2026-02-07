@@ -61,7 +61,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
             ) : (
               <div className={`
                 prose prose-invert prose-sm sm:prose-base max-w-none break-words
-                prose-p:leading-relaxed prose-p:my-2 prose-p:text-gray-100
+                prose-p:leading-relaxed prose-p:my-2 prose-p:text-white sm:prose-p:text-gray-100
                 prose-headings:text-amber-light prose-headings:font-bold prose-headings:mb-3
                 prose-a:text-amber-glow prose-a:underline decoration-amber-glow/30 hover:decoration-amber-glow transition-all
                 prose-strong:text-amber-glow prose-strong:font-black

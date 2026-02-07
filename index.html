@@ -327,8 +327,39 @@
     }
 
     @media (max-width: 640px) {
+      :root {
+        --glass-blur: 20px;
+        --amber-glow: rgba(255, 154, 60, 0.12);
+        --rose-glow: rgba(255, 77, 109, 0.2);
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+
       .chat-bubble {
-        max-width: 92%;
+        max-width: 90%;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      .ai-bubble {
+        background: rgba(15, 10, 15, 0.85);
+        /* Darker for better contrast */
+        border: 1px solid rgba(255, 154, 60, 0.25);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+
+      .user-bubble {
+        background: rgba(255, 77, 109, 0.25);
+        /* Slightly more opaque */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      .bg-glow-amber,
+      .bg-glow-rose {
+        opacity: 0.6;
+        /* Dim background glows on mobile */
       }
     }
   </style>
