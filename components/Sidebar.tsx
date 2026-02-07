@@ -277,7 +277,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </div>
 
                     {/* BOTTOM SECTION: Portfolio */}
-                    <div className={`pt-6 border-t border-white/5 transition-all duration-300 ${isOpen ? 'w-full' : 'flex justify-center'}`}>
+                    <div className={`mt-auto pt-6 border-t border-white/5 transition-all duration-300 ${isOpen ? 'w-full' : 'flex justify-center'}`}>
                         <a
                             href={PORTFOLIO_URL}
                             target="_blank"
