@@ -222,7 +222,9 @@ const App: React.FC = () => {
       {/* 🗨️ MAIN CHAT */}
       <main className={`
         relative flex flex-col flex-1 h-screen min-w-0 overflow-hidden transition-all duration-300 ease-in-out will-change-[transform,filter]
-        ${isSidebarOpen ? 'scale-[0.98] blur-[3px]' : 'scale-100 blur-0'}
+        ${isSidebarOpen
+          ? 'scale-[0.98] blur-[3px] lg:scale-100 lg:blur-0 lg:translate-x-[280px]'
+          : 'scale-100 blur-0 lg:translate-x-0'}
       `}>
 
         {/* Header Bar - Floating Modular Elements */}

@@ -93,10 +93,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     return (
         <>
-            {/* 🌑 Sidebar Overlay */}
+            {/* 🌑 Sidebar Overlay - Mobile Only */}
             <div
                 className={`
-                    fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300
+                    fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 lg:hidden
                     ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
                 `}
                 onClick={onClose}
