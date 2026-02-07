@@ -15,13 +15,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
   const baseUrl = import.meta.env.BASE_URL;
 
   return (
-    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} group animate-fade-in`}>
-      <div className={`flex w-full max-w-4xl gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'} items-start`}>
+    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} group animate-fade-in px-2 sm:px-0`}>
+      <div className={`flex w-[95%] sm:w-full max-w-4xl gap-3 sm:gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'} items-start mx-auto sm:mx-0`}>
 
         {/* Avatar */}
         <div className="flex-shrink-0 mt-0.5">
           <div className={`
-            w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-2xl flex items-center justify-center
+            w-8 h-8 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-2xl flex items-center justify-center
             transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
             ${isUser
               ? 'bg-rose-glow/30 border-rose-glow/50 shadow-[0_0_20px_rgba(255,77,109,0.2)]'
@@ -31,7 +31,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
             }
           `}>
             {isError ? (
-              <AlertCircle size={16} className="sm:w-5 sm:h-5" strokeWidth={2.5} />
+              <AlertCircle size={14} className="sm:w-5 sm:h-5" strokeWidth={2.5} />
             ) : (
               <img
                 src={`${baseUrl}${isUser ? 'user.jpg' : 'logo.jpg'}`}
@@ -45,8 +45,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
         {/* Message Content Component */}
         <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0 flex-1`}>
           <div className={`
-            chat-bubble px-5 py-3.5 sm:px-6 sm:py-5 transition-all duration-500
-            max-w-[85%] md:max-w-[75%] lg:max-w-[70%] text-left
+            chat-bubble px-4 py-3 sm:px-6 sm:py-5 transition-all duration-500
+            w-[88%] sm:w-auto max-w-[90%] md:max-w-[75%] lg:max-w-[70%] text-left
             ${isUser
               ? 'user-bubble text-white'
               : isError
@@ -55,12 +55,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
             }
           `}>
             {isUser ? (
-              <p className="whitespace-pre-wrap text-[15px] sm:text-[16px] leading-relaxed font-medium tracking-wide">
+              <p className="whitespace-pre-wrap break-words text-[15px] sm:text-[16px] leading-relaxed font-medium tracking-wide">
                 {message.text}
               </p>
             ) : (
               <div className={`
-                prose prose-invert prose-sm sm:prose-base max-w-none
+                prose prose-invert prose-sm sm:prose-base max-w-none break-words
                 prose-p:leading-relaxed prose-p:my-2 prose-p:text-gray-100
                 prose-headings:text-amber-light prose-headings:font-bold prose-headings:mb-3
                 prose-a:text-amber-glow prose-a:underline decoration-amber-glow/30 hover:decoration-amber-glow transition-all
