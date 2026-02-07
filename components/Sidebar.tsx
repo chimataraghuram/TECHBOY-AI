@@ -120,12 +120,13 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <div className="flex flex-col w-full">
 
                         {/* 1. Header Row (Toggle + Brand) */}
-                        <div className={`flex items-center w-full mb-8 ${isOpen ? 'justify-between flex-row-reverse' : 'flex-col gap-6'}`}>
+                        <div className={`flex w-full mb-8 ${isOpen ? 'items-center justify-between flex-row-reverse' : 'flex-col items-center gap-6'}`}>
 
                             {/* Toggle Button - Adaptive Behavior */}
                             <button
                                 onClick={isOpen ? onClose : onOpen}
                                 className={`
+                                    relative mt-4 flex justify-center items-center
                                     p-2 text-white/70 hover:text-white transition-all duration-200 
                                     ${isOpen ? 'opacity-100' : 'opacity-100'}
                                 `}
