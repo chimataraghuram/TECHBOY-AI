@@ -20,6 +20,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const [isListening, setIsListening] = useState(false);
   const [showMentions, setShowMentions] = useState(false);
   const [mentions, setMentions] = useState<string[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<{ id: string, file: File, preview: string, type: string }[]>([]);
   const [mentionPos, setMentionPos] = useState({ start: 0, end: 0 });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -37,10 +38,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
     const finalMessage = [...mentions, input].join(' ').trim();
-    if (finalMessage && !disabled) {
+    if ((finalMessage || selectedFiles.length > 0) && !disabled) {
       onSend(finalMessage);
       setInput('');
       setMentions([]);
+      // Revoke previews to avoid memory leaks
+      selectedFiles.forEach(f => URL.revokeObjectURL(f.preview));
+      setSelectedFiles([]);
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
       }
@@ -177,11 +181,27 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
     { icon: <User size={18} />, label: '@Ask About Raghu (Developer)', value: '@Ask About Raghu (Developer)' },
   ];
 
-  const handleCameraChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      console.log('Camera/File selected:', file.name);
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const newFiles = Array.from(files).map(file => ({
+        id: Math.random().toString(36).substr(2, 9),
+        file,
+        preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : '',
+        type: file.type
+      }));
+      setSelectedFiles(prev => [...prev, ...newFiles]);
     }
+    // Reset inputs so the same file can be picked again
+    e.target.value = '';
+  };
+
+  const removeFile = (id: string) => {
+    setSelectedFiles(prev => {
+      const file = prev.find(f => f.id === id);
+      if (file?.preview) URL.revokeObjectURL(file.preview);
+      return prev.filter(f => f.id !== id);
+    });
   };
 
   const handleFileClick = (type: 'photo' | 'video' | 'file') => {
@@ -299,6 +319,24 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                   </button>
                 </span>
               ))}
+              {selectedFiles.map((file) => (
+                <span key={file.id} className="mention-tag group/tag !mr-0 !bg-white/10 !border-white/20">
+                  {file.preview ? (
+                    <img src={file.preview} alt="preview" className="w-5 h-5 rounded object-cover mr-1" />
+                  ) : (
+                    file.type.startsWith('video/') ? <Film size={14} className="mr-1 text-amber-glow" /> : <FileText size={14} className="mr-1 text-amber-glow" />
+                  )}
+                  <span className="truncate max-w-[100px] text-[11px]">{file.file.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => removeFile(file.id)}
+                    className="ml-1.5 p-0.5 rounded-full hover:bg-white/20 transition-colors inline-flex items-center justify-center active:scale-95 flex-shrink-0"
+                    title="Remove file"
+                  >
+                    <X size={12} className="text-amber-glow" />
+                  </button>
+                </span>
+              ))}
             </div>
 
             <textarea
@@ -343,7 +381,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                 accept="image/*"
                 capture="environment"
                 className="hidden"
-                onChange={handleCameraChange}
+                onChange={handleFileSelect}
               />
             </label>
 
@@ -380,9 +418,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
         </div>
 
         {/* Hidden File Inputs */}
-        <input type="file" ref={photoInputRef} accept="image/*" capture="environment" className="hidden" onChange={handleCameraChange} />
-        <input type="file" ref={videoInputRef} accept="video/*" className="hidden" onChange={handleCameraChange} />
-        <input type="file" ref={fileInputRef} className="hidden" onChange={handleCameraChange} />
+        <input type="file" ref={photoInputRef} accept="image/*" capture="environment" className="hidden" onChange={handleFileSelect} />
+        <input type="file" ref={videoInputRef} accept="video/*" className="hidden" onChange={handleFileSelect} />
+        <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileSelect} />
+        <input type="file" ref={cameraInputRef} accept="image/*" capture="environment" className="hidden" onChange={handleFileSelect} />
 
         {/* Footer Hint (Desktop Only) */}
         <div className="hidden sm:flex justify-center pb-2 opacity-60 hover:opacity-100 transition-opacity">
