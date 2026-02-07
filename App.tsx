@@ -215,13 +215,14 @@ const App: React.FC = () => {
         {/* Header Bar - Modular Glass for Mobile, Unified for Desktop */}
         <header className="sticky top-0 z-30 px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between mx-0 sm:mx-4 my-1 sm:my-2 rounded-xl sm:rounded-2xl transition-all duration-300">
 
-          {/* Left: Hamburger (Detached Glass on Mobile) */}
+          {/* Left: Hamburger (Glass Capsule) */}
           <div className="z-10 flex items-center">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="text-white liquid-glass rounded-xl sm:rounded-full p-2.5 sm:p-0 sm:glass-circle-btn transition-all hover:scale-110 active:scale-95 shadow-[0_0_15px_rgba(255,154,60,0.15)] sm:shadow-none"
+              className="group relative flex items-center justify-center text-white liquid-glass rounded-xl w-8 h-8 sm:w-11 sm:h-11 transition-all hover:scale-110 active:scale-95 shadow-[0_0_20px_rgba(255,154,60,0.1)] sm:liquid-glass-none sm:shadow-none sm:bg-transparent sm:backdrop-blur-none sm:border-none"
             >
-              <PanelLeft size={20} className="sm:hidden" />
+              <div className="absolute inset-0 rounded-xl border border-white/10 ring-1 ring-amber-glow/10"></div>
+              <PanelLeft size={18} className="sm:hidden relative z-10" />
               <PanelLeft size={24} className="hidden sm:block" />
             </button>
             <div className="hidden sm:flex items-center gap-2.5 ml-4">
