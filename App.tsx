@@ -57,10 +57,7 @@ const App: React.FC = () => {
       setMessages(activeSession.messages);
     }
 
-    // Handle initial sidebar state
-    if (window.innerWidth >= 1024) {
-      setIsSidebarOpen(true);
-    }
+    // Unified initial state: Sidebar starts closed for all devices
   }, []);
 
   // Sync scroll
@@ -154,7 +151,6 @@ const App: React.FC = () => {
     setCurrentSessionId(newSession.id);
     setActiveSessionId(newSession.id);
     setMessages(newSession.messages);
-    if (window.innerWidth < 1024) setIsSidebarOpen(false);
   };
 
   const handleSwitchSession = (sessionId: string) => {
@@ -163,7 +159,6 @@ const App: React.FC = () => {
       setCurrentSessionId(sessionId);
       setActiveSessionId(sessionId);
       setMessages(session.messages);
-      if (window.innerWidth < 1024) setIsSidebarOpen(false);
     }
   };
 
