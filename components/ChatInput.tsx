@@ -291,7 +291,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                       </button>
                     </span>
                   )
-                  : <span key={i} className="text-transparent">{part}</span>
+                  : <span key={i} className="text-white">{part}</span>
               )}
             </div>
 
@@ -301,9 +301,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               disabled={disabled}
-              placeholder={isListening ? "Listening..." : "Ask anything..."}
+              placeholder={(!input.trim() && !isListening) ? "Ask anything..." : isListening ? "Listening..." : ""}
               className="
-                w-full bg-transparent text-white placeholder:text-white/40
+                w-full bg-transparent text-transparent caret-white placeholder:text-white/40
                 text-[16px] sm:text-[17px] resize-none focus:outline-none 
                 py-3.5 sm:py-3 max-h-[200px] leading-relaxed
                 scrollbar-none font-medium transition-all duration-200
@@ -311,7 +311,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               "
               rows={1}
             />
-            {input.length === 0 && !disabled && !isListening && (
+            {input.trim().length === 0 && !disabled && !isListening && (
               <Sparkles size={16} className="absolute right-0 text-amber-glow/20 pointer-events-none hidden sm:block animate-pulse" />
             )}
             {isListening && (
