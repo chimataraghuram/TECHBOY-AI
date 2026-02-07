@@ -159,10 +159,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   };
 
   const menuOptions = [
-    { icon: <User size={18} />, label: '@Ask About Raghu (Developer)', value: '@Ask About Raghu (Developer)' },
     { icon: <Image size={18} />, label: 'Upload Photo' },
     { icon: <Film size={18} />, label: 'Upload Video' },
     { icon: <FileText size={18} />, label: 'Upload File' },
+    { icon: <User size={18} />, label: '@Ask About Raghu (Developer)', value: '@Ask About Raghu (Developer)' },
   ];
 
   const handleCameraChange = (e: React.ChangeEvent<HTMLInputElement>) => {
