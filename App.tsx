@@ -214,6 +214,7 @@ const App: React.FC = () => {
         onSwitchSession={handleSwitchSession}
         onDeleteSession={handleDeleteSession}
         onRenameSession={handleRenameSession}
+        onOpen={() => setIsSidebarOpen(true)}
       />
 
       {/* 🗨️ MAIN CHAT */}
@@ -229,8 +230,8 @@ const App: React.FC = () => {
         {/* Header Bar - Floating Modular Elements */}
         <header className="sticky top-0 z-30 px-4 sm:px-6 h-auto sm:h-20 flex items-center justify-between mx-2 sm:mx-4 my-2 sm:my-2 rounded-xl sm:rounded-2xl transition-all duration-300 border-none bg-transparent shadow-none">
 
-          {/* Left: Sidebar Toggle Capsule (Visible only when sidebar is closed) */}
-          <div className={`z-10 flex items-center transition-opacity duration-200 ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+          {/* Left: Sidebar Toggle Capsule (Visible only when sidebar is closed on mobile) */}
+          <div className={`z-10 flex items-center transition-opacity duration-200 lg:hidden ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <button
               onClick={() => setIsSidebarOpen(true)}
               className="group relative flex items-center justify-center text-white liquid-glass rounded-xl w-7 h-7 sm:w-12 sm:h-12 transition-all hover:scale-110 active:scale-95 shadow-[0_0_20px_rgba(255,154,60,0.15)]"

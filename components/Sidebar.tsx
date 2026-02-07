@@ -12,6 +12,7 @@ interface SidebarProps {
     onSwitchSession: (id: string) => void;
     onDeleteSession: (id: string) => void;
     onRenameSession: (id: string, newTitle: string) => void;
+    onOpen: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -22,7 +23,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     currentSessionId,
     onSwitchSession,
     onDeleteSession,
-    onRenameSession
+    onRenameSession,
+    onOpen
 }) => {
     const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
     const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
@@ -132,14 +134,16 @@ const Sidebar: React.FC<SidebarProps> = ({
                         )}
 
                         {/* Toggle Button (Visible only when sidebar is open) */}
+                        {/* Toggle Button - Adaptive Behavior */}
                         <button
-                            onClick={onClose}
+                            onClick={isOpen ? onClose : onOpen}
                             className={`
                                 p-2 text-white/70 hover:text-white transition-all duration-200 
-                                ${isOpen ? 'opacity-100 pointer-events-auto' : 'hidden'}
+                                ${isOpen ? 'opacity-100' : 'opacity-100 mt-2'}
                             `}
+                            title={isOpen ? "Collapse Sidebar" : "Expand Sidebar"}
                         >
-                            <PanelLeft size={24} />
+                            <PanelLeft size={24} className={!isOpen ? "rotate-180" : ""} />
                         </button>
                     </div>
 
