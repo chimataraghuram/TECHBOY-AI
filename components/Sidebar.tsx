@@ -3,6 +3,37 @@ import { MessageSquarePlus, History, ExternalLink, X, Circle, PanelLeft, MoreVer
 import { ChatSession } from '../types';
 import { PORTFOLIO_URL } from '../constants';
 
+// Helper function to group sessions by date
+const groupSessionsByDate = (sessions: ChatSession[]) => {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const last7Days = new Date(today);
+    last7Days.setDate(last7Days.getDate() - 7);
+
+    const groups: { [key: string]: ChatSession[] } = {
+        'Today': [],
+        'Yesterday': [],
+        'Last 7 Days': [],
+        'Older': []
+    };
+
+    sessions.forEach(session => {
+        const date = new Date(session.updatedAt || session.createdAt); // Fallback to createdAt if updatedAt missing
+        if (date.toDateString() === today.toDateString()) {
+            groups['Today'].push(session);
+        } else if (date.toDateString() === yesterday.toDateString()) {
+            groups['Yesterday'].push(session);
+        } else if (date > last7Days) {
+            groups['Last 7 Days'].push(session);
+        } else {
+            groups['Older'].push(session);
+        }
+    });
+
+    return groups;
+};
+
 interface SidebarProps {
     isOpen: boolean;
     onClose: () => void;
@@ -184,65 +215,77 @@ const Sidebar: React.FC<SidebarProps> = ({
 
                         {/* 3. Session List - Scrollable Area */}
                         {isOpen ? (
-                            <div className="flex-1 overflow-y-auto space-y-2 scrollbar-none pr-1 pb-4 min-h-0" ref={menuRef}>
+                            <div className="flex-1 overflow-y-auto space-y-4 scrollbar-none pr-1 pb-4 min-h-0" ref={menuRef}>
                                 <div className="flex items-center gap-2 px-2 mb-2 text-[10px] font-black text-white/70 uppercase tracking-[0.2em]">
                                     <History size={12} />
                                     <span>Chat History</span>
                                 </div>
-                                {sessions.map((session) => (
-                                    <div key={session.id} className="relative">
-                                        <button
-                                            onClick={() => onSwitchSession(session.id)}
-                                            className={`group w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-medium transition-all duration-200 border ${currentSessionId === session.id
-                                                ? 'bg-white/10 text-white border-amber-500/30 shadow-[0_4px_20px_rgba(0,0,0,0.2)]'
-                                                : 'border-transparent text-white/60 hover:bg-white/5 hover:text-white hover:border-white/10'
-                                                }`}
-                                        >
-                                            {editingSessionId === session.id ? (
-                                                <input
-                                                    ref={inputRef}
-                                                    type="text"
-                                                    value={editTitle}
-                                                    onChange={(e) => setEditTitle(e.target.value)}
-                                                    onKeyDown={handleRenameKeyDown}
-                                                    onBlur={saveRename}
-                                                    onClick={(e) => e.stopPropagation()}
-                                                    className="bg-transparent text-white outline-none w-full truncate border-b border-white/20 pb-0.5"
-                                                />
-                                            ) : (
-                                                <span className="truncate max-w-[170px]">{session.title}</span>
-                                            )}
-                                            <div
-                                                onClick={(e) => toggleMenu(e, session.id)}
-                                                className={`p-2 rounded-full hover:bg-white/10 transition-all duration-200 ${activeMenuId === session.id ? 'opacity-100 bg-white/10 text-white' : 'opacity-60 lg:opacity-0 lg:group-hover:opacity-60 hover:!opacity-100'
-                                                    }`}
-                                            >
-                                                <MoreVertical size={16} />
-                                            </div>
-                                        </button>
 
-                                        {/* Dropdown Menu */}
-                                        {activeMenuId === session.id && (
-                                            <div className="absolute right-0 top-full mt-2 w-32 z-50 overflow-hidden rounded-xl border border-white/10 bg-[#1a1016]/90 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] animate-fade-in origin-top-right">
-                                                <div className="py-1">
-                                                    <button
-                                                        onClick={(e) => handleRenameStart(e, session)}
-                                                        className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-white/80 hover:bg-white/10 hover:text-white transition-colors text-left"
-                                                    >
-                                                        <Edit2 size={12} />
-                                                        Rename
-                                                    </button>
-                                                    <button
-                                                        onClick={(e) => handleDelete(e, session.id)}
-                                                        className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors text-left border-t border-white/5"
-                                                    >
-                                                        <Trash2 size={12} />
-                                                        Delete
-                                                    </button>
-                                                </div>
+                                {Object.entries(groupSessionsByDate(sessions)).map(([label, groupSessions]) => (
+                                    groupSessions.length > 0 && (
+                                        <div key={label} className="mb-4">
+                                            <div className="px-2 mb-2 text-[10px] font-bold text-white/40 uppercase tracking-wider sticky top-0 bg-[#0a0508]/80 backdrop-blur-sm z-10 py-1">
+                                                {label}
                                             </div>
-                                        )}
-                                    </div>
+                                            <div className="space-y-2">
+                                                {groupSessions.map((session) => (
+                                                    <div key={session.id} className="relative">
+                                                        <button
+                                                            onClick={() => onSwitchSession(session.id)}
+                                                            className={`group w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-all duration-200 border ${currentSessionId === session.id
+                                                                ? 'bg-white/10 text-white border-amber-500/30 shadow-[0_4px_20px_rgba(0,0,0,0.2)]'
+                                                                : 'border-transparent text-white/60 hover:bg-white/5 hover:text-white hover:border-white/5'
+                                                                }`}
+                                                        >
+                                                            {editingSessionId === session.id ? (
+                                                                <input
+                                                                    ref={inputRef}
+                                                                    type="text"
+                                                                    value={editTitle}
+                                                                    onChange={(e) => setEditTitle(e.target.value)}
+                                                                    onKeyDown={handleRenameKeyDown}
+                                                                    onBlur={saveRename}
+                                                                    onClick={(e) => e.stopPropagation()}
+                                                                    className="bg-transparent text-white outline-none w-full truncate border-b border-white/20 pb-0.5"
+                                                                />
+                                                            ) : (
+                                                                <span className="truncate flex-1 text-left pr-2">{session.title}</span>
+                                                            )}
+                                                            <div
+                                                                onClick={(e) => toggleMenu(e, session.id)}
+                                                                className={`p-1.5 rounded-lg hover:bg-white/10 transition-all duration-200 ${activeMenuId === session.id ? 'opacity-100 bg-white/10 text-white' : 'opacity-0 group-hover:opacity-100'
+                                                                    }`}
+                                                            >
+                                                                <MoreVertical size={14} />
+                                                            </div>
+                                                        </button>
+
+                                                        {/* Dropdown Menu */}
+                                                        {activeMenuId === session.id && (
+                                                            <div className="absolute right-0 top-full mt-1 w-32 z-50 overflow-hidden rounded-xl border border-white/10 bg-[#1a1016]/95 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] animate-fade-in origin-top-right">
+                                                                <div className="py-1">
+                                                                    <button
+                                                                        onClick={(e) => handleRenameStart(e, session)}
+                                                                        className="w-full flex items-center gap-2 px-4 py-2 text-xs text-white/80 hover:bg-white/10 hover:text-white transition-colors text-left"
+                                                                    >
+                                                                        <Edit2 size={12} />
+                                                                        Rename
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={(e) => handleDelete(e, session.id)}
+                                                                        className="w-full flex items-center gap-2 px-4 py-2 text-xs text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors text-left border-t border-white/5"
+                                                                    >
+                                                                        <Trash2 size={12} />
+                                                                        Delete
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )
                                 ))}
                             </div>
                         ) : (
