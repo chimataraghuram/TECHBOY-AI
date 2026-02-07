@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Plus, Image, Film, FileText, Mic, Sparkles, Camera } from 'lucide-react';
+import { Send, Plus, Image, Film, FileText, Mic, Sparkles, Camera, AtSign, User } from 'lucide-react';
 
 interface ChatInputProps {
   onSend: (text: string) => void;
@@ -18,10 +18,17 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const [input, setInput] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [showMentions, setShowMentions] = useState(false);
+  const [mentionPos, setMentionPos] = useState({ start: 0, end: 0 });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const mentionRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
+
+  const MENTION_OPTIONS = [
+    { label: 'Ask about Raghu (Developer)', value: '@Ask about Raghu (Developer)', icon: <User size={14} /> },
+  ];
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -34,10 +41,55 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    const selectionStart = e.target.selectionStart;
+    setInput(value);
+
+    // Detect @ mention
+    const lastChar = value.slice(selectionStart - 1, selectionStart);
+    if (lastChar === '@') {
+      setShowMentions(true);
+      setMentionPos({ start: selectionStart - 1, end: selectionStart });
+    } else {
+      // Hide mentions if space is typed or if cursor moves away from @
+      const textBeforeCursor = value.slice(0, selectionStart);
+      const lastAtIndex = textBeforeCursor.lastIndexOf('@');
+      if (lastAtIndex === -1 || textBeforeCursor.slice(lastAtIndex).includes(' ')) {
+        setShowMentions(false);
+      }
+    }
+  };
+
+  const insertMention = (mentionValue: string) => {
+    const before = input.slice(0, mentionPos.start);
+    const after = input.slice(mentionPos.end);
+    const newValue = before + mentionValue + ' ' + after;
+    setInput(newValue);
+    setShowMentions(false);
+    
+    // Auto-focus and place cursor after mention
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        const newPos = mentionPos.start + mentionValue.length + 1;
+        textareaRef.current.setSelectionRange(newPos, newPos);
+      }
+    }, 0);
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
-      e.preventDefault();
-      handleSubmit();
+      if (showMentions) {
+        e.preventDefault();
+        insertMention(MENTION_OPTIONS[0].value);
+      } else {
+        e.preventDefault();
+        handleSubmit();
+      }
+    }
+    if (e.key === 'Escape') {
+      setShowMentions(false);
     }
   };
 
@@ -48,21 +100,20 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
     }
   }, [input]);
 
-  // Handle click outside to close menu
+  // Handle click outside to close menu and mentions
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsMenuOpen(false);
       }
+      if (mentionRef.current && !mentionRef.current.contains(event.target as Node)) {
+        setShowMentions(false);
+      }
     };
 
-    if (isMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isMenuOpen]);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Web Speech API Setup
   useEffect(() => {
@@ -125,10 +176,40 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
       <form
         onSubmit={handleSubmit}
         className={`
-          w-full floating-input-bar group
+          w-full floating-input-bar group relative
           ${disabled ? 'opacity-50 grayscale' : 'hover:border-amber-glow/60'}
         `}
       >
+        {/* Mention Suggestions */}
+        {showMentions && (
+          <div 
+            ref={mentionRef}
+            className="absolute bottom-full left-4 mb-4 w-[280px] liquid-glass rounded-2xl overflow-hidden z-[60] animate-fade-in shadow-2xl"
+          >
+            <div className="p-2 flex flex-col gap-1">
+              <div className="px-3 py-1.5 text-[10px] font-bold text-amber-glow/60 uppercase tracking-widest">
+                Suggestions
+              </div>
+              {MENTION_OPTIONS.map((option, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => insertMention(option.value)}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-white/90 hover:text-white hover:bg-white/10 rounded-xl transition-all group text-left"
+                >
+                  <div className="w-8 h-8 rounded-full bg-amber-glow/10 flex items-center justify-center text-amber-glow group-hover:bg-amber-glow group-hover:text-black transition-all">
+                    {option.icon}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-semibold">{option.label}</span>
+                    <span className="text-[10px] opacity-50 uppercase tracking-tighter">Shortcut</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="flex items-end gap-2 sm:gap-4 p-2.5 sm:p-4">
 
           {/* Plus Button & Dropdown */}
@@ -156,7 +237,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                       <span className="text-amber-glow/70 group-hover:text-amber-glow transition-colors">
                         {option.icon}
                       </span>
-                      <span className="font-medium tracking-wide">{option.label}</span>
+                      <span>{option.label}</span>
                     </button>
                   ))}
                 </div>
@@ -169,7 +250,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
             <textarea
               ref={textareaRef}
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               disabled={disabled}
               placeholder={isListening ? "Listening..." : "Ask anything..."}
