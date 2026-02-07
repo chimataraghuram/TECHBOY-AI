@@ -19,24 +19,24 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
       <div className={`flex w-full max-w-4xl gap-2.5 sm:gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'} items-start`}>
 
         {/* Avatar */}
-        <div className="flex-shrink-0 mt-0.5 sm:mt-1">
+        <div className="flex-shrink-0 mt-0.5 sm:mt-1 group-hover:scale-110 transition-transform duration-300">
           <div className={`
-            w-7 h-7 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center
+            w-8 h-8 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center
             transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
             ${isUser
-              ? 'bg-rose-glow/30 border-rose-glow/50 shadow-[0_0_20px_rgba(255,77,109,0.2)]'
+              ? 'bg-rose-glow/20 border-rose-glow/40 shadow-[0_0_15px_rgba(255,77,109,0.15)]'
               : isError
-                ? 'bg-red-500/30 border-red-500/50 text-red-100 shadow-[0_0_20px_rgba(239,68,68,0.2)]'
-                : 'liquid-glass border-white/30 shadow-[0_0_20px_rgba(255,154,60,0.2)]'
+                ? 'bg-red-500/30 border-red-500/50 text-red-100'
+                : 'bg-amber-glow/15 border-amber-glow/40 shadow-[0_0_25px_rgba(255,154,60,0.3)] ring-1 ring-white/10'
             }
           `}>
             {isError ? (
-              <AlertCircle size={12} className="sm:w-5 sm:h-5" strokeWidth={2.5} />
+              <AlertCircle size={14} className="sm:w-5 sm:h-5" strokeWidth={2.5} />
             ) : (
               <img
                 src={`${baseUrl}${isUser ? 'user.jpg' : 'logo.jpg'}`}
                 alt={isUser ? "User" : "AI"}
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover transition-all duration-500 ${!isUser ? 'brightness-125 contrast-110 saturate-[1.1]' : 'brightness-110'}`}
               />
             )}
           </div>
