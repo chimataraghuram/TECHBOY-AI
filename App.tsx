@@ -251,8 +251,8 @@ const App: React.FC = () => {
           </div>
         </header>
 
-        {/* Messages Feed - Pushed to use available space */}
-        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-4 sm:px-10 py-4 sm:py-8 space-y-4 sm:space-y-6 scroll-smooth">
+        {/* Messages Feed - Balanced Spacing */}
+        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-5 sm:px-10 py-5 sm:py-8 space-y-4 sm:space-y-6 scroll-smooth">
           {messages.map((msg, idx) => (
             <ChatMessage
               key={msg.id}

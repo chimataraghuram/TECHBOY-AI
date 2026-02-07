@@ -15,7 +15,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading })
   const baseUrl = import.meta.env.BASE_URL;
 
   return (
-    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} group animate-fade-in px-1 sm:px-0`}>
+    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} group animate-fade-in`}>
       <div className={`flex w-full max-w-4xl gap-2.5 sm:gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'} items-start`}>
 
         {/* Avatar */}
