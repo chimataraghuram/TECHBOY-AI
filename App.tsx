@@ -239,14 +239,17 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: Avatar (Detached Glass on Mobile) */}
-          <div className="z-10 flex items-center justify-end gap-3 sm:gap-6">
-            <div className={`relative group p-1 sm:p-0 rounded-full transition-all ${isSidebarOpen ? '' : 'liquid-glass sm:bg-transparent sm:backdrop-blur-none sm:border-none sm:shadow-none shadow-[0_0_15px_rgba(255,154,60,0.15)]'}`}>
-              {/* Refined Outer Glow */}
-              <div className="absolute -inset-1 sm:-inset-4 bg-amber-glow/20 sm:bg-amber-glow/25 rounded-full blur-lg sm:blur-2xl group-hover:bg-amber-glow/50 transition-all duration-700 animate-pulse-slow"></div>
+          {/* Right: Avatar (Glowing Glass Capsule) */}
+          <div className="z-10 flex items-center justify-end">
+            <div className={`
+              relative group p-1 transition-all duration-300 active:scale-90
+              ${isSidebarOpen ? '' : 'liquid-glass rounded-full shadow-[0_0_20px_rgba(255,154,60,0.2)] border-white/20 sm:bg-transparent sm:backdrop-blur-none sm:border-none sm:shadow-none'}
+            `}>
+              {/* Outer Glow - Mobile Optimized */}
+              <div className="absolute -inset-1 sm:-inset-4 bg-amber-glow/20 sm:bg-amber-glow/25 rounded-full blur-md sm:blur-2xl group-hover:bg-amber-glow/50 transition-all duration-700 animate-pulse-slow"></div>
 
-              {/* Main Logo Container */}
-              <div className="relative w-9 h-9 sm:w-16 sm:h-16 rounded-full liquid-glass border sm:border-2 border-white/20 p-0.5 sm:p-1 flex items-center justify-center shadow-[0_0_15px_rgba(255,154,60,0.15)] sm:shadow-[0_0_30px_rgba(255,154,60,0.3)] overflow-hidden transition-transform duration-500 group-hover:scale-110">
+              {/* Main Avatar Container */}
+              <div className="relative w-9 h-9 sm:w-16 sm:h-16 rounded-full liquid-glass border sm:border-2 border-white/20 p-0.5 sm:p-1 flex items-center justify-center shadow-inner overflow-hidden transition-transform duration-500 group-hover:scale-110">
                 <img
                   src={`${import.meta.env.BASE_URL}logo.jpg`}
                   alt="Logo"
