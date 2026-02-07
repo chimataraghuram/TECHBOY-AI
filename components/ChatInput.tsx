@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Plus, Image, Film, FileText, Mic, Sparkles } from 'lucide-react';
+import { Send, Plus, Image, Film, FileText, Mic, Sparkles, Camera } from 'lucide-react';
 
 interface ChatInputProps {
   onSend: (text: string) => void;
@@ -11,6 +11,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -58,6 +59,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
     { icon: <Film size={18} />, label: 'Upload Video' },
     { icon: <FileText size={18} />, label: 'Upload File' },
   ];
+
+  const handleCameraChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log('Camera file selected:', file.name);
+      // Here you would typically handle the file upload or preview
+    }
+  };
 
   return (
     <div className="w-full h-full flex flex-col items-center">
@@ -126,7 +135,23 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </div>
 
           {/* Action Group 2 */}
-          <div className="flex items-center gap-2 sm:gap-3 pb-1.5 sm:pb-2">
+          <div className="flex items-center gap-2 sm:gap-2.5 pb-1.5 sm:pb-2">
+            {/* Camera Button */}
+            <label
+              className="glass-circle-btn text-white/90 hover:text-white cursor-pointer group"
+              title="Take Photo"
+            >
+              <Camera size={18} />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={handleCameraChange}
+              />
+            </label>
+
             <button
               type="button"
               className="hidden sm:flex glass-circle-btn text-white/90 hover:text-white"
