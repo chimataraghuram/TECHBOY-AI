@@ -147,13 +147,20 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <button
                         onClick={onNewChat}
                         className={`
-                            jelly-btn flex items-center justify-center gap-2 rounded-full text-white font-bold shadow-lg transition-all duration-300
+                            jelly-btn flex items-center justify-center gap-2 rounded-full text-white font-bold shadow-lg transition-all duration-300 relative group
                             ${isOpen ? 'w-full py-4 mb-8' : 'w-10 h-10 p-0 mb-6 bg-amber-glow/20 !border-amber-glow/40'}
                         `}
-                        title="New Chat"
+                        title={isOpen ? "" : "New Chat"}
                     >
                         <MessageSquarePlus size={isOpen ? 20 : 18} />
                         {isOpen && <span>New Chat</span>}
+
+                        {/* Tooltip for mini mode */}
+                        {!isOpen && (
+                            <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-2 py-1 bg-black/80 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+                                New Chat
+                            </div>
+                        )}
                     </button>
 
                     {/* Chat History Pills */}
@@ -223,17 +230,28 @@ const Sidebar: React.FC<SidebarProps> = ({
                         <div className="flex-1 w-full flex flex-col items-center gap-4">
                             <div className="w-8 h-[1px] bg-white/10"></div>
                             {/* Mini Session Indicators (Optional - just showing 3 recents) */}
-                            {sessions.slice(0, 3).map((session) => (
+                            {sessions.slice(0, 5).map((session) => (
                                 <button
                                     key={session.id}
                                     onClick={() => onSwitchSession(session.id)}
                                     className={`
-                                        w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200
-                                        ${currentSessionId === session.id ? 'bg-amber-glow/20 text-amber-glow shadow' : 'text-white/30 hover:bg-white/5 hover:text-white'}
+                                        w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 relative group
+                                        ${currentSessionId === session.id
+                                            ? 'bg-amber-glow/20 text-amber-glow shadow-[0_0_10px_rgba(255,154,60,0.2)]'
+                                            : 'text-white/30 hover:bg-white/5 hover:text-white'}
                                     `}
                                     title={session.title}
                                 >
-                                    <div className="w-1.5 h-1.5 rounded-full bg-current" />
+                                    {currentSessionId === session.id ? (
+                                        <div className="w-2 h-2 rounded-full bg-current animate-pulse-slow" />
+                                    ) : (
+                                        <div className="w-1.5 h-1.5 rounded-full bg-current" />
+                                    )}
+
+                                    {/* Tooltip */}
+                                    <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-2 py-1 bg-black/80 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50 max-w-[150px] truncate">
+                                        {session.title}
+                                    </div>
                                 </button>
                             ))}
                         </div>
@@ -256,15 +274,19 @@ const Sidebar: React.FC<SidebarProps> = ({
                                 href={PORTFOLIO_URL}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-10 h-10 flex items-center justify-center rounded-full text-white/50 hover:text-amber-light hover:bg-white/5 transition-colors"
-                                title="Enter Portfolio"
+                                className="w-10 h-10 flex items-center justify-center rounded-full text-white/50 hover:text-amber-light hover:bg-white/5 transition-colors relative group"
+                                title=""
                             >
                                 <ExternalLink size={18} />
+                                {/* Tooltip */}
+                                <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-2 py-1 bg-black/80 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+                                    Enter Portfolio
+                                </div>
                             </a>
                         )}
                     </div>
                 </div>
-            </aside>
+            </aside >
         </>
     );
 };
