@@ -291,7 +291,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </div>
         )}
 
-        <div className="flex items-center gap-2 sm:gap-4 p-2 sm:p-4">
+        <div className="flex items-center gap-3 p-2 sm:p-4">
 
           {/* Plus Button & Dropdown */}
           <div className="flex-shrink-0 relative" ref={menuRef}>
@@ -300,12 +300,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`
                 glass-circle-btn text-white/90 hover:text-white
-                w-11 h-11 sm:w-10 sm:h-10 transition-all duration-200 hover:scale-[1.05]
+                w-10 h-10 transition-all duration-200 hover:scale-[1.05]
                 ${isMenuOpen ? 'border-amber-glow shadow-[0_0_15px_rgba(255,154,60,0.4)]' : ''}
               `}
               title="Add attachment"
             >
-              <Plus size={22} className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-45' : ''}`} />
+              <Plus size={20} className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-45' : ''}`} />
             </button>
 
             {/* Dropdown Menu Moved to Form Root */}
@@ -375,10 +375,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </div>
 
           {/* Action Group 2 */}
-          <div className="flex-shrink-0 flex items-center gap-1.5 sm:gap-3">
+          <div className="flex-shrink-0 flex items-center gap-3">
             {/* Camera Button */}
             <label
-              className="glass-circle-btn w-11 h-11 sm:w-10 sm:h-10 text-white/90 hover:text-white cursor-pointer group transition-all duration-200 hover:scale-[1.05]"
+              className="glass-circle-btn w-10 h-10 text-white/90 hover:text-white cursor-pointer group transition-all duration-200 hover:scale-[1.05]"
               title="Take Photo"
             >
               <Camera size={20} className="transition-transform duration-200 group-hover:scale-[1.1]" />
@@ -397,7 +397,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               type="button"
               onClick={toggleListening}
               className={`
-                glass-circle-btn w-11 h-11 sm:w-10 sm:h-10 transition-all duration-200 hover:scale-[1.05]
+                glass-circle-btn w-10 h-10 transition-all duration-200 hover:scale-[1.05]
                 ${isListening
                   ? 'bg-rose-500/20 border-rose-500 text-rose-400 shadow-[0_0_20px_rgba(255,77,109,0.6)] animate-pulse'
                   : 'text-white/90 hover:text-white'
@@ -412,14 +412,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               type="submit"
               disabled={!input.trim() || disabled}
               className={`
-                glass-circle-btn shadow-xl w-11 h-11 sm:w-10 sm:h-10 transition-all duration-200
+                glass-circle-btn shadow-xl w-10 h-10 transition-all duration-200
                 ${input.trim() && !disabled
                   ? 'jelly-btn text-white !border-none hover:scale-[1.08] active:scale-[0.95]'
                   : 'text-white/20 border-white/5 cursor-not-allowed opacity-40 shadow-none'
                 }
               `}
             >
-              <Send size={22} className={input.trim() && !disabled ? "ml-0.5" : ""} />
+              <Send size={20} className={input.trim() && !disabled ? "ml-0.5" : ""} />
             </button>
           </div>
         </div>
