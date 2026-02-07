@@ -67,7 +67,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
     const newValue = before + mentionValue + ' ' + after;
     setInput(newValue);
     setShowMentions(false);
-    
+
     // Auto-focus and place cursor after mention
     setTimeout(() => {
       if (textareaRef.current) {
@@ -182,7 +182,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
       >
         {/* Mention Suggestions */}
         {showMentions && (
-          <div 
+          <div
             ref={mentionRef}
             className="absolute bottom-full left-4 mb-4 w-[280px] liquid-glass rounded-2xl overflow-hidden z-[60] animate-fade-in shadow-2xl"
           >
@@ -210,17 +210,21 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </div>
         )}
 
-        <div className="flex items-end gap-2 sm:gap-4 p-2.5 sm:p-4">
+        <div className="flex items-end gap-1.5 sm:gap-4 p-2 sm:p-4">
 
           {/* Plus Button & Dropdown */}
           <div className="flex items-center pb-2 relative" ref={menuRef}>
             <button
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`glass-circle-btn text-white/90 hover:text-white ${isMenuOpen ? 'border-amber-glow shadow-[0_0_15px_rgba(255,154,60,0.4)]' : ''}`}
+              className={`
+                glass-circle-btn text-white/90 hover:text-white
+                w-11 h-11 sm:w-10 sm:h-10
+                ${isMenuOpen ? 'border-amber-glow shadow-[0_0_15px_rgba(255,154,60,0.4)]' : ''}
+              `}
               title="Add attachment"
             >
-              <Plus size={20} className={`transition-transform duration-300 ${isMenuOpen ? 'rotate-45' : ''}`} />
+              <Plus size={22} className={`transition-transform duration-300 ${isMenuOpen ? 'rotate-45' : ''}`} />
             </button>
 
             {/* Dropdown Menu */}
@@ -246,7 +250,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </div>
 
           {/* Text Area */}
-          <div className="flex-1 relative flex items-center min-h-[54px] sm:min-h-[48px] px-2 sm:px-0">
+          <div className="flex-1 relative flex items-center min-h-[54px] sm:min-h-[48px] px-1 sm:px-0">
             <textarea
               ref={textareaRef}
               value={input}
@@ -257,7 +261,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               className="
                 w-full bg-transparent text-white placeholder:text-white/40
                 text-[16px] sm:text-[17px] resize-none focus:outline-none 
-                py-3.5 sm:py-3 max-h-[220px] leading-relaxed
+                py-3.5 sm:py-3 max-h-[200px] leading-relaxed
                 scrollbar-none font-medium
               "
               rows={1}
@@ -275,13 +279,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </div>
 
           {/* Action Group 2 */}
-          <div className="flex items-center gap-2 sm:gap-2.5 pb-1.5 sm:pb-2">
+          <div className="flex items-center gap-1.5 sm:gap-3 pb-1.5 sm:pb-2">
             {/* Camera Button */}
             <label
-              className="glass-circle-btn text-white/90 hover:text-white cursor-pointer group"
+              className="glass-circle-btn w-11 h-11 sm:w-10 sm:h-10 text-white/90 hover:text-white cursor-pointer group"
               title="Take Photo"
             >
-              <Camera size={18} />
+              <Camera size={20} />
               <input
                 ref={fileInputRef}
                 type="file"
@@ -297,7 +301,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               type="button"
               onClick={toggleListening}
               className={`
-                glass-circle-btn transition-all duration-300
+                glass-circle-btn w-11 h-11 sm:w-10 sm:h-10 transition-all duration-300
                 ${isListening
                   ? 'bg-rose-500/20 border-rose-500 text-rose-400 shadow-[0_0_15px_rgba(255,77,109,0.4)] animate-pulse'
                   : 'text-white/90 hover:text-white'
@@ -305,7 +309,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               `}
               title={isListening ? "Stop Listening" : "Voice Input"}
             >
-              <Mic size={18} />
+              <Mic size={20} />
             </button>
 
             <button
@@ -319,7 +323,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                 }
               `}
             >
-              <Send size={20} className={input.trim() && !disabled ? "ml-0.5" : ""} />
+              <Send size={22} className={input.trim() && !disabled ? "ml-0.5" : ""} />
             </button>
           </div>
         </div>
