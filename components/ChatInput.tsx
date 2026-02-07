@@ -380,7 +380,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
         </div>
 
         {/* Hidden File Inputs */}
-        <input type="file" ref={photoInputRef} accept="image/*" className="hidden" onChange={handleCameraChange} />
+        <input type="file" ref={photoInputRef} accept="image/*" capture="environment" className="hidden" onChange={handleCameraChange} />
         <input type="file" ref={videoInputRef} accept="video/*" className="hidden" onChange={handleCameraChange} />
         <input type="file" ref={fileInputRef} className="hidden" onChange={handleCameraChange} />
 
