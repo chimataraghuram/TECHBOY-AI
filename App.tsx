@@ -230,17 +230,15 @@ const App: React.FC = () => {
         <header className="sticky top-0 z-30 px-4 sm:px-6 h-auto sm:h-20 flex items-center justify-between mx-2 sm:mx-4 my-2 sm:my-2 rounded-xl sm:rounded-2xl transition-all duration-300 border-none bg-transparent shadow-none">
 
           {/* Left: Sidebar Toggle Capsule (Visible only when sidebar is closed) */}
-          <div className={`z-10 flex items-center transition-all duration-300 ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-            {!isSidebarOpen && (
-              <button
-                onClick={() => setIsSidebarOpen(true)}
-                className="group relative flex items-center justify-center text-white liquid-glass rounded-xl w-7 h-7 sm:w-12 sm:h-12 transition-all hover:scale-110 active:scale-95 shadow-[0_0_20px_rgba(255,154,60,0.15)]"
-              >
-                <div className="absolute inset-0 rounded-xl border border-white/10 ring-1 ring-amber-glow/10"></div>
-                <PanelLeft size={16} className="sm:hidden relative z-10" />
-                <PanelLeft size={24} className="hidden sm:block relative z-10" />
-              </button>
-            )}
+          <div className={`z-10 flex items-center transition-opacity duration-200 ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="group relative flex items-center justify-center text-white liquid-glass rounded-xl w-7 h-7 sm:w-12 sm:h-12 transition-all hover:scale-110 active:scale-95 shadow-[0_0_20px_rgba(255,154,60,0.15)]"
+            >
+              <div className="absolute inset-0 rounded-xl border border-white/10 ring-1 ring-amber-glow/10"></div>
+              <PanelLeft size={16} className="sm:hidden relative z-10" />
+              <PanelLeft size={24} className="hidden sm:block relative z-10" />
+            </button>
             <div className="hidden lg:flex items-center gap-2.5 ml-4">
               <Sparkles size={20} className="text-amber-glow animate-float" />
             </div>

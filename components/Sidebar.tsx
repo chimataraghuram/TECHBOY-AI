@@ -123,10 +123,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                             </div>
                         </div>
 
-                        {/* Toggle Button */}
+                        {/* Toggle Button (Visible only when sidebar is open) */}
                         <button
                             onClick={onClose}
-                            className="p-2 text-white/70 hover:text-white transition-colors"
+                            className={`p-2 text-white/70 hover:text-white transition-opacity duration-200 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
                         >
                             <PanelLeft size={24} />
                         </button>
