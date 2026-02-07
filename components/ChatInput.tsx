@@ -113,9 +113,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </p>
         </div>
       </form>
-
-      {/* Safety Margin for detached look on mobile */}
-      <div className="h-6 sm:hidden"></div>
     </div>
   );
 };

@@ -207,7 +207,7 @@ const App: React.FC = () => {
       />
 
       {/* 🗨️ MAIN CHAT */}
-      <main className="relative flex flex-col flex-1 min-w-0 overflow-x-hidden">
+      <main className="relative flex flex-col flex-1 h-screen min-w-0 overflow-hidden">
 
         {/* Header Bar - Floating Glass */}
         <header className="sticky top-0 z-30 liquid-glass border-b border-white/5 px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between mx-2 sm:mx-4 my-1 sm:my-2 rounded-xl sm:rounded-2xl shadow-2xl">
@@ -251,8 +251,8 @@ const App: React.FC = () => {
           </div>
         </header>
 
-        {/* Messages Feed */}
-        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-4 sm:px-10 pt-6 sm:pt-20 pb-32 sm:pb-52 space-y-4 sm:space-y-6 scroll-smooth">
+        {/* Messages Feed - Pushed to use available space */}
+        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-4 sm:px-10 py-4 sm:py-8 space-y-4 sm:space-y-6 scroll-smooth">
           {messages.map((msg, idx) => (
             <ChatMessage
               key={msg.id}
@@ -267,9 +267,9 @@ const App: React.FC = () => {
           <div ref={messagesEndRef} className="h-4" />
         </div>
 
-        {/* Floating Detached Input */}
-        <div className="fixed bottom-0 left-0 right-0 lg:left-[280px] px-4 sm:px-16 pb-6 sm:pb-10 pointer-events-none z-50">
-          <div className="max-w-3xl mx-auto pointer-events-auto">
+        {/* Detached Input Container - Stays at bottom */}
+        <div className="w-full px-4 sm:px-16 pb-4 sm:pb-8 z-50">
+          <div className="max-w-3xl mx-auto">
             <ChatInput onSend={handleSendMessage} disabled={isLoading} />
           </div>
         </div>
