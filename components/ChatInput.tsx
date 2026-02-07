@@ -355,9 +355,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               "
               rows={1}
             />
-            {input.trim().length === 0 && !disabled && !isListening && (
-              <Sparkles size={16} className="absolute right-0 text-amber-glow/20 pointer-events-none hidden sm:block animate-pulse" />
-            )}
+
             {isListening && (
               <div className="absolute right-0 flex gap-0.5 pb-1">
                 <div className="w-1 h-3 bg-amber-glow rounded-full animate-bounce [animation-delay:-0.3s]"></div>
