@@ -27,7 +27,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const recognitionRef = useRef<any>(null);
 
   const MENTION_OPTIONS = [
-    { label: 'Ask about Raghu (Developer)', value: '@Ask about Raghu (Developer)', icon: <User size={14} /> },
+    { label: 'Ask About Raghu (Developer)', value: '@Ask About Raghu (Developer)', icon: <User size={14} /> },
   ];
 
   const handleSubmit = (e?: React.FormEvent) => {
@@ -268,7 +268,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               className="
                 absolute inset-0 pointer-events-none whitespace-pre-wrap break-words
                 text-[16px] sm:text-[17px] py-3.5 sm:py-3 leading-relaxed
-                font-medium opacity-100 pl-[1px]
+                font-medium opacity-100 pl-[1px] pr-8 sm:pr-10
               "
               aria-hidden="true"
             >
@@ -291,7 +291,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                 text-[16px] sm:text-[17px] resize-none focus:outline-none 
                 py-3.5 sm:py-3 max-h-[200px] leading-relaxed
                 scrollbar-none font-medium transition-all duration-200
-                relative z-10
+                relative z-10 pr-8 sm:pr-10
               "
               rows={1}
             />
