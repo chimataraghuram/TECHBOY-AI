@@ -219,12 +219,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`
                 glass-circle-btn text-white/90 hover:text-white
-                w-11 h-11 sm:w-10 sm:h-10
+                w-11 h-11 sm:w-10 sm:h-10 transition-all duration-200 hover:scale-[1.05]
                 ${isMenuOpen ? 'border-amber-glow shadow-[0_0_15px_rgba(255,154,60,0.4)]' : ''}
               `}
               title="Add attachment"
             >
-              <Plus size={22} className={`transition-transform duration-300 ${isMenuOpen ? 'rotate-45' : ''}`} />
+              <Plus size={22} className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-45' : ''}`} />
             </button>
 
             {/* Dropdown Menu */}
@@ -235,10 +235,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                     <button
                       key={idx}
                       type="button"
-                      className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all group"
+                      className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <span className="text-amber-glow/70 group-hover:text-amber-glow transition-colors">
+                      <span className="text-amber-glow/70 group-hover:text-amber-glow transition-colors duration-200">
                         {option.icon}
                       </span>
                       <span>{option.label}</span>
@@ -262,12 +262,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                 w-full bg-transparent text-white placeholder:text-white/40
                 text-[16px] sm:text-[17px] resize-none focus:outline-none 
                 py-3.5 sm:py-3 max-h-[200px] leading-relaxed
-                scrollbar-none font-medium
+                scrollbar-none font-medium transition-all duration-200
               "
               rows={1}
             />
             {input.length === 0 && !disabled && !isListening && (
-              <Sparkles size={16} className="absolute right-0 text-amber-glow/20 pointer-events-none hidden sm:block" />
+              <Sparkles size={16} className="absolute right-0 text-amber-glow/20 pointer-events-none hidden sm:block animate-pulse" />
             )}
             {isListening && (
               <div className="absolute right-0 flex gap-0.5 pb-1">
@@ -282,10 +282,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           <div className="flex items-center gap-1.5 sm:gap-3 pb-1.5 sm:pb-2">
             {/* Camera Button */}
             <label
-              className="glass-circle-btn w-11 h-11 sm:w-10 sm:h-10 text-white/90 hover:text-white cursor-pointer group"
+              className="glass-circle-btn w-11 h-11 sm:w-10 sm:h-10 text-white/90 hover:text-white cursor-pointer group transition-all duration-200 hover:scale-[1.05]"
               title="Take Photo"
             >
-              <Camera size={20} />
+              <Camera size={20} className="transition-transform duration-200 group-hover:scale-[1.1]" />
               <input
                 ref={fileInputRef}
                 type="file"
@@ -301,25 +301,25 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               type="button"
               onClick={toggleListening}
               className={`
-                glass-circle-btn w-11 h-11 sm:w-10 sm:h-10 transition-all duration-300
+                glass-circle-btn w-11 h-11 sm:w-10 sm:h-10 transition-all duration-200 hover:scale-[1.05]
                 ${isListening
-                  ? 'bg-rose-500/20 border-rose-500 text-rose-400 shadow-[0_0_15px_rgba(255,77,109,0.4)] animate-pulse'
+                  ? 'bg-rose-500/20 border-rose-500 text-rose-400 shadow-[0_0_20px_rgba(255,77,109,0.6)] animate-pulse'
                   : 'text-white/90 hover:text-white'
                 }
               `}
               title={isListening ? "Stop Listening" : "Voice Input"}
             >
-              <Mic size={20} />
+              <Mic size={20} className={isListening ? 'animate-pulse' : ''} />
             </button>
 
             <button
               type="submit"
               disabled={!input.trim() || disabled}
               className={`
-                glass-circle-btn shadow-xl w-11 h-11 sm:w-10 sm:h-10
+                glass-circle-btn shadow-xl w-11 h-11 sm:w-10 sm:h-10 transition-all duration-200
                 ${input.trim() && !disabled
-                  ? 'jelly-btn text-white !border-none'
-                  : 'text-gray-600 cursor-not-allowed'
+                  ? 'jelly-btn text-white !border-none hover:scale-[1.08] active:scale-[0.95]'
+                  : 'text-white/20 border-white/5 cursor-not-allowed opacity-40 shadow-none'
                 }
               `}
             >
