@@ -211,10 +211,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </div>
         )}
 
-        <div className="flex items-end gap-1.5 sm:gap-4 p-2 sm:p-4">
+        <div className="flex items-center gap-2 sm:gap-4 p-2 sm:p-4">
 
           {/* Plus Button & Dropdown */}
-          <div className="flex items-center pb-2 relative" ref={menuRef}>
+          <div className="flex-shrink-0 relative" ref={menuRef}>
             <button
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -262,7 +262,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </div>
 
           {/* Text Area with Highlight Backdrop */}
-          <div className="flex-1 relative flex items-center min-h-[54px] sm:min-h-[48px] px-1 sm:px-0">
+          <div className="flex-grow relative flex items-center min-h-[54px] sm:min-h-[48px]">
             {/* Decoration Layer */}
             <div
               className="
@@ -308,7 +308,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </div>
 
           {/* Action Group 2 */}
-          <div className="flex items-center gap-1.5 sm:gap-3 pb-1.5 sm:pb-2">
+          <div className="flex-shrink-0 flex items-center gap-1.5 sm:gap-3">
             {/* Camera Button */}
             <label
               className="glass-circle-btn w-11 h-11 sm:w-10 sm:h-10 text-white/90 hover:text-white cursor-pointer group transition-all duration-200 hover:scale-[1.05]"
