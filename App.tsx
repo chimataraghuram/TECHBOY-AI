@@ -215,41 +215,41 @@ const App: React.FC = () => {
         {/* Header Bar - Floating Modular Elements */}
         <header className="sticky top-0 z-30 px-4 sm:px-6 h-auto sm:h-20 flex items-center justify-between mx-2 sm:mx-4 my-2 sm:my-2 rounded-xl sm:rounded-2xl transition-all duration-300 border-none bg-transparent shadow-none">
 
-          {/* Left: Hamburger (Smaller Glass Capsule) */}
+          {/* Left: Sidebar Toggle Capsule */}
           <div className="z-10 flex items-center">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="group relative flex items-center justify-center text-white liquid-glass rounded-xl w-7 h-7 sm:w-11 sm:h-11 transition-all hover:scale-110 active:scale-95 shadow-[0_0_20px_rgba(255,154,60,0.1)] sm:liquid-glass-none sm:shadow-none sm:bg-transparent sm:backdrop-blur-none sm:border-none"
+              className="group relative flex items-center justify-center text-white liquid-glass rounded-xl w-7 h-7 sm:w-12 sm:h-12 transition-all hover:scale-110 active:scale-95 shadow-[0_0_20px_rgba(255,154,60,0.15)]"
             >
               <div className="absolute inset-0 rounded-xl border border-white/10 ring-1 ring-amber-glow/10"></div>
               <PanelLeft size={16} className="sm:hidden relative z-10" />
-              <PanelLeft size={24} className="hidden sm:block" />
+              <PanelLeft size={24} className="hidden sm:block relative z-10" />
             </button>
-            <div className="hidden sm:flex items-center gap-2.5 ml-4">
+            <div className="hidden lg:flex items-center gap-2.5 ml-4">
               <Sparkles size={20} className="text-amber-glow animate-float" />
             </div>
           </div>
 
-          {/* Center: Title (Thinner Glass Pill) */}
-          <div className="absolute left-1/2 -translate-x-1/2 sm:relative sm:left-0 sm:translate-x-0 sm:flex-1 sm:flex sm:justify-start sm:ml-4 overflow-hidden z-0">
-            <div className="liquid-glass px-3.5 py-1.5 sm:px-0 sm:py-0 sm:bg-transparent sm:backdrop-blur-none sm:border-none sm:shadow-none rounded-xl flex items-center shadow-[0_0_15px_rgba(255,154,60,0.15)]">
-              <p className="text-[13px] sm:text-[16px] font-black whitespace-nowrap tracking-[0.1em] sm:tracking-[0.15em] bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent uppercase leading-none text-center">
+          {/* Center: Title Capsule */}
+          <div className="absolute left-1/2 -translate-x-1/2 z-0">
+            <div className="liquid-glass px-3.5 py-1.5 sm:px-8 sm:py-3 rounded-xl sm:rounded-2xl flex items-center shadow-[0_0_20px_rgba(255,154,60,0.2)] border-white/10">
+              <p className="text-[13px] sm:text-[18px] font-black whitespace-nowrap tracking-[0.12em] bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent uppercase leading-none text-center">
                 {PORTFOLIO_OWNER}
               </p>
             </div>
           </div>
 
-          {/* Right: Avatar (Larger Glowing Glass) */}
+          {/* Right: Avatar Capsule */}
           <div className="z-10 flex items-center justify-end">
             <div className={`
               relative group p-1 transition-all duration-300 active:scale-95
-              ${isSidebarOpen ? '' : 'liquid-glass rounded-full shadow-[0_0_25px_rgba(255,154,60,0.25)] border-white/20 sm:bg-transparent sm:backdrop-blur-none sm:border-none sm:shadow-none'}
+              liquid-glass rounded-full shadow-[0_0_25px_rgba(255,154,60,0.3)] border-white/20
             `}>
-              {/* Outer Glow - Mobile Optimized */}
+              {/* Outer Glow */}
               <div className="absolute -inset-1 sm:-inset-4 bg-amber-glow/20 sm:bg-amber-glow/25 rounded-full blur-md sm:blur-2xl group-hover:bg-amber-glow/50 transition-all duration-700 animate-pulse-slow"></div>
 
               {/* Main Avatar Container */}
-              <div className="relative w-10 h-10 sm:w-16 sm:h-16 rounded-full liquid-glass border sm:border-2 border-white/20 p-1 sm:p-1 flex items-center justify-center shadow-inner overflow-hidden transition-transform duration-500 group-hover:scale-110">
+              <div className="relative w-10 h-10 sm:w-16 sm:h-16 rounded-full liquid-glass border sm:border-2 border-white/20 p-1 sm:p-1.5 flex items-center justify-center shadow-inner overflow-hidden transition-transform duration-500 group-hover:scale-110">
                 <img
                   src={`${import.meta.env.BASE_URL}logo.jpg`}
                   alt="Logo"
