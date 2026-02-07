@@ -276,7 +276,7 @@ const App: React.FC = () => {
         </header>
 
         {/* Messages Feed - Scrolled Area */}
-        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-5 sm:px-10 py-5 sm:py-8 space-y-4 sm:space-y-6 scroll-smooth pb-32 sm:pb-32">
+        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-4 sm:px-10 py-4 sm:py-8 space-y-4 sm:space-y-6 scroll-smooth pb-32 sm:pb-32">
           {messages.map((msg, idx) => (
             <ChatMessage
               key={msg.id}
