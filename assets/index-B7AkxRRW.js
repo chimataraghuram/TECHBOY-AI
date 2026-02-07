@@ -266,8 +266,8 @@ Ask me about coding, general topics, or my projects!`;var vm;(function(l){l.STRI
                     fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 lg:hidden
                     ${l?"opacity-100 pointer-events-auto":"opacity-0 pointer-events-none"}
                 `,onClick:u}),w.jsx("aside",{className:`
-                fixed inset-y-0 left-0 z-50 h-full sidebar-glass overflow-hidden will-change-[transform,width]
-                transition-all duration-300 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]
+                fixed inset-y-0 left-0 z-50 h-full sidebar-glass overflow-hidden will-change-[width,transform]
+                transition-[width,transform] duration-300 ease-out
                 lg:relative lg:z-auto border-r border-white/5
                 ${l?"translate-x-0 w-[280px]":"-translate-x-full lg:translate-x-0 lg:w-[70px]"}
             `,children:w.jsxs("div",{className:`flex flex-col h-full ${l?"p-6":"p-2 py-6 items-center"}`,children:[w.jsxs("div",{className:`flex items-center ${l?"justify-between mb-10 w-full":"flex-col gap-4 mb-8"}`,children:[l?w.jsxs("div",{className:"flex flex-col",children:[w.jsx("h1",{className:"text-xl font-bold bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent",children:"TECHBOY AI"}),w.jsxs("div",{className:"flex items-center gap-1.5 mt-0.5",children:[w.jsx(pp,{size:8,className:"fill-emerald-500 text-emerald-500 animate-pulse-slow"}),w.jsx("span",{className:"text-[10px] text-white/90 font-bold uppercase tracking-widest",children:"Neural Sync"})]})]}):w.jsx("div",{className:"w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 shadow-lg",children:w.jsx(pp,{size:10,className:"fill-emerald-500 text-emerald-500 animate-pulse-slow"})}),w.jsx("button",{onClick:u,className:`
