@@ -24,6 +24,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const [mentionPos, setMentionPos] = useState({ start: 0, end: 0 });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const mentionRef = useRef<HTMLDivElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
@@ -42,6 +43,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
       onSend(finalMessage);
       setInput('');
       setMentions([]);
+      setIsMenuOpen(false);
       // Revoke previews to avoid memory leaks
       selectedFiles.forEach(f => URL.revokeObjectURL(f.preview));
       setSelectedFiles([]);
@@ -119,7 +121,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   // Handle click outside to close menu and mentions
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      const isOutsideMenu = menuRef.current && !menuRef.current.contains(event.target as Node);
+      const isOutsideDropdown = !dropdownRef.current || !dropdownRef.current.contains(event.target as Node);
+
+      if (isOutsideMenu && isOutsideDropdown) {
         setIsMenuOpen(false);
       }
       if (mentionRef.current && !mentionRef.current.contains(event.target as Node)) {
@@ -250,6 +255,42 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           </div>
         )}
 
+        {/* Upload Dropdown Menu */}
+        {isMenuOpen && (
+          <div
+            ref={dropdownRef}
+            className="absolute bottom-[70px] left-[16px] w-[280px] sm:w-64 liquid-glass rounded-2xl overflow-hidden z-[60] animate-fade-in origin-bottom-left shadow-2xl"
+          >
+            <div className="p-1.5 flex flex-col gap-1">
+              {menuOptions.map((option, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  className="w-full flex items-center gap-3 px-3 py-3 sm:py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group active:scale-[0.98]"
+                  onClick={() => {
+                    if (option.label === 'Upload Photo') handleFileClick('photo');
+                    else if (option.label === 'Upload Video') handleFileClick('video');
+                    else if (option.label === 'Upload File') handleFileClick('file');
+                    else if (option.value) {
+                      const pos = textareaRef.current?.selectionStart ?? input.length;
+                      setMentionPos({ start: pos, end: pos });
+                      setTimeout(() => {
+                        insertMention(option.value!);
+                      }, 0);
+                    }
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <span className="w-8 h-8 rounded-lg bg-amber-glow/5 flex items-center justify-center text-amber-glow/70 group-hover:text-amber-glow group-hover:bg-amber-glow/10 transition-all duration-200">
+                    {option.icon}
+                  </span>
+                  <span className="truncate font-medium">{option.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="flex items-center gap-2 sm:gap-4 p-2 sm:p-4">
 
           {/* Plus Button & Dropdown */}
@@ -267,40 +308,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               <Plus size={22} className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-45' : ''}`} />
             </button>
 
-            {/* Dropdown Menu */}
-            {isMenuOpen && (
-              <div
-                className="absolute bottom-full left-0 mb-4 w-[280px] sm:w-64 liquid-glass rounded-2xl overflow-hidden z-50 animate-fade-in origin-bottom-left shadow-2xl"
-              >
-                <div className="p-1.5 flex flex-col gap-1">
-                  {menuOptions.map((option, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      className="w-full flex items-center gap-3 px-3 py-3 sm:py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group active:scale-[0.98]"
-                      onClick={() => {
-                        if (option.label === 'Upload Photo') handleFileClick('photo');
-                        else if (option.label === 'Upload Video') handleFileClick('video');
-                        else if (option.label === 'Upload File') handleFileClick('file');
-                        else if (option.value) {
-                          const pos = textareaRef.current?.selectionStart ?? input.length;
-                          setMentionPos({ start: pos, end: pos });
-                          setTimeout(() => {
-                            insertMention(option.value!);
-                          }, 0);
-                        }
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      <span className="w-8 h-8 rounded-lg bg-amber-glow/5 flex items-center justify-center text-amber-glow/70 group-hover:text-amber-glow group-hover:bg-amber-glow/10 transition-all duration-200">
-                        {option.icon}
-                      </span>
-                      <span className="truncate font-medium">{option.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Dropdown Menu Moved to Form Root */}
           </div>
 
           {/* Input Area with Separate Chips */}
@@ -344,6 +352,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
+              onFocus={() => setIsMenuOpen(false)}
               disabled={disabled}
               placeholder={(!input.trim() && mentions.length === 0 && !isListening) ? "Ask anything..." : isListening ? "Listening..." : ""}
               className="
