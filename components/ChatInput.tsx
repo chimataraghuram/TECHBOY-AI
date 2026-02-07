@@ -6,12 +6,22 @@ interface ChatInputProps {
   disabled: boolean;
 }
 
+// Add SpeechRecognition types for TS
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
+
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const [input, setInput] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const recognitionRef = useRef<any>(null);
 
   const handleSubmit = (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -54,6 +64,49 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
     };
   }, [isMenuOpen]);
 
+  // Web Speech API Setup
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = true;
+      recognitionRef.current.interimResults = true;
+
+      recognitionRef.current.onresult = (event: any) => {
+        const transcript = Array.from(event.results)
+          .map((result: any) => result[0])
+          .map((result: any) => result.transcript)
+          .join('');
+
+        setInput(transcript);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+      };
+    }
+  }, []);
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      alert("Voice recognition is not supported in your browser.");
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
+
   const menuOptions = [
     { icon: <Image size={18} />, label: 'Upload Photo' },
     { icon: <Film size={18} />, label: 'Upload Video' },
@@ -64,7 +117,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
     const file = e.target.files?.[0];
     if (file) {
       console.log('Camera file selected:', file.name);
-      // Here you would typically handle the file upload or preview
     }
   };
 
@@ -120,7 +172,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={disabled}
-              placeholder="Ask anything..."
+              placeholder={isListening ? "Listening..." : "Ask anything..."}
               className="
                 w-full bg-transparent text-white placeholder:text-white/40
                 text-[16px] sm:text-[17px] resize-none focus:outline-none 
@@ -129,8 +181,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               "
               rows={1}
             />
-            {input.length === 0 && !disabled && (
+            {input.length === 0 && !disabled && !isListening && (
               <Sparkles size={16} className="absolute right-0 text-amber-glow/20 pointer-events-none hidden sm:block" />
+            )}
+            {isListening && (
+              <div className="absolute right-0 flex gap-0.5 pb-1">
+                <div className="w-1 h-3 bg-amber-glow rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                <div className="w-1 h-4 bg-amber-glow rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                <div className="w-1 h-3 bg-amber-glow rounded-full animate-bounce"></div>
+              </div>
             )}
           </div>
 
@@ -152,13 +211,22 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               />
             </label>
 
+            {/* Voice Input Button */}
             <button
               type="button"
-              className="hidden sm:flex glass-circle-btn text-white/90 hover:text-white"
-              title="Voice Input"
+              onClick={toggleListening}
+              className={`
+                glass-circle-btn transition-all duration-300
+                ${isListening
+                  ? 'bg-rose-500/20 border-rose-500 text-rose-400 shadow-[0_0_15px_rgba(255,77,109,0.4)] animate-pulse'
+                  : 'text-white/90 hover:text-white'
+                }
+              `}
+              title={isListening ? "Stop Listening" : "Voice Input"}
             >
               <Mic size={18} />
             </button>
+
             <button
               type="submit"
               disabled={!input.trim() || disabled}
