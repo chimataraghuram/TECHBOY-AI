@@ -24,6 +24,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const mentionRef = useRef<HTMLDivElement>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
+  const docInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
 
@@ -177,8 +180,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const handleCameraChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      console.log('Camera file selected:', file.name);
+      console.log('Camera/File selected:', file.name);
     }
+  };
+
+  const handleFileClick = (type: 'photo' | 'video' | 'file') => {
+    if (type === 'photo') photoInputRef.current?.click();
+    else if (type === 'video') videoInputRef.current?.click();
+    else if (type === 'file') docInputRef.current?.click();
+    setIsMenuOpen(false);
   };
 
   return (
@@ -249,7 +259,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                       type="button"
                       className="w-full flex items-center gap-3 px-3 py-3 sm:py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group active:scale-[0.98]"
                       onClick={() => {
-                        if (option.value) {
+                        if (option.label === 'Upload Photo') handleFileClick('photo');
+                        else if (option.label === 'Upload Video') handleFileClick('video');
+                        else if (option.label === 'Upload File') handleFileClick('file');
+                        else if (option.value) {
                           const pos = textareaRef.current?.selectionStart ?? input.length;
                           setMentionPos({ start: pos, end: pos });
                           setTimeout(() => {
@@ -365,6 +378,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
             </button>
           </div>
         </div>
+
+        {/* Hidden File Inputs */}
+        <input type="file" ref={photoInputRef} accept="image/*" className="hidden" onChange={handleCameraChange} />
+        <input type="file" ref={videoInputRef} accept="video/*" className="hidden" onChange={handleCameraChange} />
+        <input type="file" ref={docInputRef} className="hidden" onChange={handleCameraChange} />
 
         {/* Footer Hint (Desktop Only) */}
         <div className="hidden sm:flex justify-center pb-2 opacity-60 hover:opacity-100 transition-opacity">
