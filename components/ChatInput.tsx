@@ -239,10 +239,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                       className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group"
                       onClick={() => {
                         if (option.value) {
-                          // Capture current cursor position before state changes
                           const pos = textareaRef.current?.selectionStart ?? input.length;
                           setMentionPos({ start: pos, end: pos });
-                          // Use a slight delay to ensure setMentionPos is processed
                           setTimeout(() => {
                             insertMention(option.value!);
                           }, 0);
@@ -261,8 +259,24 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
             )}
           </div>
 
-          {/* Text Area */}
+          {/* Text Area with Highlight Backdrop */}
           <div className="flex-1 relative flex items-center min-h-[54px] sm:min-h-[48px] px-1 sm:px-0">
+            {/* Decoration Layer */}
+            <div
+              className="
+                absolute inset-0 pointer-events-none whitespace-pre-wrap break-words
+                text-[16px] sm:text-[17px] py-3.5 sm:py-3 leading-relaxed
+                font-medium opacity-100 pl-[1px]
+              "
+              aria-hidden="true"
+            >
+              {input.split(/(@Ask About Raghu \(Developer\))/g).map((part, i) =>
+                part === "@Ask About Raghu (Developer)"
+                  ? <span key={i} className="mention-tag">{part}</span>
+                  : <span key={i} className="text-transparent">{part}</span>
+              )}
+            </div>
+
             <textarea
               ref={textareaRef}
               value={input}
@@ -275,6 +289,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                 text-[16px] sm:text-[17px] resize-none focus:outline-none 
                 py-3.5 sm:py-3 max-h-[200px] leading-relaxed
                 scrollbar-none font-medium transition-all duration-200
+                relative z-10
               "
               rows={1}
             />
