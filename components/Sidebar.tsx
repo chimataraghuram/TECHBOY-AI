@@ -104,10 +104,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 
             {/* 🔮 SIDEBAR */}
             <aside className={`
-                fixed inset-y-0 left-0 z-50 h-full sidebar-glass overflow-hidden will-change-transform
-                transition-transform duration-300 ease-in-out
-                w-[280px]
-                ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+                fixed inset-y-0 left-0 z-50 h-full sidebar-glass overflow-hidden will-change-[transform,width,opacity]
+                transition-all duration-300 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]
+                lg:relative lg:z-auto
+                ${isOpen
+                    ? 'translate-x-0 opacity-100 w-[280px]'
+                    : '-translate-x-full lg:translate-x-0 lg:w-0 lg:opacity-0'}
             `}>
                 <div className="flex flex-col h-full p-6">
 
