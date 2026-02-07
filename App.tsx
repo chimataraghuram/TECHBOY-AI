@@ -56,8 +56,10 @@ const App: React.FC = () => {
     if (activeSession) {
       setMessages(activeSession.messages);
     }
-
-    // Unified initial state: Sidebar starts closed for all devices
+    // Set initial sidebar state: Open on desktop, closed on mobile/tablet
+    if (window.innerWidth >= 1024) {
+      setIsSidebarOpen(true);
+    }
   }, []);
 
   // Sync scroll
