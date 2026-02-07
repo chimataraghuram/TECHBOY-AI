@@ -210,32 +210,37 @@ const App: React.FC = () => {
       <main className="relative flex flex-col flex-1 min-w-0">
 
         {/* Header Bar - Floating Glass */}
-        <header className="sticky top-0 z-30 liquid-glass border-b border-white/5 px-6 h-20 flex items-center justify-between mx-4 my-2 rounded-2xl shadow-2xl">
-          <div className="flex items-center gap-4">
+        <header className="sticky top-0 z-30 liquid-glass border-b border-white/5 px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between mx-2 sm:mx-4 my-1 sm:my-2 rounded-xl sm:rounded-2xl shadow-2xl">
+
+          {/* Left: Hamburger */}
+          <div className="flex items-center w-1/4 sm:w-auto">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="text-white glass-circle-btn transition-transform hover:scale-110 active:scale-95"
+              className="text-white glass-circle-btn transition-transform hover:scale-110 active:scale-95 w-9 h-9 sm:w-11 sm:h-11"
             >
-              <PanelLeft size={24} />
+              <PanelLeft size={20} className="sm:hidden" />
+              <PanelLeft size={24} className="hidden sm:block" />
             </button>
-            <div className="flex items-center gap-2.5">
+            <div className="hidden sm:flex items-center gap-2.5 ml-4">
               <Sparkles size={20} className="text-amber-glow animate-float" />
             </div>
           </div>
 
-          <div className="flex items-center gap-4 sm:gap-6">
-            <div className="text-right">
-              <p className="text-[14px] sm:text-[16px] font-black whitespace-nowrap tracking-[0.15em] bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent uppercase leading-none">{PORTFOLIO_OWNER}</p>
-            </div>
+          {/* Center: Title (Mobile Only Centering) */}
+          <div className="flex-1 flex justify-center sm:justify-start sm:ml-4 overflow-hidden">
+            <p className="text-[13px] sm:text-[16px] font-black whitespace-nowrap tracking-[0.1em] sm:tracking-[0.15em] bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent uppercase leading-none text-center">
+              {PORTFOLIO_OWNER}
+            </p>
+          </div>
+
+          {/* Right: Avatar */}
+          <div className="flex items-center justify-end w-1/4 sm:w-auto gap-4 sm:gap-6">
             <div className="relative group">
               {/* Refined Outer Glow */}
-              <div className="absolute -inset-4 bg-amber-glow/25 rounded-full blur-2xl group-hover:bg-amber-glow/50 transition-all duration-700 animate-pulse-slow"></div>
-
-              {/* Glass Badge Ring */}
-              <div className="absolute -inset-1 rounded-full border border-white/10 glass-pill opacity-40"></div>
+              <div className="absolute -inset-2 sm:-inset-4 bg-amber-glow/20 sm:bg-amber-glow/25 rounded-full blur-xl sm:blur-2xl group-hover:bg-amber-glow/50 transition-all duration-700 animate-pulse-slow"></div>
 
               {/* Main Logo Container */}
-              <div className="relative w-16 h-16 rounded-full liquid-glass border-2 border-white/20 p-1 flex items-center justify-center shadow-[0_0_30px_rgba(255,154,60,0.3)] overflow-hidden transition-transform duration-500 group-hover:scale-110">
+              <div className="relative w-10 h-10 sm:w-16 sm:h-16 rounded-full liquid-glass border sm:border-2 border-white/20 p-0.5 sm:p-1 flex items-center justify-center shadow-[0_0_20px_rgba(255,154,60,0.2)] sm:shadow-[0_0_30px_rgba(255,154,60,0.3)] overflow-hidden transition-transform duration-500 group-hover:scale-110">
                 <img
                   src={`${import.meta.env.BASE_URL}logo.jpg`}
                   alt="Logo"
