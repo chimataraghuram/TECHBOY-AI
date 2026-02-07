@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Plus, Image, Film, FileText, Mic, Sparkles, Camera, AtSign, User } from 'lucide-react';
+import { Send, Plus, Image, Film, FileText, Mic, Sparkles, Camera, AtSign, User, X } from 'lucide-react';
 
 interface ChatInputProps {
   onSend: (text: string) => void;
@@ -76,6 +76,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
         textareaRef.current.setSelectionRange(newPos, newPos);
       }
     }, 0);
+  };
+
+  const removeMention = (mentionValue: string) => {
+    setInput(input.replace(mentionValue, '').replace(/\s\s+/g, ' ').trim());
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -268,13 +272,25 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               className="
                 absolute inset-0 pointer-events-none whitespace-pre-wrap break-words
                 text-[16px] sm:text-[17px] py-3.5 sm:py-3 leading-relaxed
-                font-medium opacity-100 pl-[1px] pr-8 sm:pr-10
+                font-medium opacity-100 pl-[1px] pr-8 sm:pr-10 z-20
               "
               aria-hidden="true"
             >
               {input.split(/(@Ask About Raghu \(Developer\))/g).map((part, i) =>
                 part === "@Ask About Raghu (Developer)"
-                  ? <span key={i} className="mention-tag">{part}</span>
+                  ? (
+                    <span key={i} className="mention-tag group/tag">
+                      {part}
+                      <button
+                        type="button"
+                        onClick={() => removeMention(part)}
+                        className="ml-1.5 p-0.5 rounded-full hover:bg-white/20 transition-colors pointer-events-auto inline-flex items-center justify-center active:scale-95"
+                        title="Remove mention"
+                      >
+                        <X size={12} className="text-amber-glow" />
+                      </button>
+                    </span>
+                  )
                   : <span key={i} className="text-transparent">{part}</span>
               )}
             </div>
