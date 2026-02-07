@@ -252,7 +252,7 @@ const App: React.FC = () => {
         </header>
 
         {/* Messages Feed */}
-        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-4 sm:px-10 pt-20 pb-52 space-y-6 scroll-smooth">
+        <div className="flex-1 overflow-y-auto w-full max-w-4xl mx-auto px-4 sm:px-10 pt-6 sm:pt-20 pb-32 sm:pb-52 space-y-4 sm:space-y-6 scroll-smooth">
           {messages.map((msg, idx) => (
             <ChatMessage
               key={msg.id}
@@ -268,7 +268,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Floating Detached Input */}
-        <div className="fixed bottom-0 left-0 right-0 lg:left-[280px] px-6 sm:px-16 pb-10 pointer-events-none z-50">
+        <div className="fixed bottom-0 left-0 right-0 lg:left-[280px] px-4 sm:px-16 pb-6 sm:pb-10 pointer-events-none z-50">
           <div className="max-w-3xl mx-auto pointer-events-auto">
             <ChatInput onSend={handleSendMessage} disabled={isLoading} />
           </div>
