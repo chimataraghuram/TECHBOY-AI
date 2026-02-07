@@ -239,10 +239,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                       className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group"
                       onClick={() => {
                         if (option.value) {
-                          // Find current cursor position or just append
-                          const pos = textareaRef.current?.selectionStart || input.length;
+                          // Capture current cursor position before state changes
+                          const pos = textareaRef.current?.selectionStart ?? input.length;
                           setMentionPos({ start: pos, end: pos });
-                          insertMention(option.value);
+                          // Use a slight delay to ensure setMentionPos is processed
+                          setTimeout(() => {
+                            insertMention(option.value!);
+                          }, 0);
                         }
                         setIsMenuOpen(false);
                       }}
