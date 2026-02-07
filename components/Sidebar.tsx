@@ -120,7 +120,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <div className="flex flex-col w-full">
 
                         {/* 1. Header Row (Toggle + Brand) */}
-                        <div className={`flex w-full mb-8 ${isOpen ? 'items-center justify-between flex-row-reverse' : 'flex-col items-center gap-6'}`}>
+                        <div className={`flex w-full mb-6 ${isOpen ? 'items-center justify-between flex-row-reverse' : 'flex-col items-center gap-6'}`}>
 
                             {/* Toggle Button - Adaptive Behavior */}
                             <button
@@ -134,6 +134,11 @@ const Sidebar: React.FC<SidebarProps> = ({
                             >
                                 <PanelLeft size={24} className={!isOpen ? "rotate-180" : ""} />
                             </button>
+
+                            {/* Divider after Toggle (Mini Mode Only) */}
+                            {!isOpen && (
+                                <div className="w-8 h-[1px] bg-white/10"></div>
+                            )}
 
                             {/* Branding */}
                             {isOpen ? (
@@ -236,8 +241,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                                 ))}
                             </div>
                         ) : (
-                            <div className="w-full flex flex-col items-center gap-3">
-                                <div className="w-8 h-[1px] bg-white/10 mb-2"></div>
+                            <div className="w-full flex flex-col items-center gap-6">
                                 {/* Mini Session Indicators */}
                                 {sessions.slice(0, 5).map((session) => (
                                     <button
