@@ -90,23 +90,13 @@ const Sidebar: React.FC<SidebarProps> = ({
         setActiveMenuId(activeMenuId === sessionId ? null : sessionId);
     };
 
-    useEffect(() => {
-        if (isOpen && window.innerWidth < 1024) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, [isOpen]);
 
     return (
         <>
-            {/* 📱 Mobile Sidebar Overlay */}
+            {/* 🌑 Sidebar Overlay */}
             <div
                 className={`
-                    fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden transition-opacity duration-300
+                    fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300
                     ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
                 `}
                 onClick={onClose}
@@ -116,7 +106,6 @@ const Sidebar: React.FC<SidebarProps> = ({
             <aside className={`
                 fixed inset-y-0 left-0 z-50 h-full sidebar-glass overflow-hidden will-change-transform
                 transition-transform duration-300 ease-in-out
-                lg:relative lg:z-auto lg:translate-x-0
                 w-[280px]
                 ${isOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
@@ -134,10 +123,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                             </div>
                         </div>
 
-                        {/* 📱 Mobile Toggle Button */}
+                        {/* Toggle Button */}
                         <button
                             onClick={onClose}
-                            className="lg:hidden p-2 text-white/70 hover:text-white transition-colors"
+                            className="p-2 text-white/70 hover:text-white transition-colors"
                         >
                             <PanelLeft size={24} />
                         </button>
