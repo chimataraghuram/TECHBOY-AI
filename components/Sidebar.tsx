@@ -90,22 +90,35 @@ const Sidebar: React.FC<SidebarProps> = ({
         setActiveMenuId(activeMenuId === sessionId ? null : sessionId);
     };
 
+    useEffect(() => {
+        if (isOpen && window.innerWidth < 1024) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isOpen]);
+
     return (
         <>
             {/* 📱 Mobile Sidebar Overlay */}
-            {isOpen && (
-                <div
-                    className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm lg:hidden animate-fade-in"
-                    onClick={onClose}
-                />
-            )}
+            <div
+                className={`
+                    fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden transition-opacity duration-300
+                    ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
+                `}
+                onClick={onClose}
+            />
 
             {/* 🔮 SIDEBAR */}
             <aside className={`
-                fixed inset-y-0 left-0 z-50 h-full sidebar-glass transition-all duration-500 ease-in-out overflow-hidden
+                fixed inset-y-0 left-0 z-50 h-full sidebar-glass overflow-hidden will-change-transform
+                transition-transform duration-300 ease-in-out
                 lg:relative lg:z-auto lg:translate-x-0
                 w-[280px]
-                ${isOpen ? 'translate-x-0 lg:w-[280px]' : '-translate-x-full lg:w-0'}
+                ${isOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
                 <div className="flex flex-col h-full p-6">
 
