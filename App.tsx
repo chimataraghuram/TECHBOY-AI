@@ -207,7 +207,10 @@ const App: React.FC = () => {
       />
 
       {/* 🗨️ MAIN CHAT */}
-      <main className="relative flex flex-col flex-1 h-screen min-w-0 overflow-hidden">
+      <main className={`
+        relative flex flex-col flex-1 h-screen min-w-0 overflow-hidden transition-all duration-300 ease-in-out will-change-[transform,filter]
+        ${isSidebarOpen ? 'scale-[0.98] blur-[3px] lg:scale-100 lg:blur-0' : 'scale-100 blur-0'}
+      `}>
 
         {/* Header Bar - Floating Glass */}
         <header className="sticky top-0 z-30 liquid-glass border-b border-white/5 px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between mx-2 sm:mx-4 my-1 sm:my-2 rounded-xl sm:rounded-2xl shadow-2xl">
