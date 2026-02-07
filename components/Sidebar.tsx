@@ -141,34 +141,39 @@ const Sidebar: React.FC<SidebarProps> = ({
                             )}
 
                             {/* Branding */}
-                            {isOpen ? (
-                                <div className="flex flex-col">
-                                    <h1 className="text-xl font-bold bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent">
-                                        TECHBOY AI
-                                    </h1>
-                                    <div className="flex items-center gap-1.5 mt-0.5">
-                                        <Circle size={8} className="fill-emerald-500 text-emerald-500 animate-pulse-slow" />
-                                        <span className="text-[10px] text-white/90 font-bold uppercase tracking-widest">Neural Sync</span>
+                            <div className={`flex flex-col transition-all duration-300 ${isOpen ? 'items-start pl-1' : 'items-center'}`}>
+                                {isOpen ? (
+                                    <>
+                                        <h1 className="text-xl font-bold bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent whitespace-nowrap overflow-hidden animate-fade-in">
+                                            TECHBOY AI
+                                        </h1>
+                                        <div className="flex items-center gap-1.5 mt-0.5 animate-fade-in" style={{ animationDelay: '100ms' }}>
+                                            <Circle size={8} className="fill-emerald-500 text-emerald-500 animate-pulse-slow" />
+                                            <span className="text-[10px] text-white/90 font-bold uppercase tracking-widest whitespace-nowrap">Neural Sync</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 shadow-lg">
+                                        <Circle size={10} className="fill-emerald-500 text-emerald-500 animate-pulse-slow" />
                                     </div>
-                                </div>
-                            ) : (
-                                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 shadow-lg">
-                                    <Circle size={10} className="fill-emerald-500 text-emerald-500 animate-pulse-slow" />
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
 
                         {/* 2. New Chat Button */}
                         <button
                             onClick={onNewChat}
                             className={`
-                                jelly-btn flex items-center justify-center gap-2 rounded-full text-white font-bold shadow-lg transition-all duration-300 relative group
-                                ${isOpen ? 'w-full py-4 mb-4' : 'w-10 h-10 p-0 mb-4 bg-amber-glow/20 !border-amber-glow/40'}
+                                jelly-btn flex items-center gap-2 rounded-full text-white font-bold shadow-lg transition-all duration-300 relative group overflow-hidden
+                                ${isOpen ? 'w-full py-4 mb-4 pl-6 justify-start' : 'w-10 h-10 p-0 mb-4 justify-center'}
                             `}
                             title={isOpen ? "" : "New Chat"}
                         >
-                            <MessageSquarePlus size={isOpen ? 20 : 18} />
-                            {isOpen && <span>New Chat</span>}
+                            <MessageSquarePlus size={isOpen ? 20 : 18} className="flex-shrink-0" />
+
+                            <span className={`whitespace-nowrap transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 translate-x-0 w-auto' : 'opacity-0 -translate-x-4 w-0 absolute'}`}>
+                                New Chat
+                            </span>
 
                             {!isOpen && (
                                 <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-2 py-1 bg-black/80 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
@@ -272,31 +277,31 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </div>
 
                     {/* BOTTOM SECTION: Portfolio */}
-                    <div className={`pt-6 border-t border-white/5 ${isOpen ? '' : 'flex justify-center'}`}>
-                        {isOpen ? (
-                            <a
-                                href={PORTFOLIO_URL}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full glass-pill flex items-center gap-3 px-5 py-3.5 rounded-full text-white/90 hover:text-amber-light text-xs font-medium"
-                            >
-                                <ExternalLink size={16} />
-                                <span>Enter Portfolio</span>
-                            </a>
-                        ) : (
-                            <a
-                                href={PORTFOLIO_URL}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-10 h-10 flex items-center justify-center rounded-full text-white/50 hover:text-amber-light hover:bg-white/5 transition-colors relative group"
-                                title=""
-                            >
-                                <ExternalLink size={18} />
+                    <div className={`pt-6 border-t border-white/5 transition-all duration-300 ${isOpen ? 'w-full' : 'flex justify-center'}`}>
+                        <a
+                            href={PORTFOLIO_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`
+                                flex items-center rounded-full transition-all duration-300 relative group overflow-hidden
+                                ${isOpen
+                                    ? 'w-full glass-pill gap-3 px-5 py-3.5 text-white/90 hover:text-amber-light text-xs font-medium justify-start pl-6'
+                                    : 'w-10 h-10 flex items-center justify-center text-white/50 hover:text-amber-light hover:bg-white/5'}
+                            `}
+                        >
+                            <ExternalLink size={isOpen ? 16 : 18} className="flex-shrink-0" />
+
+                            <span className={`whitespace-nowrap transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 translate-x-0 w-auto' : 'opacity-0 -translate-x-4 w-0 absolute'}`}>
+                                Enter Portfolio
+                            </span>
+
+                            {/* Tooltip */}
+                            {!isOpen && (
                                 <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-2 py-1 bg-black/80 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
                                     Enter Portfolio
                                 </div>
-                            </a>
-                        )}
+                            )}
+                        </a>
                     </div>
                 </div>
             </aside >
