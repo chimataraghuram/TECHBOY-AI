@@ -104,8 +104,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
             {/* 🔮 SIDEBAR */}
             <aside className={`
-                fixed inset-y-0 left-0 z-50 h-full sidebar-glass overflow-hidden will-change-[transform,width]
-                transition-all duration-300 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)]
+                fixed inset-y-0 left-0 z-50 h-full sidebar-glass overflow-hidden will-change-[width,transform]
+                transition-[width,transform] duration-300 ease-out
                 lg:relative lg:z-auto border-r border-white/5
                 ${isOpen
                     ? 'translate-x-0 w-[280px]'
