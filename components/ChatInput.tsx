@@ -68,7 +68,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
     if (!mentions.includes(mentionValue)) {
       setMentions(prev => [...prev, mentionValue]);
     }
-    
+
     // Remove the '@' or partial mention text that triggered this
     const before = input.slice(0, mentionPos.start);
     const after = input.slice(mentionPos.end);
@@ -296,7 +296,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
               disabled={disabled}
               placeholder={(!input.trim() && mentions.length === 0 && !isListening) ? "Ask anything..." : isListening ? "Listening..." : ""}
               className="
-                flex-grow bg-transparent text-white caret-white placeholder:text-white/40
+                flex-1 bg-transparent border-none outline-none text-white caret-white placeholder:text-white/40
                 text-[16px] sm:text-[17px] resize-none focus:outline-none 
                 py-3.5 sm:py-3 max-h-[200px] leading-relaxed
                 scrollbar-none font-medium transition-all duration-200
