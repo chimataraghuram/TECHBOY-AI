@@ -230,13 +230,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
 
             {/* Dropdown Menu */}
             {isMenuOpen && (
-              <div className="absolute bottom-full left-0 mb-4 w-48 liquid-glass rounded-2xl overflow-hidden z-50 animate-fade-in origin-bottom-left">
+              <div
+                className="absolute bottom-full left-0 mb-4 w-[280px] sm:w-64 liquid-glass rounded-2xl overflow-hidden z-50 animate-fade-in origin-bottom-left shadow-2xl"
+              >
                 <div className="p-1.5 flex flex-col gap-1">
                   {menuOptions.map((option, idx) => (
                     <button
                       key={idx}
                       type="button"
-                      className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group"
+                      className="w-full flex items-center gap-3 px-3 py-3 sm:py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group active:scale-[0.98]"
                       onClick={() => {
                         if (option.value) {
                           const pos = textareaRef.current?.selectionStart ?? input.length;
@@ -248,10 +250,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                         setIsMenuOpen(false);
                       }}
                     >
-                      <span className="text-amber-glow/70 group-hover:text-amber-glow transition-colors duration-200">
+                      <span className="w-8 h-8 rounded-lg bg-amber-glow/5 flex items-center justify-center text-amber-glow/70 group-hover:text-amber-glow group-hover:bg-amber-glow/10 transition-all duration-200">
                         {option.icon}
                       </span>
-                      <span>{option.label}</span>
+                      <span className="truncate font-medium">{option.label}</span>
                     </button>
                   ))}
                 </div>
