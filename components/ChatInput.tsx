@@ -26,8 +26,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const mentionRef = useRef<HTMLDivElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
-  const docInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
 
   const MENTION_OPTIONS = [
@@ -187,7 +187,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   const handleFileClick = (type: 'photo' | 'video' | 'file') => {
     if (type === 'photo') photoInputRef.current?.click();
     else if (type === 'video') videoInputRef.current?.click();
-    else if (type === 'file') docInputRef.current?.click();
+    else if (type === 'file') fileInputRef.current?.click();
     setIsMenuOpen(false);
   };
 
@@ -338,7 +338,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
             >
               <Camera size={20} className="transition-transform duration-200 group-hover:scale-[1.1]" />
               <input
-                ref={fileInputRef}
+                ref={cameraInputRef}
                 type="file"
                 accept="image/*"
                 capture="environment"
@@ -382,7 +382,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
         {/* Hidden File Inputs */}
         <input type="file" ref={photoInputRef} accept="image/*" className="hidden" onChange={handleCameraChange} />
         <input type="file" ref={videoInputRef} accept="video/*" className="hidden" onChange={handleCameraChange} />
-        <input type="file" ref={docInputRef} className="hidden" onChange={handleCameraChange} />
+        <input type="file" ref={fileInputRef} className="hidden" onChange={handleCameraChange} />
 
         {/* Footer Hint (Desktop Only) */}
         <div className="hidden sm:flex justify-center pb-2 opacity-60 hover:opacity-100 transition-opacity">
