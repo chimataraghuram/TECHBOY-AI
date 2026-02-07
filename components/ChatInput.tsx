@@ -159,6 +159,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
   };
 
   const menuOptions = [
+    { icon: <User size={18} />, label: '@Ask About Raghu (Developer)', value: '@Ask About Raghu (Developer)' },
     { icon: <Image size={18} />, label: 'Upload Photo' },
     { icon: <Film size={18} />, label: 'Upload Video' },
     { icon: <FileText size={18} />, label: 'Upload File' },
@@ -236,7 +237,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
                       key={idx}
                       type="button"
                       className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group"
-                      onClick={() => setIsMenuOpen(false)}
+                      onClick={() => {
+                        if (option.value) {
+                          // Find current cursor position or just append
+                          const pos = textareaRef.current?.selectionStart || input.length;
+                          setMentionPos({ start: pos, end: pos });
+                          insertMention(option.value);
+                        }
+                        setIsMenuOpen(false);
+                      }}
                     >
                       <span className="text-amber-glow/70 group-hover:text-amber-glow transition-colors duration-200">
                         {option.icon}
