@@ -212,14 +212,14 @@ const App: React.FC = () => {
         ${isSidebarOpen ? 'scale-[0.98] blur-[3px] lg:scale-100 lg:blur-0' : 'scale-100 blur-0'}
       `}>
 
-        {/* Header Bar - Floating Glass */}
-        <header className="sticky top-0 z-30 liquid-glass border-b border-white/5 px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between mx-2 sm:mx-4 my-1 sm:my-2 rounded-xl sm:rounded-2xl shadow-2xl">
+        {/* Header Bar - Modular Glass for Mobile, Unified for Desktop */}
+        <header className="sticky top-0 z-30 px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between mx-0 sm:mx-4 my-1 sm:my-2 rounded-xl sm:rounded-2xl transition-all duration-300">
 
-          {/* Left: Hamburger */}
-          <div className="flex items-center w-1/4 sm:w-auto">
+          {/* Left: Hamburger (Detached Glass on Mobile) */}
+          <div className="flex items-center">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="text-white glass-circle-btn transition-transform hover:scale-110 active:scale-95 w-9 h-9 sm:w-11 sm:h-11"
+              className="text-white liquid-glass rounded-xl sm:rounded-full p-2.5 sm:p-0 sm:glass-circle-btn transition-all hover:scale-110 active:scale-95 shadow-[0_0_15px_rgba(255,154,60,0.15)] sm:shadow-none"
             >
               <PanelLeft size={20} className="sm:hidden" />
               <PanelLeft size={24} className="hidden sm:block" />
@@ -229,21 +229,23 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Center: Title (Mobile Only Centering) */}
-          <div className="flex-1 flex justify-center sm:justify-start sm:ml-4 overflow-hidden">
-            <p className="text-[13px] sm:text-[16px] font-black whitespace-nowrap tracking-[0.1em] sm:tracking-[0.15em] bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent uppercase leading-none text-center">
-              {PORTFOLIO_OWNER}
-            </p>
+          {/* Center: Title (Detached Glass on Mobile) */}
+          <div className="flex-1 flex justify-center mx-2 sm:mx-0 sm:justify-start sm:ml-4 overflow-hidden">
+            <div className="liquid-glass px-4 py-2 sm:px-0 sm:py-0 sm:bg-transparent sm:backdrop-blur-none sm:border-none sm:shadow-none rounded-xl flex items-center shadow-[0_0_15px_rgba(255,154,60,0.15)]">
+              <p className="text-[13px] sm:text-[16px] font-black whitespace-nowrap tracking-[0.1em] sm:tracking-[0.15em] bg-gradient-to-r from-amber-light to-rose-glow bg-clip-text text-transparent uppercase leading-none text-center">
+                {PORTFOLIO_OWNER}
+              </p>
+            </div>
           </div>
 
-          {/* Right: Avatar */}
-          <div className="flex items-center justify-end w-1/4 sm:w-auto gap-4 sm:gap-6">
-            <div className="relative group">
+          {/* Right: Avatar (Detached Glass on Mobile) */}
+          <div className="flex items-center justify-end gap-4 sm:gap-6">
+            <div className={`relative group p-1 sm:p-0 rounded-full transition-all ${isSidebarOpen ? '' : 'liquid-glass sm:bg-transparent sm:backdrop-blur-none sm:border-none sm:shadow-none shadow-[0_0_15px_rgba(255,154,60,0.15)]'}`}>
               {/* Refined Outer Glow */}
-              <div className="absolute -inset-2 sm:-inset-4 bg-amber-glow/20 sm:bg-amber-glow/25 rounded-full blur-xl sm:blur-2xl group-hover:bg-amber-glow/50 transition-all duration-700 animate-pulse-slow"></div>
+              <div className="absolute -inset-1 sm:-inset-4 bg-amber-glow/20 sm:bg-amber-glow/25 rounded-full blur-lg sm:blur-2xl group-hover:bg-amber-glow/50 transition-all duration-700 animate-pulse-slow"></div>
 
               {/* Main Logo Container */}
-              <div className="relative w-10 h-10 sm:w-16 sm:h-16 rounded-full liquid-glass border sm:border-2 border-white/20 p-0.5 sm:p-1 flex items-center justify-center shadow-[0_0_20px_rgba(255,154,60,0.2)] sm:shadow-[0_0_30px_rgba(255,154,60,0.3)] overflow-hidden transition-transform duration-500 group-hover:scale-110">
+              <div className="relative w-9 h-9 sm:w-16 sm:h-16 rounded-full liquid-glass border sm:border-2 border-white/20 p-0.5 sm:p-1 flex items-center justify-center shadow-[0_0_15px_rgba(255,154,60,0.15)] sm:shadow-[0_0_30px_rgba(255,154,60,0.3)] overflow-hidden transition-transform duration-500 group-hover:scale-110">
                 <img
                   src={`${import.meta.env.BASE_URL}logo.jpg`}
                   alt="Logo"
