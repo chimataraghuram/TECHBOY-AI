@@ -1,4 +1,4 @@
-# 🤖 TECHBOY AI - Portfolio Assistant
+# 🤖 TECHBOY AI - Personal AI Chatbot & Portfolio Assistant
 
 ![License](https://img.shields.io/badge/License-Proprietary-red.svg)
 ![Status](https://img.shields.io/badge/Status-Active-success.svg)
@@ -14,7 +14,24 @@
 
 ## 📋 About
 
-**TECHBOY AI** is an intelligent portfolio assistant designed and developed entirely by **Chimata Raghu Ram**. This application showcases advanced UI/UX design with a warm sunset glassmorphism aesthetic, featuring floating glass panels, jelly-effect buttons, and radial ambient glows.
+**TECHBOY AI** is an intelligent, interactive Personal AI Chatbot and Portfolio Assistant designed and developed entirely by **Chimata Raghu Ram**. Rather than a traditional static portfolio page, this project is a **Conversational AI Web Application** that acts as a virtual representative. 
+
+At its core, it integrates **Google's Gemini 2.0 Flash API** to generate real-time, streaming responses, enabling users to naturally inquire about the author's skills, experience, and projects. 
+
+Beyond its functional AI capabilities, TECHBOY AI serves as a masterclass in modern frontend engineering. It is a fully responsive React application that implements a complex, custom-built **Sunset Glassmorphism** design system. This includes layered backdrop blurs, fluid jelly interactions, and dynamic radial ambient lighting—all engineered without relying on pre-built component UI libraries. This project is a testament to the intersection of artificial intelligence and premium UI/UX design.
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+  <!-- Place your actual screenshots in the public/ folder or adjust the src paths below -->
+  <img src="public/screenshot_1.png" alt="Splash Screen" width="48%" style="border-radius: 10px; margin: 1%; box-shadow: 0 4px 8px rgba(0,0,0,0.5);" />
+  <img src="public/screenshot_2.png" alt="Chat UI Display" width="48%" style="border-radius: 10px; margin: 1%; box-shadow: 0 4px 8px rgba(0,0,0,0.5);" />
+  <br/>
+  <img src="public/screenshot_3.png" alt="Mobile Dashboard View" width="48%" style="border-radius: 10px; margin: 1%; box-shadow: 0 4px 8px rgba(0,0,0,0.5);" />
+  <img src="public/screenshot_4.png" alt="Interactive Jelly UI" width="48%" style="border-radius: 10px; margin: 1%; box-shadow: 0 4px 8px rgba(0,0,0,0.5);" />
+</div>
 
 ### ✨ Key Features
 
@@ -61,56 +78,6 @@ This project demonstrates mastery of:
 
 ---
 
-## 🚀 Local Development
-
-### Prerequisites
-
-```bash
-Node.js >= 18.0.0
-npm or yarn
-```
-
-### Installation
-
-```bash
-# Clone the repository (viewing only - see LICENSE)
-git clone https://github.com/chimataraghuram/TECHBOY-AI.git
-
-# Navigate to project directory
-cd TECHBOY-AI
-
-# Install dependencies
-npm install
-
-# Create .env.local file
-echo "VITE_GEMINI_API_KEY=your_api_key_here" > .env.local
-
-# Start development server
-npm run dev
-```
-
-The application will be available at `http://localhost:3000`
-
-### Build for Production
-
-```bash
-npm run build
-npm run preview
-```
-
----
-
-## 🔑 API Configuration
-
-This application requires a Google Gemini API key. Obtain one from:
-**[Google AI Studio](https://makersuite.google.com/app/apikey)**
-
-Add it to `.env.local`:
-```env
-VITE_GEMINI_API_KEY=your_api_key_here
-```
-
----
 
 ## 📁 Project Structure
 
