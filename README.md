@@ -25,12 +25,11 @@ Beyond its functional AI capabilities, TECHBOY AI serves as a masterclass in mod
 ## 📸 Screenshots
 
 <div align="center">
-  <!-- Place your actual screenshots in the public/ folder or adjust the src paths below -->
   <img src="public/screenshot_1.png" alt="Splash Screen" width="48%" style="border-radius: 10px; margin: 1%; box-shadow: 0 4px 8px rgba(0,0,0,0.5);" />
   <img src="public/screenshot_2.png" alt="Chat UI Display" width="48%" style="border-radius: 10px; margin: 1%; box-shadow: 0 4px 8px rgba(0,0,0,0.5);" />
   <br/>
   <img src="public/screenshot_3.png" alt="Mobile Dashboard View" width="48%" style="border-radius: 10px; margin: 1%; box-shadow: 0 4px 8px rgba(0,0,0,0.5);" />
-  <img src="public/screenshot_4.png" alt="Interactive Jelly UI" width="48%" style="border-radius: 10px; margin: 1%; box-shadow: 0 4px 8px rgba(0,0,0,0.5);" />
+  <img src="public/screenshot_4.png" alt="Interactive UI" width="48%" style="border-radius: 10px; margin: 1%; box-shadow: 0 4px 8px rgba(0,0,0,0.5);" />
 </div>
 
 ### ✨ Key Features
