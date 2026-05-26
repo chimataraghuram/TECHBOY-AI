@@ -80,7 +80,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                     <div className="mt-12 flex justify-center opacity-0 animate-[fadeIn_0.5s_ease-out_1s_forwards]">
                         <div className="glass-pill px-6 py-2.5 bg-white/5 border border-white/10 backdrop-blur-md">
                             <p className="text-white/50 font-medium text-[9px] sm:text-[10px] tracking-[0.3em] uppercase whitespace-nowrap">
-                                cooked by Raghu with ❤️
+                                COOKED BY RAGHU❤️
                             </p>
                         </div>
                     </div>

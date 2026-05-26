@@ -339,8 +339,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                                     : 'w-10 h-10 flex items-center justify-center jelly-btn text-white'}
                             `}
                         >
-                            <ExternalLink size={isOpen ? 16 : 18} className="flex-shrink-0" />
-
                             <span className={`whitespace-nowrap transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 translate-x-0 w-auto' : 'opacity-0 -translate-x-4 w-0 absolute'}`}>
                                 Developer Portfolio
                             </span>

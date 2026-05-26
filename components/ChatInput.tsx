@@ -456,7 +456,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
         {/* Footer Hint (Desktop Only) */}
         <div className="hidden sm:flex justify-center pb-2 opacity-60 hover:opacity-100 transition-opacity">
           <p className="text-[10px] text-amber-light font-bold tracking-widest uppercase">
-            COOKED BY RAGHU WITH ❤️
+            COOKED BY RAGHU❤️
           </p>
         </div>
       </form>
