@@ -333,10 +333,10 @@ const Sidebar: React.FC<SidebarProps> = ({
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`
-                                flex items-center rounded-full transition-all duration-300 relative group overflow-hidden
+                                flex items-center rounded-full transition-all duration-300 relative group overflow-hidden shadow-lg hover:shadow-[0_0_25px_rgba(255,154,60,0.6)]
                                 ${isOpen
-                                    ? 'w-full glass-pill gap-3 px-5 py-3.5 text-white/90 hover:text-amber-light text-xs font-medium justify-start pl-6'
-                                    : 'w-10 h-10 flex items-center justify-center text-white/50 hover:text-amber-light hover:bg-white/5'}
+                                    ? 'w-full jelly-btn gap-3 px-5 py-4 text-white font-bold text-sm justify-start pl-6'
+                                    : 'w-10 h-10 flex items-center justify-center jelly-btn text-white'}
                             `}
                         >
                             <ExternalLink size={isOpen ? 16 : 18} className="flex-shrink-0" />
