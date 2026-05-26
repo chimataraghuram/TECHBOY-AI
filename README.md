@@ -39,9 +39,10 @@ Frontend (React + Vite) → FastAPI Backend → Agent Orchestrator → Gemini AP
 
 ### Frontend
 1. Make sure `backend` is running on `http://localhost:8000`
-2. `npm install`
-3. `npm run dev`
+2. `cd frontend`
+3. `npm install`
+4. `npm run dev`
 
 ## Deployment
 The backend is ready to be deployed via Docker to AWS EC2, Render, or any VPS.
-The frontend can be deployed statically to Vercel or GitHub Pages (just configure the VITE_API_URL environment variable during build).
+The frontend can be deployed statically to Vercel or GitHub Pages (configure the VITE_API_URL environment variable during build, and set the root directory to `frontend/`).
