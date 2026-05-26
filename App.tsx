@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Message, Role, ChatSession } from './types';
+import { Message, Role, ChatSession, User } from './types';
 import { INITIAL_GREETING, PORTFOLIO_OWNER } from './constants';
 import { sendMessageStream } from './services/aiService';
 import {
@@ -16,11 +16,14 @@ import ChatMessage from './components/ChatMessage';
 import TypingIndicator from './components/TypingIndicator';
 import ChatInput from './components/ChatInput';
 import Sidebar from './components/Sidebar';
+import AuthModal from './components/AuthModal';
+import { getToken, removeToken, apiRequest } from './services/apiClient';
 import {
   Menu,
   Sparkles,
   Settings,
-  PanelLeft
+  PanelLeft,
+  LogOut
 } from 'lucide-react';
 import SplashScreen from './components/SplashScreen';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,36 +35,72 @@ const App: React.FC = () => {
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setTokenState] = useState<string | null>(getToken());
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Initialize data
+  // Initialize data and authenticate
   useEffect(() => {
-    // Load sessions
-    const loadedSessions = getSessions();
-    let activeId = getActiveSessionId();
-    let activeSession = activeId ? loadedSessions.find(s => s.id === activeId) : null;
-
-    if (!activeSession) {
-      if (loadedSessions.length === 0) {
-        activeSession = createNewSession();
-        loadedSessions.unshift(activeSession);
-      } else {
-        activeSession = loadedSessions[0];
+    const initApp = async () => {
+      if (token) {
+        try {
+          const userData = await apiRequest('/auth/me');
+          setUser(userData);
+          await loadSessionsData();
+        } catch (error) {
+          console.error('Auth verification failed:', error);
+          handleLogout();
+        }
       }
-      activeId = activeSession.id;
-      setActiveSessionId(activeId);
-    }
+    };
+    initApp();
 
-    setSessions(loadedSessions);
-    setCurrentSessionId(activeId);
-    if (activeSession) {
-      setMessages(activeSession.messages);
-    }
-    // Set initial sidebar state: Open on desktop, closed on mobile/tablet
     if (window.innerWidth >= 1024) {
       setIsSidebarOpen(true);
     }
-  }, []);
+  }, [token]);
+
+  const loadSessionsData = async () => {
+    try {
+      // In a real implementation this would fetch from backend
+      // const loadedSessions = await getSessions();
+      const loadedSessions = await getSessions();
+      let activeId = getActiveSessionId();
+      let activeSession = activeId ? loadedSessions.find(s => s.id === activeId) : null;
+
+      if (!activeSession) {
+        if (loadedSessions.length === 0) {
+          activeSession = await createNewSession();
+          loadedSessions.unshift(activeSession);
+        } else {
+          activeSession = loadedSessions[0];
+        }
+        activeId = activeSession.id;
+        setActiveSessionId(activeId!);
+      }
+
+      setSessions(loadedSessions);
+      setCurrentSessionId(activeId);
+      if (activeSession) {
+        setMessages(activeSession.messages);
+      }
+    } catch (err) {
+      console.error('Failed to load sessions', err);
+    }
+  };
+
+  const handleAuthSuccess = async () => {
+    setTokenState(getToken());
+  };
+
+  const handleLogout = () => {
+    removeToken();
+    setTokenState(null);
+    setUser(null);
+    setSessions([]);
+    setMessages([]);
+    setCurrentSessionId(null);
+  };
 
   // Sync scroll
   useEffect(() => {
@@ -78,7 +117,7 @@ const App: React.FC = () => {
     return () => clearTimeout(timeoutId);
   }, [messages, isLoading]);
 
-  const updateSessionMessages = (sessionId: string, newMessages: Message[]) => {
+  const updateSessionMessages = async (sessionId: string, newMessages: Message[]) => {
     setSessions(prev => {
       const idx = prev.findIndex(s => s.id === sessionId);
       if (idx === -1) return prev;
@@ -90,6 +129,7 @@ const App: React.FC = () => {
         let title = newMessages[1].text.substring(0, 30);
         if (newMessages[1].text.length > 30) title += "...";
         updatedSession.title = title;
+        updateSessionTitle(sessionId, title); // backend call
       }
 
       saveSession(updatedSession);
@@ -113,7 +153,7 @@ const App: React.FC = () => {
 
     const botMsgId = (Date.now() + 1).toString();
     try {
-      const stream = sendMessageStream(text);
+      const stream = sendMessageStream(text, currentSessionId);
       let fullText = "";
       let isFirstChunk = true;
       let currentMessages = updatedMessages; // Track locally for saving
@@ -136,7 +176,7 @@ const App: React.FC = () => {
       const errorMsg: Message = {
         id: (Date.now() + 2).toString(),
         role: Role.MODEL,
-        text: "Neural link interrupted. Please check your network.",
+        text: "Neural link interrupted. Please check your network or token.",
         timestamp: new Date(),
         isError: true,
       };
@@ -148,8 +188,8 @@ const App: React.FC = () => {
     }
   };
 
-  const handleNewChat = () => {
-    const newSession = createNewSession();
+  const handleNewChat = async () => {
+    const newSession = await createNewSession();
     setSessions(prev => [newSession, ...prev]);
     setCurrentSessionId(newSession.id);
     setActiveSessionId(newSession.id);
@@ -165,8 +205,8 @@ const App: React.FC = () => {
     }
   };
 
-  const handleDeleteSession = (sessionId: string) => {
-    deleteSession(sessionId);
+  const handleDeleteSession = async (sessionId: string) => {
+    await deleteSession(sessionId);
     const updatedSessions = sessions.filter(s => s.id !== sessionId);
     setSessions(updatedSessions);
 
@@ -192,18 +232,25 @@ const App: React.FC = () => {
     };
   }, [isSidebarOpen]);
 
-  const handleRenameSession = (sessionId: string, newTitle: string) => {
-    renameSession(sessionId, newTitle);
+  const handleRenameSession = async (sessionId: string, newTitle: string) => {
+    await renameSession(sessionId, newTitle);
     setSessions(prev => prev.map(s => s.id === sessionId ? { ...s, title: newTitle } : s));
   };
 
   return (
     <div className="relative flex h-[100dvh] w-full bg-transparent overflow-hidden selection:bg-rose-glow/30 selection:text-white">
 
-      {/* 🎬 Splash Screen Overlay - Always mounted but toggled by state */}
+      {/* 🎬 Splash Screen Overlay */}
       <AnimatePresence>
         {showSplash && (
           <SplashScreen onComplete={() => setShowSplash(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* 🔐 Auth Modal Overlay */}
+      <AnimatePresence>
+        {!token && !showSplash && (
+          <AuthModal onAuthSuccess={handleAuthSuccess} />
         )}
       </AnimatePresence>
 
@@ -233,7 +280,7 @@ const App: React.FC = () => {
         {/* Header Bar - Floating Modular Elements */}
         <header className="sticky top-0 z-30 px-4 sm:px-6 h-auto sm:h-20 flex items-center justify-between mx-2 sm:mx-4 my-2 sm:my-2 rounded-xl sm:rounded-2xl transition-all duration-300 border-none bg-transparent shadow-none">
 
-          {/* Left: Sidebar Toggle Capsule (Visible only when sidebar is closed on mobile) */}
+          {/* Left: Sidebar Toggle Capsule */}
           <div className={`z-10 flex items-center transition-opacity duration-200 lg:hidden ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <button
               onClick={() => setIsSidebarOpen(true)}
@@ -257,8 +304,17 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: Avatar Capsule */}
-          <div className="z-10 flex items-center justify-end">
+          {/* Right: Avatar Capsule & Logout */}
+          <div className="z-10 flex items-center justify-end gap-3">
+            {token && (
+               <button
+                 onClick={handleLogout}
+                 className="group relative flex items-center justify-center text-white/70 hover:text-white liquid-glass rounded-xl w-7 h-7 sm:w-10 sm:h-10 transition-all hover:scale-110 active:scale-95"
+                 title="Logout"
+               >
+                 <LogOut size={16} className="relative z-10" />
+               </button>
+            )}
             <div className={`
               relative group p-1 transition-all duration-300 active:scale-95
               liquid-glass rounded-full shadow-[0_0_25px_rgba(255,154,60,0.3)] border-white/20

@@ -1,118 +1,132 @@
-import { GoogleGenerativeAI, ChatSession, GenerativeModel } from "@google/generative-ai";
-import { PORTFOLIO_CONTEXT } from "../constants";
-
 // ============================================================================
-// 🔑 SECURITY CONFIGURATION
-// Your API key was leaked on GitHub and disabled by Google.
-// To fix this:
-// 1. Generate a NEW key at https://aistudio.google.com/app/apikey
-// 2. Create a file named '.env' in the root directory
-// 3. Add this line: VITE_GEMINI_API_KEY=your_new_key_here
-// ============================================================================
-// (Hardcoded key removed for security)
+// 🤖 AI SERVICE - Backend-Powered Streaming Chat
+// All AI inference is now handled by the FastAPI backend.
+// This service streams responses via SSE / ReadableStream.
 // ============================================================================
 
-let genAI: GoogleGenerativeAI | null = null;
-let currentModel: GenerativeModel | null = null;
-let chatSession: ChatSession | null = null;
-let currentModelName: string = "gemini-2.0-flash";
+import { API_URL, getToken } from './apiClient';
 
-const AVAILABLE_MODELS = [
-  "gemini-2.0-flash",
-  "gemini-2.5-flash",
-  "gemini-1.5-flash",
-  "gemini-flash-latest"
-];
+/**
+ * Send a chat message to the backend and yield text chunks as they stream in.
+ *
+ * @param message  The user's message text
+ * @param sessionId  Optional session ID for conversation continuity
+ */
+export async function* sendMessageStream(
+  message: string,
+  sessionId: string | null = null,
+): AsyncGenerator<string> {
+  const token = getToken();
 
-const initializeAI = (modelName: string = "gemini-2.0-flash") => {
-  // Use Environment Variable for security
-  // FALLBACK SECTION: Injected via split-method to prevent immediate automated closure
-  const _a = "AIzaSyAWtg9e";
-  const _b = "grAfAc-3hGHGCNbRQkoqHApVzuI";
-  const activeKey = import.meta.env.VITE_GEMINI_API_KEY || (_a + _b);
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
 
-  if (!activeKey || activeKey === "your_new_api_key_here") {
-    console.error("AI Service Error: No API Key found.");
-    return;
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
-  if (!genAI) {
-    console.log("AI Service: Initializing Core...");
-    genAI = new GoogleGenerativeAI(activeKey);
+  const body: Record<string, unknown> = { message };
+  if (sessionId) {
+    body.session_id = sessionId;
   }
 
-  if (genAI) {
-    console.log(`AI Service: Deploying Neural Model -> ${modelName}`);
-    currentModelName = modelName;
-    currentModel = genAI.getGenerativeModel({
-      model: modelName,
-      systemInstruction: PORTFOLIO_CONTEXT
-    });
-  }
-};
-
-export const createChatSession = async (forceReset = false): Promise<ChatSession> => {
-  if (!currentModel || forceReset) {
-    initializeAI(currentModelName);
-  }
-
-  if (!currentModel) {
-    throw new Error("Neural Core Offline: Missing API Key Configuration.");
-  }
-
-  chatSession = currentModel.startChat({
-    history: [],
-    generationConfig: {
-      temperature: 0.8,
-      topP: 0.95,
-      topK: 40,
-    },
+  const response = await fetch(`${API_URL}/chat`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(body),
   });
 
-  return chatSession;
-};
+  if (response.status === 401) {
+    throw new Error('Session expired. Please log in again.');
+  }
 
-// ... remaining logic (sendMessageStream, etc.) remains same but using updated init
-export const sendMessageStream = async function* (text: string) {
-  const modelsToTry = [
-    currentModelName,
-    ...AVAILABLE_MODELS.filter(m => m !== currentModelName)
-  ];
-
-  let success = false;
-  let lastError: any;
-
-  for (const modelName of modelsToTry) {
+  if (!response.ok) {
+    let detail = `Chat request failed (${response.status})`;
     try {
-      if (modelName !== currentModelName || !chatSession) {
-        initializeAI(modelName);
-        await createChatSession(true);
-      }
+      const err = await response.json();
+      detail = err.detail || err.message || detail;
+    } catch { /* ignore */ }
+    throw new Error(detail);
+  }
 
-      if (!chatSession) throw new Error("No session");
+  // Determine if the response is streaming (SSE) or plain JSON
+  const contentType = response.headers.get('content-type') || '';
 
-      console.log(`AI Service: Connecting via ${modelName}...`);
-      const result = await chatSession.sendMessageStream(text);
+  if (
+    contentType.includes('text/event-stream') ||
+    contentType.includes('text/plain') ||
+    contentType.includes('application/octet-stream')
+  ) {
+    // ---------- Streaming path ----------
+    const reader = response.body?.getReader();
+    if (!reader) {
+      throw new Error('Response body is not readable');
+    }
 
-      for await (const chunk of result.stream) {
-        const chunkText = chunk.text();
-        if (chunkText) {
-          yield chunkText;
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+
+      // Process complete lines in the buffer
+      const lines = buffer.split('\n');
+      // Keep the last (potentially incomplete) line in the buffer
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+
+        // SSE format: "data: ..."
+        if (trimmed.startsWith('data: ')) {
+          const data = trimmed.slice(6);
+          if (data === '[DONE]') return;
+
+          // Try to parse as JSON (some backends send {text: "..."})
+          try {
+            const parsed = JSON.parse(data);
+            if (parsed.text) {
+              yield parsed.text;
+            } else if (parsed.content) {
+              yield parsed.content;
+            } else if (typeof parsed === 'string') {
+              yield parsed;
+            } else {
+              yield data;
+            }
+          } catch {
+            // Plain text chunk
+            yield data;
+          }
+        } else {
+          // Non-SSE streaming – yield line as-is
+          yield trimmed;
         }
       }
+    }
 
-      success = true;
-      break;
-
-    } catch (error: any) {
-      console.warn(`AI Service: Link lost with ${modelName}`, error);
-      lastError = error;
-      chatSession = null;
+    // Flush any remaining buffer content
+    if (buffer.trim()) {
+      const trimmed = buffer.trim();
+      if (trimmed.startsWith('data: ')) {
+        const data = trimmed.slice(6);
+        if (data !== '[DONE]') yield data;
+      } else {
+        yield trimmed;
+      }
+    }
+  } else {
+    // ---------- JSON fallback ----------
+    const json = await response.json();
+    const text =
+      json.response || json.text || json.content || json.message || '';
+    if (text) {
+      yield text;
     }
   }
-
-  if (!success) {
-    const errorMessage = lastError?.message || lastError?.toString() || "Connection timeout";
-    yield `I encountered an issue connecting to the AI neural network: ${errorMessage}. If you are the owner, please ensure your NEW API key is set in the .env file (the old one was leaked and disabled).`;
-  }
-};
+}
