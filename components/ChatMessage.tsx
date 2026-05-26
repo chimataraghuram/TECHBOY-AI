@@ -1,0 +1,113 @@
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import { Message, Role } from '../types';
+import { Sparkles, User, AlertCircle, Terminal } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+interface ChatMessageProps {
+  message: Message;
+  isLast?: boolean;
+  isLoading?: boolean;
+}
+
+const ChatMessage: React.FC<ChatMessageProps> = ({ message, isLast, isLoading }) => {
+  const isUser = message.role === Role.USER;
+  const isError = message.isError;
+  const baseUrl = import.meta.env.BASE_URL;
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, type: "spring", stiffness: 250, damping: 25 }}
+      className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} group`}
+    >
+      <div className={`flex w-full max-w-4xl gap-2.5 sm:gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'} items-start`}>
+
+        {/* Avatar */}
+        <div className="flex-shrink-0 mt-0.5 sm:mt-1 group-hover:scale-110 transition-transform duration-300">
+          <div className={`
+            w-8 h-8 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center
+            transition-all duration-300 border backdrop-blur-3xl shadow-2xl overflow-hidden
+            ${isUser
+              ? 'bg-rose-glow/20 border-rose-glow/40 shadow-[0_0_15px_rgba(255,77,109,0.15)]'
+              : isError
+                ? 'bg-red-500/30 border-red-500/50 text-red-100'
+                : 'bg-amber-glow/15 border-amber-glow/40 shadow-[0_0_25px_rgba(255,154,60,0.3)] ring-1 ring-white/10'
+            }
+          `}>
+            {isError ? (
+              <AlertCircle size={14} className="sm:w-5 sm:h-5" strokeWidth={2.5} />
+            ) : (
+              <img
+                src={`${baseUrl}${isUser ? 'user.jpg' : 'logo.jpg'}`}
+                alt={isUser ? "User" : "AI"}
+                className={`w-full h-full object-cover transition-all duration-500 ${!isUser ? 'brightness-125 contrast-110 saturate-[1.1]' : 'brightness-110'}`}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Message Content Component */}
+        <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} min-w-0 flex-1`}>
+          <div className={`
+            chat-bubble px-4 py-3 sm:px-6 sm:py-5 transition-all duration-500
+            max-w-[88%] md:max-w-[75%] lg:max-w-[70%] text-left
+            ${isUser
+              ? 'user-bubble text-white'
+              : isError
+                ? 'bg-red-500/10 border border-red-500/40 text-red-50 shadow-inner'
+                : 'ai-bubble'
+            }
+          `}>
+            {isUser ? (
+              <p className="whitespace-pre-wrap break-words text-[15px] sm:text-[16px] leading-relaxed font-medium tracking-wide">
+                {message.text}
+              </p>
+            ) : (
+              <div className={`
+                prose prose-invert prose-sm sm:prose-base max-w-none break-words
+                prose-p:leading-relaxed prose-p:my-2 prose-p:text-white sm:prose-p:text-gray-100
+                prose-headings:text-amber-light prose-headings:font-bold prose-headings:mb-3
+                prose-a:text-amber-glow prose-a:underline decoration-amber-glow/30 hover:decoration-amber-glow transition-all
+                prose-strong:text-amber-glow prose-strong:font-black
+                prose-code:text-amber-light prose-code:bg-black/40 prose-code:px-1.5 prose-code:py-0.5
+                prose-code:rounded-lg prose-code:before:content-none prose-code:after:content-none
+                prose-pre:bg-black/60 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-xl prose-pre:shadow-2xl
+                ${isLoading ? 'after:content-["▋"] after:animate-pulse-slow after:ml-1 after:text-amber-glow' : ''}
+              `}>
+                <ReactMarkdown>{message.text}</ReactMarkdown>
+              </div>
+            )}
+          </div>
+
+          {/* Timestamp */}
+          <div className={`flex items-center gap-2 mt-2 px-1 opacity-60 hover:opacity-100 transition-opacity`}>
+            {isUser && (
+              <span className="text-[10px] sm:text-[11px] font-medium tracking-wider text-white">
+                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </span>
+            )}
+
+            {!isUser && !isError && (
+              <div className="flex items-center gap-1.5 text-[10px] text-amber-glow">
+                <Terminal size={10} />
+                <span className="uppercase tracking-wider font-bold">Neural Output</span>
+                <div className="w-1 h-1 rounded-full bg-amber-glow animate-pulse"></div>
+              </div>
+            )}
+
+            {!isUser && (
+              <span className="text-[10px] sm:text-[11px] font-medium tracking-wider text-white">
+                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </span>
+            )}
+          </div>
+        </div>
+
+      </div>
+    </motion.div>
+  );
+};
+
+export default ChatMessage;

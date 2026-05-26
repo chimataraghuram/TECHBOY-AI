@@ -1,0 +1,93 @@
+import React, { useRef, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+
+interface SplashScreenProps {
+    onComplete: () => void;
+}
+
+const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const baseUrl = import.meta.env.BASE_URL;
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.play().catch(error => {
+                console.error("Auto-play failed:", error);
+                setTimeout(onComplete, 3000);
+            });
+        }
+
+        const timeout = setTimeout(() => {
+            onComplete();
+        }, 10000);
+
+        return () => clearTimeout(timeout);
+    }, [onComplete]);
+
+    const handleVideoEndOrError = () => {
+        onComplete();
+    };
+
+    return (
+        <motion.div 
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, filter: "blur(10px)" }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="fixed inset-0 z-[9999] bg-wine-darker flex items-center justify-center overflow-hidden"
+        >
+            {/* Animated Background Orbs for the 'Logo' feel */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-amber-glow/20 rounded-full blur-[100px] animate-pulse"></div>
+
+            <div className="relative flex flex-col items-center">
+                {/* Logo Intro Container - Smaller on Mobile */}
+                <motion.div 
+                    initial={{ scale: 0.8, opacity: 0, y: 20 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    transition={{ duration: 1, type: "spring", bounce: 0.4 }}
+                    className="
+                        w-48 h-48 sm:w-80 sm:h-80 
+                        rounded-[40px] overflow-hidden 
+                        liquid-glass border-2 border-white/20 
+                        shadow-[0_0_50px_rgba(255,154,60,0.3)]
+                    "
+                >
+                    <video
+                        ref={videoRef}
+                        src={`${baseUrl}intro.mp4`}
+                        className="w-full h-full object-cover"
+                        onEnded={handleVideoEndOrError}
+                        onError={handleVideoEndOrError}
+                        muted
+                        autoPlay
+                        playsInline
+                        preload="auto"
+                    />
+                </motion.div>
+
+                {/* Subtext for premium feel */}
+                <div className="mt-8 text-center animate-pulse">
+                    <p className="text-amber-glow font-bold tracking-[0.4em] uppercase text-sm sm:text-lg">
+                        TECHBOY AI
+                    </p>
+
+                    <div className="mt-5 flex gap-1 justify-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-rose-glow animate-bounce [animation-delay:-0.3s]"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-amber-glow animate-bounce [animation-delay:-0.15s]"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-rose-glow animate-bounce"></div>
+                    </div>
+
+                    {/* Credit Badge at the Bottom (Marked Place) */}
+                    <div className="mt-12 flex justify-center opacity-0 animate-[fadeIn_0.5s_ease-out_1s_forwards]">
+                        <div className="glass-pill px-6 py-2.5 bg-white/5 border border-white/10 backdrop-blur-md">
+                            <p className="text-white/50 font-medium text-[9px] sm:text-[10px] tracking-[0.3em] uppercase whitespace-nowrap">
+                                cooked by Raghu with ❤️
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </motion.div>
+    );
+};
+
+export default SplashScreen;

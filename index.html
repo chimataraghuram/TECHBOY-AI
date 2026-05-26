@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <title>TECHBOY AI - Personal AI Chatbot & Portfolio Assistant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/jpeg" href="/TECHBOY-AI/logo.jpg" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          transitionProperty: {
+            'width': 'width',
+          },
+          colors: {
+            wine: {
+              black: '#0A0508',
+              darker: '#140A12',
+              dark: '#1F1217',
+              base: '#2D1B22',
+            },
+            amber: {
+              glow: '#FF9A3C',
+              light: '#FFB366',
+              dark: '#E8843A',
+            },
+            rose: {
+              glow: '#FF4D6D',
+              light: '#FF7A8F',
+              dark: '#E83D5F',
+            }
+          },
+          fontFamily: {
+            sans: ['Outfit', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'blob': 'blob 20s infinite ease-in-out',
+            'float': 'float 8s ease-in-out infinite',
+            'jelly': 'jelly 0.6s cubic-bezier(0.3, 1.2, 0.3, 1)',
+            'fade-in': 'fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+            'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+          },
+          keyframes: {
+            blob: {
+              '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+              '33%': { transform: 'translate(40px, -60px) scale(1.1)' },
+              '66%': { transform: 'translate(-30px, 40px) scale(0.95)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            jelly: {
+              '0%': { transform: 'scale(1, 1)' },
+              '30%': { transform: 'scale(1.05, 0.95)' },
+              '40%': { transform: 'scale(0.98, 1.02)' },
+              '100%': { transform: 'scale(1, 1)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(15px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            glowPulse: {
+              '0%, 100%': { borderColor: 'rgba(255, 154, 60, 0.3)', opacity: '0.8' },
+              '50%': { borderColor: 'rgba(255, 154, 60, 0.6)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-blur: 35px;
+      --glass-border: rgba(255, 154, 60, 0.2);
+      --amber-glow: rgba(255, 154, 60, 0.2);
+      --rose-glow: rgba(255, 77, 109, 0.35);
+    }
+
+    body {
+      background-color: #140A12;
+      color: #f5f5f5;
+      overflow: hidden;
+      font-family: 'Outfit', sans-serif;
+      position: relative;
+    }
+
+    /* Atmospheric Fog & Noise Overlays */
+    .noise-layer {
+      content: '';
+      position: fixed;
+      inset: 0;
+      /* SVG Noise Pattern */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 98;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(rgba(20, 10, 18, 0.4), rgba(20, 10, 18, 0.4));
+      opacity: 0.15;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .mist-layer {
+      position: fixed;
+      inset: 0;
+      background: url('https://www.transparenttextures.com/patterns/foggy-birds.png');
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 99;
+      animation: subtle-drift 60s linear infinite;
+    }
+
+    @keyframes subtle-drift {
+      from {
+        background-position: 0 0;
+      }
+
+      to {
+        background-position: 1000px 1000px;
+      }
+    }
+
+    /* Radial background glows - Enhanced Depth */
+    .bg-glow-amber {
+      position: fixed;
+      top: -15%;
+      left: -15%;
+      width: 90%;
+      height: 90%;
+      background: radial-gradient(circle at center, rgba(255, 154, 60, 0.18) 0%, transparent 70%);
+      filter: blur(120px);
+      z-index: -1;
+      animation: pulse-slow 15s infinite alternate;
+    }
+
+    .bg-glow-rose {
+      position: fixed;
+      bottom: -15%;
+      right: -15%;
+      width: 90%;
+      height: 90%;
+      background: radial-gradient(circle at center, rgba(255, 77, 109, 0.15) 0%, transparent 70%);
+      filter: blur(120px);
+      z-index: -1;
+      animation: pulse-slow 18s infinite alternate-reverse;
+    }
+
+    /* Glass System Controls */
+    .liquid-glass {
+      background: rgba(20, 10, 18, 0.6);
+      backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+      border: 1px solid var(--glass-border);
+      box-shadow:
+        0 50px 100px -20px rgba(0, 0, 0, 0.8),
+        inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    }
+
+    /* Sidebar Glass - Lighter & More Translucent */
+    .sidebar-glass {
+      background: rgba(10, 5, 8, 0.6);
+      backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      border-right: 1px solid var(--glass-border);
+      box-shadow:
+        inset -1px 0 0 rgba(255, 255, 255, 0.05),
+        inset 0 0 80px rgba(255, 154, 60, 0.1),
+        40px 0 120px rgba(0, 0, 0, 0.9);
+    }
+
+    /* Message Bubbles - Optimized for Glassmorphism */
+    .chat-bubble {
+      border-radius: 30px;
+      max-width: 80%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+    }
+
+    .ai-bubble {
+      background: rgba(30, 20, 30, 0.7);
+      border: 1px solid rgba(255, 154, 60, 0.3);
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(255, 154, 60, 0.15),
+        inset 0 0 20px rgba(255, 154, 60, 0.05);
+      color: #ffffff;
+    }
+
+    .user-bubble {
+      background: rgba(255, 77, 109, 0.15);
+      border: 1px solid rgba(255, 77, 109, 0.3);
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+
+    /* Global Button Micro-interactions */
+    button,
+    .clickable {
+      cursor: pointer;
+      transition: all 300ms ease;
+    }
+
+    /* Apply hover lift to all buttons unless overridden */
+    button:not(.no-lift):hover,
+    .glass-pill:hover,
+    .clickable:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.1);
+    }
+
+    /* Subtle press animation */
+    button:not(.no-lift):active,
+    .glass-pill:active,
+    .clickable:active {
+      transform: translateY(0) scale(0.98);
+      filter: brightness(0.95);
+    }
+
+    @keyframes subtle-glow {
+
+      0%,
+      100% {
+        box-shadow: 0 12px 30px rgba(255, 77, 109, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 12px 40px rgba(255, 154, 60, 0.6);
+      }
+    }
+
+    /* Jelly Button (Amber -> Rose) */
+    .jelly-btn {
+      background: linear-gradient(135deg, #FF9A3C, #FF4D6D);
+      transition: all 300ms ease;
+      box-shadow: 0 12px 30px rgba(255, 77, 109, 0.4);
+      border: none;
+      animation: subtle-glow 3s infinite ease-in-out;
+      color: #ffffff;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .jelly-btn:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 15px 35px rgba(255, 77, 109, 0.6);
+      filter: brightness(1.1);
+    }
+
+    /* Glass Pill Button - More Blur & Transparent */
+    .glass-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 154, 60, 0.2);
+      backdrop-filter: blur(25px);
+      transition: all 300ms ease;
+      border-radius: 9999px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .glass-pill:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 154, 60, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      color: #ffffff;
+    }
+
+    /* Floating Input Bar - Detached */
+    .floating-input-bar {
+      background: rgba(40, 30, 40, 0.8);
+      backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow:
+        0 60px 120px rgba(0, 0, 0, 1),
+        0 0 80px rgba(0, 0, 0, 0.6),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      transition: all 300ms ease;
+    }
+
+    .floating-input-bar:focus-within {
+      animation: glowPulse 4s ease-in-out infinite;
+      border-color: rgba(255, 154, 60, 0.4);
+      background: rgba(40, 30, 40, 0.9);
+    }
+
+    /* Circular Glass Button */
+    .glass-circle-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 300ms ease;
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .glass-circle-btn:hover {
+      background: rgba(255, 154, 60, 0.2);
+      border-color: rgba(255, 154, 60, 0.4);
+      transform: scale(1.1) translateY(-2px);
+      color: white;
+      box-shadow: 0 0 15px rgba(255, 154, 60, 0.2);
+    }
+
+    /* Mention Tag Styling */
+    .mention-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      white-space: nowrap;
+      min-width: 0;
+      padding: 4px 10px;
+      margin-right: 6px;
+      border-radius: 999px;
+      background: rgba(255, 154, 60, 0.15);
+      border: 1px solid rgba(255, 154, 60, 0.35);
+      font-size: 0.9em;
+      color: #FF9A3C;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(255, 154, 60, 0.1);
+      transition: all 200ms ease;
+      max-width: 70%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mention-tag:hover {
+      background: rgba(255, 154, 60, 0.25);
+      border-color: rgba(255, 154, 60, 0.5);
+      box-shadow: 0 4px 12px rgba(255, 154, 60, 0.2);
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --glass-blur: 20px;
+        --amber-glow: rgba(255, 154, 60, 0.12);
+        --rose-glow: rgba(255, 77, 109, 0.2);
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+
+      .chat-bubble {
+        max-width: 90%;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      .ai-bubble {
+        background: rgba(15, 10, 15, 0.85);
+        /* Darker for better contrast */
+        border: 1px solid rgba(255, 154, 60, 0.25);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+
+      .user-bubble {
+        background: rgba(255, 77, 109, 0.25);
+        /* Slightly more opaque */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      .bg-glow-amber,
+      .bg-glow-rose {
+        opacity: 0.6;
+        /* Dim background glows on mobile */
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="noise-layer"></div>
+  <div class="mist-layer"></div>
+  <div class="bg-glow-amber"></div>
+  <div class="bg-glow-rose"></div>
+  <div id="root">
+    <div
+      style="height: 100vh; display: flex; align-items: center; justify-content: center; background: #140A12; color: #FF9A3C; font-family: sans-serif;">
+      <p style="letter-spacing: 0.1em; font-weight: bold; animation: pulse 2s infinite;">TECHBOY AI...
+      </p>
+    </div>
+  </div>
+  <script type="module" src="./index.tsx"></script>
+</body>
+
+</html>
